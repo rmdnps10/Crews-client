@@ -1,5 +1,5 @@
 import { BrowserRouter } from 'react-router-dom';
-// import './@style/font.css';
+import 'style/font.css';
 
 import Router from 'Router';
 import GlobalStyle from 'style/GlobalStyle';

@@ -8,7 +8,7 @@ export const Text = ({
   variant,
   as = 'span',
   spacing = '-0px',
-  font = 'Pretendard-Regular',
+  font = 'Noto Sans KR',
   cursor = 'inherit',
   underline = false,
   lineHeight = '120%',

@@ -3,9 +3,6 @@ import reset from 'styled-reset';
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
-    body {
-        /* font-family: ; */
-    }
     body * {
         box-sizing: border-box;
     }
