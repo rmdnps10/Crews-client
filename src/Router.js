@@ -1,8 +1,16 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from 'react-router-dom';
+import { Navigation } from 'components/molecules';
+import { Hello, MakeForm } from 'pages';
 
 const Router = () => {
   return (
-      <Routes>{/* <Route path="/" element={<Home />} /> */}</Routes>
+    <>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Hello />} />
+        <Route path="/makeform" element={<MakeForm />} />
+      </Routes>
+    </>
   );
 };
 
