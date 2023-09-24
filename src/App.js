@@ -4,7 +4,6 @@ import 'style/font.css';
 import Router from 'Router';
 import GlobalStyle from 'style/GlobalStyle';
 import { AppContainer } from 'components/templates';
-import { Hello } from 'pages';
 
 function App() {
   return (
@@ -12,7 +11,6 @@ function App() {
       <GlobalStyle />
       <AppContainer>
         <Router />
-        <Hello />
       </AppContainer>
     </BrowserRouter>
   );
