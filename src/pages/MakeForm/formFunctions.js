@@ -1,4 +1,3 @@
-// 길이 10의 랜덤 문자열 생성
 export const generateRandomString = () => {
   const characters = 'ABCDEFHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let result = '';
@@ -14,17 +13,38 @@ export const isRedundantName = (sections, newName) => {
   return false;
 };
 
-export const addNewSection = (sectionDatas, setSectionDatas) => {
+export const addSection = (sectionDatas, setSectionDatas) => {
   let newName;
   do {
     newName = generateRandomString();
   } while (isRedundantName(sectionDatas, newName));
 
-  setSectionDatas([
-    ...sectionDatas,
+  setSectionDatas((prev) => [
+    ...prev,
     {
       section_name: newName,
       section_description: '어쩌구 저쩌구',
+    },
+  ]);
+};
+
+export const addCheckboxQues = (
+  questionDatas,
+  section_name,
+  setQuestionDatas
+) => {
+  let lastId = questionDatas[questionDatas.length - 1].id + 1;
+  setQuestionDatas([
+    ...questionDatas,
+    {
+      id: lastId,
+      section_name,
+      is_mandatory: false,
+      question_type: 'checkbox',
+      question_description: `질문 ${lastId}`,
+      minimum_answer: 1,
+      maximum_answer: 1,
+      options: [],
     },
   ]);
 };

@@ -1,30 +1,29 @@
-import { useState } from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { sectionDataAtom } from './FormAtom';
 
 // Imported Functions & Datas
-import { DefaultSectionData, DummyQuestionDatas } from './formData';
-import { addNewSection } from './formFunctions';
+import { addSection } from './formFunctions';
 
 // Imported Components
 import SectionBox from './SectionBox';
+import { Space } from 'components/atoms';
 
 export const MakeForm = () => {
-  const [sectionDatas, setSectionDatas] = useState(DefaultSectionData);
-  const [questionDatas, setQuestionDatas] = useState(DummyQuestionDatas);
+  const [sectionData, setSectionData] = useRecoilState(sectionDataAtom);
 
   return (
     <div>
       <h1>지원서 양식 작성</h1>
-      {sectionDatas.map((it, idx) => {
-        return (
-          <SectionBox
-            sectionData={it}
-            questionData={questionDatas[it.section_name]}
-          />
-        );
-      })}
+      {sectionData.map((it, idx) => (
+        <>
+          <SectionBox section={it} />
+          <Space height="50px" />
+        </>
+      ))}
+
       <AddSectionButton
-        onClick={() => addNewSection(sectionDatas, setSectionDatas)}
+        onClick={() => addSection(sectionData, setSectionData)}
         children="섹션 추가하기"
       />
     </div>
@@ -38,7 +37,3 @@ const AddSectionButton = styled.button`
   cursor: pointer;
   background-color: blue;
 `;
-
-// 커밋 메세지
-// 섹션 추가하기 기능 추가
-// 질문 데이터 구조 변경 그에 따른 props 부여 로직도 변경
