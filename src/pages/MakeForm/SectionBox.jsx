@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 
 // Imported Functions & Datas
-import { addCheckboxQues } from './formFunctions';
-import { questionDataAtom } from './FormAtom';
+import { addCheckboxQues, deleteSecition } from './formFunctions';
+import { sectionDataAtom, questionDataAtom } from './FormAtom';
 
 // Imported Components
 import { Space } from 'components/atoms';
@@ -12,6 +12,7 @@ import SectionName from './SectionName';
 
 const SectionBox = ({ section }) => {
   const { section_name, section_description } = { ...section };
+  const [sectionData, setSectionData] = useRecoilState(sectionDataAtom);
   const [questionData, setQuestionData] = useRecoilState(questionDataAtom);
 
   return (
@@ -33,10 +34,24 @@ const SectionBox = ({ section }) => {
         })}
       <MyButton
         onClick={() =>
-          addCheckboxQues(questionData, section_name, setQuestionData)
+          addCheckboxQues(section_name, questionData, setQuestionData)
         }
         children="질문 추가"
       />
+      {section_name !== '공통' && (
+        <MyButton
+          onClick={() =>
+            deleteSecition(
+              section_name,
+              sectionData,
+              setSectionData,
+              questionData,
+              setQuestionData
+            )
+          }
+          children="섹션 삭제"
+        />
+      )}
     </SectionContainer>
   );
 };

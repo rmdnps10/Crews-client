@@ -28,6 +28,27 @@ export const addSection = (sectionData, setSectionData) => {
   ]);
 };
 
+export const deleteSecition = (
+  sectionName,
+  sectionData,
+  setSectionData,
+  questionData,
+  setQuestionData
+) => {
+  if (!window.confirm('섹션 삭제 시 내부의 생성된 질문들이 모두 삭제됩니다.'))
+    return;
+
+  const newSectionData = sectionData.filter(
+    (sec) => sec.section_name !== sectionName
+  );
+  setSectionData(newSectionData);
+
+  const newQuestionData = questionData.filter(
+    (ques) => ques.section_name !== sectionName
+  );
+  setQuestionData(newQuestionData);
+};
+
 export const changeSection = (
   newSectionName,
   originalName,
@@ -39,7 +60,7 @@ export const changeSection = (
 ) => {
   if (newSectionName !== originalName) {
     if (isRedundantName(sectionData, newSectionName)) {
-      alert('섹션명은 중복되면 안된당!');
+      window.alert('섹션명은 중복되면 안된당!');
       return;
     }
 
