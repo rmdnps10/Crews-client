@@ -3,32 +3,16 @@ import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 // Imported Functions
-import { isRedundantName } from './formFunctions';
+import { changeSection } from './formFunctions';
 
 // Imported Components
-import { sectionDataAtom } from './FormAtom';
+import { sectionDataAtom, questionDataAtom } from './FormAtom';
 
 const SectionName = ({ section_name }) => {
   const [sectionData, setSectionData] = useRecoilState(sectionDataAtom);
+  const [questionData, setQuestionData] = useRecoilState(questionDataAtom);
   const [changingSecName, setChangingSecName] = useState(false);
   const [inputSecName, setInputSecName] = useState(section_name);
-
-  const checkChangedSecName = () => {
-    if (inputSecName !== section_name) {
-      if (isRedundantName(sectionData, inputSecName)) {
-        alert('섹션명은 중복되면 안된당!');
-        return;
-      }
-
-      const newSectionData = sectionData.map((sec) => {
-        if (sec.section_name === section_name)
-          return { ...sec, section_name: inputSecName };
-        return sec;
-      });
-      setSectionData(newSectionData);
-    }
-    setChangingSecName(false);
-  };
 
   if (changingSecName)
     return (
@@ -37,7 +21,20 @@ const SectionName = ({ section_name }) => {
           value={inputSecName}
           onChange={(e) => setInputSecName(e.target.value)}
         />
-        <MyButton onClick={checkChangedSecName} children="확인" />
+        <MyButton
+          onClick={() =>
+            changeSection(
+              inputSecName,
+              section_name,
+              sectionData,
+              setSectionData,
+              questionData,
+              setQuestionData,
+              setChangingSecName
+            )
+          }
+          children="확인"
+        />
       </SectionNameContainer>
     );
   else

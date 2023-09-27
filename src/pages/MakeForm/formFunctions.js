@@ -7,19 +7,19 @@ export const generateRandomString = () => {
   return result;
 };
 
-export const isRedundantName = (sections, newName) => {
-  for (let i = 0; i < sections.length; i++)
-    if (sections[i].section_name === newName) return true;
+export const isRedundantName = (section, newName) => {
+  for (let i = 0; i < section.length; i++)
+    if (section[i].section_name === newName) return true;
   return false;
 };
 
-export const addSection = (sectionDatas, setSectionDatas) => {
+export const addSection = (sectionData, setSectionData) => {
   let newName;
   do {
     newName = generateRandomString();
-  } while (isRedundantName(sectionDatas, newName));
+  } while (isRedundantName(sectionData, newName));
 
-  setSectionDatas((prev) => [
+  setSectionData((prev) => [
     ...prev,
     {
       section_name: newName,
@@ -28,14 +28,46 @@ export const addSection = (sectionDatas, setSectionDatas) => {
   ]);
 };
 
-export const addCheckboxQues = (
-  questionDatas,
-  section_name,
-  setQuestionDatas
+export const changeSection = (
+  newSectionName,
+  originalName,
+  sectionData,
+  setSectionData,
+  questionData,
+  setQuestionData,
+  setChangingSecName
 ) => {
-  let lastId = questionDatas[questionDatas.length - 1].id + 1;
-  setQuestionDatas([
-    ...questionDatas,
+  if (newSectionName !== originalName) {
+    if (isRedundantName(sectionData, newSectionName)) {
+      alert('섹션명은 중복되면 안된당!');
+      return;
+    }
+
+    const newSectionData = sectionData.map((sec) => {
+      if (sec.section_name === originalName)
+        return { ...sec, section_name: newSectionName };
+      return sec;
+    });
+    setSectionData(newSectionData);
+
+    const newQuestionData = questionData.map((ques) => {
+      if (ques.section_name === originalName)
+        return { ...ques, section_name: newSectionName };
+      return ques;
+    });
+    setQuestionData(newQuestionData);
+  }
+  setChangingSecName(false);
+};
+
+export const addCheckboxQues = (
+  section_name,
+  questionData,
+  setQuestionData
+) => {
+  let lastId = questionData[questionData.length - 1].id + 1;
+  setQuestionData([
+    ...questionData,
     {
       id: lastId,
       section_name,
