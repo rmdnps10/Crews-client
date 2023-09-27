@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
 
 // Imported Functions & Datas
 import { addCheckboxQues } from './formFunctions';
@@ -7,19 +8,17 @@ import { questionDataAtom } from './FormAtom';
 // Imported Components
 import { Space } from 'components/atoms';
 import CheckBoxQues from './CheckBoxQues';
-import { useRecoilState } from 'recoil';
+import SectionName from './SectionName';
 
 const SectionBox = ({ section }) => {
-  const [questionData, setQuestionData] = useRecoilState(questionDataAtom);
   const { section_name, section_description } = { ...section };
+  const [questionData, setQuestionData] = useRecoilState(questionDataAtom);
 
   return (
     <SectionContainer>
-      <h3>{section_name}</h3>
+      <SectionName section_name={section_name} />
       <Space height="50px" />
-      <SectionDescriptionContainer>
-        {section_description}
-      </SectionDescriptionContainer>
+      <SectionDescriptionContainer children={section_description} />
 
       <Space height="50px" />
       {questionData &&
@@ -32,7 +31,7 @@ const SectionBox = ({ section }) => {
               </>
             );
         })}
-      <AddQuestionButton
+      <MyButton
         onClick={() =>
           addCheckboxQues(questionData, section_name, setQuestionData)
         }
@@ -55,11 +54,12 @@ const SectionDescriptionContainer = styled.div`
   height: 100px;
 `;
 
-const AddQuestionButton = styled.button`
+const MyButton = styled.button`
   width: 100px;
   height: 50px;
   cursor: pointer;
   background-color: green;
+  color: white;
 `;
 
 export default SectionBox;
