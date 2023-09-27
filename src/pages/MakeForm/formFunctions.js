@@ -81,6 +81,11 @@ export const changeSection = (
   setChangingSecName(false);
 };
 
+export const deleteQuestion = (id, questionData, setQuestionData) => {
+  const newQuestionData = questionData.filter((ques) => ques.id !== id);
+  setQuestionData(newQuestionData);
+};
+
 export const addCheckboxQues = (
   section_name,
   questionData,

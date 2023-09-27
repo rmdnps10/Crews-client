@@ -1,13 +1,21 @@
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
 
-const CheckBoxQues = ({ questionData }) => {
+// Imported Functions
+import { deleteQuestion } from './formFunctions';
+import { questionDataAtom } from './FormAtom';
+
+const CheckBoxQues = ({ question }) => {
   const {
+    id,
     is_mandatory,
     question_description,
     minimum_answer,
     maximum_answer,
     options,
-  } = { ...questionData };
+  } = { ...question };
+
+  const [questionData, setQuestionData] = useRecoilState(questionDataAtom);
 
   return (
     <CheckBoxQuesContainer>
@@ -24,16 +32,29 @@ const CheckBoxQues = ({ questionData }) => {
           {it}
         </label>
       ))}
+      <MyButton
+        onClick={() => deleteQuestion(id, questionData, setQuestionData)}
+        children="X"
+      />
     </CheckBoxQuesContainer>
   );
 };
 
 const CheckBoxQuesContainer = styled.div`
+  position: relative;
   border: 2px solid black;
   padding: 10px;
 `;
 
-export default CheckBoxQues;
+const MyButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-color: red;
+  color: white;
+`;
 
-// 라벨 달아주기
-// Recoil 공부
+export default CheckBoxQues;

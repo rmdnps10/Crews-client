@@ -27,7 +27,7 @@ const SectionBox = ({ section }) => {
           if (ques.section_name === section_name)
             return (
               <>
-                <CheckBoxQues questionData={ques} />
+                <CheckBoxQues question={ques} />
                 <Space height="50px" />
               </>
             );
