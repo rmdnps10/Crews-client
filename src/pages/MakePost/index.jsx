@@ -37,11 +37,7 @@ export const MakePost = () => {
   // 상시모집 여부와 2차 모집여부에 따라 Input값 활성화<->비활성화
   const onRadioChange = (e) => {
     const { name, value } = e.target;
-    setForm((prevForm) => ({
-      ...prevForm,
-      [name]: value,
-    }));
-
+    setForm({ ...form, [name]: value });
     switch (name) {
       case 'isContinuousRecruitment':
         const isContinuousRecruitment = value !== 'true';
@@ -63,6 +59,8 @@ export const MakePost = () => {
         break;
     }
   };
+
+  const uploadImage = (e) => {};
 
   return (
     <>
@@ -245,7 +243,16 @@ export const MakePost = () => {
 
         <UploadImage direction="column" align="flex-start" gap="10">
           <H2>이미지</H2>
-          <ImagePreview src="asdfd" alt="선택된 이미지 없음" />
+
+          <ImagePreviewList>
+            <ImagePreview />
+            <ImagePreview />
+            <ImagePreview />
+            <ImagePreview />
+            <ImagePreview />
+            <ImagePreview />
+            <ImagePreview />
+          </ImagePreviewList>
           <ImageUploadButton type="file" />
           <GuideText>
             이미지는 최대 8장까지 첨부 가능합니다. 이미지를 여러 장 선택했을 때,
@@ -314,7 +321,17 @@ const NavigateButton = styled.button``;
 
 const ImageUploadButton = styled.input``;
 
-const ImagePreview = styled.img``;
+const ImagePreviewList = styled.div`
+  flex-wrap: wrap;
+  display: flex;
+  gap: 10px;
+`;
+
+const ImagePreview = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: gray;
+`;
 
 const RadioWrap = styled(Flex)``;
 
