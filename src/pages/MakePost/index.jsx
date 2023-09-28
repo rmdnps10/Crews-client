@@ -94,6 +94,25 @@ export const MakePost = () => {
           <GuideText>
             서류 시작, 마감, 발표일을 정확하게 기입해 주세요.
           </GuideText>
+          <H3>2차 모집 여부</H3>
+          <RadioWrap>
+            예
+            <Radio
+              type="radio"
+              name="hasSecondInterview"
+              value={true}
+              onChange={onRadioChange}
+              checked={form.hasSecondInterview === true}
+            />
+            아니오
+            <Radio
+              type="radio"
+              name="hasSecondInterview"
+              value={false}
+              onChange={onRadioChange}
+              checked={form.hasSecondInterview === false}
+            />
+          </RadioWrap>
           <H3>2차 면접 일정 설정</H3>
           <PlanWrap>
             시작일
