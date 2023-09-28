@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Flex } from 'components/atoms';
+import ImageSection from './ImageSection';
 export const MakePost = () => {
   const [form, setForm] = useState({
     title: '',
@@ -29,7 +30,6 @@ export const MakePost = () => {
   const secondStartDateRef = useRef(null);
   const secondEndDateRef = useRef(null);
   const secondAnnounceDateRef = useRef(null);
-  const imageUploadRealButtonRef = useRef(null);
 
   const onTextFieldChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -58,15 +58,6 @@ export const MakePost = () => {
         break;
       default:
         break;
-    }
-  };
-
-  const getImageFiles = (e) => {
-    const files = e.currentTarget.files;
-    console.log(files);
-    if ([...files].length >= 9) {
-      alert('이미지는 최대 8개까지 업로드가 가능합니다.');
-      return;
     }
   };
 
@@ -251,31 +242,7 @@ export const MakePost = () => {
 
         <UploadImage direction="column" align="flex-start" gap="10">
           <H2>이미지</H2>
-
-          <ImagePreviewList>
-            <ImagePreview
-              onClick={() => {
-                imageUploadRealButtonRef.current.click();
-              }}
-            />
-            <ImagePreview
-              onClick={() => {
-                imageUploadRealButtonRef.current.click();
-              }}
-            />
-            <ImagePreview />
-            <ImagePreview />
-            <ImagePreview />
-            <ImagePreview />
-            <ImagePreview />
-          </ImagePreviewList>
-          <ImageUploadButton
-            type="file"
-            multiple="multiple" // 이미지 파일 여러개 업로드 가능
-            accept="image/*"
-            ref={imageUploadRealButtonRef}
-            onChange={getImageFiles}
-          />
+          <ImageSection />
           <GuideText>
             이미지는 최대 8장까지 첨부 가능합니다. 이미지를 여러 장 선택했을 때,
             선택한 첫 번째 이미지가 메인 화면에 표시됩니다.
@@ -341,22 +308,6 @@ const Radio = styled.input``;
 
 const NavigateButton = styled.button``;
 
-const ImageUploadButton = styled.input`
-  display: none;
-`;
-
-const ImagePreviewList = styled.div`
-  flex-wrap: wrap;
-  display: flex;
-  gap: 10px;
-`;
-
-const ImagePreview = styled.div`
-  width: 200px;
-  height: 200px;
-  background-color: gray;
-`;
-
 const RadioWrap = styled(Flex)``;
 
 const PlanWrap = styled(Flex)``;
@@ -379,7 +330,7 @@ const UploadImage = styled(Flex)``;
 
 const Notice = styled.div``;
 
-const MakePostWrapper = styled.div`
+const MakePostWrapper = styled.form`
   width: 60%;
   display: flex;
   flex-direction: column;
