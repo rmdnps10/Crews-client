@@ -4,11 +4,11 @@ import { Flex } from 'components/atoms';
 export const MakePost = () => {
   const [form, setForm] = useState({
     title: '',
-    isContinuousRecruitment: false,
+    isContinuousRecruitment: 'false',
     firstStartDate: '',
     firstEndDate: '',
     firstAnnounceDate: '',
-    hasSecondInterview: false,
+    hasSecondInterview: '',
     secondStartDate: '',
     secondEndDate: '',
     secondAnnounceDate: '',
@@ -24,7 +24,8 @@ export const MakePost = () => {
   const firstStartDateRef = useRef(null);
   const firstEndDateRef = useRef(null);
   const firstAnnounceDateRef = useRef(null);
-  const hasSecondInterviewRef = useRef(null);
+  const hasYesSecondInterviewRef = useRef(null);
+  const hasNoSecondInterviewRef = useRef(null);
   const secondStartDateRef = useRef(null);
   const secondEndDateRef = useRef(null);
   const secondAnnounceDateRef = useRef(null);
@@ -33,37 +34,34 @@ export const MakePost = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onRadioChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    console.log(e.target.value);
-    console.log(e.target.checked);
-    if (e.target.name === 'isContinuousRecruitment') {
-      // 상시모집 onChange
-      if (form.isContinuousRecruitment) {
-        //
-        firstEndDateRef.current.value = '';
-        firstAnnounceDateRef.current.value = '';
-        secondStartDateRef.current.value = '';
-        secondEndDateRef.current.value = '';
-        secondAnnounceDateRef.current.value = '';
-        console.log(firstEndDateRef.current);
-      }
-    }
-    if (e.target.name === 'hasSecondInterviewRef') {
-      // 2차 인터뷰 존재유뮤
-      if (form.isC) {
-      }
-    }
-  };
-
   // 상시모집 여부와 2차 모집여부에 따라 Input값 활성화<->비활성화
+  const onRadioChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
 
-  const handleIsContinousRecruitmentChange = () => {
-    const isChecked = isContinuousRecruitmentRef.current.checked;
-    firstEndDateRef.current.disabled = isChecked;
-    firstAnnounceDateRef.current.disabled = isChecked;
-    // 2차 모집 여부 라디오 버튼을 활성화합니다.
-    hasSecondInterviewRef.current.disabled = !isChecked;
+    switch (name) {
+      case 'isContinuousRecruitment':
+        const isContinuousRecruitment = value !== 'true';
+        firstEndDateRef.current.disabled = !isContinuousRecruitment;
+        firstAnnounceDateRef.current.disabled = !isContinuousRecruitment;
+        hasYesSecondInterviewRef.current.disabled = !isContinuousRecruitment;
+        hasNoSecondInterviewRef.current.disabled = !isContinuousRecruitment;
+        secondStartDateRef.current.disabled = !isContinuousRecruitment;
+        secondEndDateRef.current.disabled = !isContinuousRecruitment;
+        secondAnnounceDateRef.current.disabled = !isContinuousRecruitment;
+        break;
+      case 'hasSecondInterview':
+        const hasSecondInterview = value === 'true';
+        secondStartDateRef.current.disabled = !hasSecondInterview;
+        secondEndDateRef.current.disabled = !hasSecondInterview;
+        secondAnnounceDateRef.current.disabled = !hasSecondInterview;
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -112,7 +110,7 @@ export const MakePost = () => {
           <PlanWrap>
             시작일
             <Date
-              type="date"
+              type="text"
               name="firstStartDate"
               ref={firstStartDateRef}
               value={form.firstStartDate}
@@ -120,7 +118,7 @@ export const MakePost = () => {
             />
             마감일
             <Date
-              type="date"
+              type="text"
               name="firstEndDate"
               ref={firstEndDateRef}
               value={form.firstEndDate}
@@ -128,7 +126,7 @@ export const MakePost = () => {
             />
             발표일
             <Date
-              type="date"
+              type="text"
               name="firstAnnounceDate"
               ref={firstAnnounceDateRef}
               value={form.firstAnnounceDate}
@@ -145,7 +143,7 @@ export const MakePost = () => {
               type="radio"
               name="hasSecondInterview"
               value={true}
-              ref={hasSecondInterviewRef}
+              ref={hasYesSecondInterviewRef}
               onChange={onRadioChange}
               checked={form.hasSecondInterview === 'true'}
             />
@@ -154,7 +152,7 @@ export const MakePost = () => {
               type="radio"
               name="hasSecondInterview"
               value={false}
-              ref={hasSecondInterviewRef}
+              ref={hasNoSecondInterviewRef}
               onChange={onRadioChange}
               checked={form.hasSecondInterview === 'false'}
             />
@@ -163,7 +161,7 @@ export const MakePost = () => {
           <PlanWrap>
             시작일
             <Date
-              type="date"
+              type="text"
               name="secondStartDate"
               ref={secondStartDateRef}
               value={form.secondStartDate}
@@ -171,7 +169,7 @@ export const MakePost = () => {
             />
             마감일
             <Date
-              type="date"
+              type="text"
               name="secondEndDate"
               ref={secondEndDateRef}
               value={form.secondEndDate}
@@ -179,7 +177,7 @@ export const MakePost = () => {
             />
             발표일
             <Date
-              type="date"
+              type="text"
               name="secondAnnounceDate"
               ref={secondAnnounceDateRef}
               value={form.secondAnnounceDate}
