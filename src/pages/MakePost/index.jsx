@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Flex } from 'components/atoms';
 export const MakePost = () => {
@@ -19,13 +19,51 @@ export const MakePost = () => {
     uploadImage: {},
     mainContent: '',
   });
+  // useRef를 사용하여 DOM 요소 참조
+  const isContinuousRecruitmentRef = useRef(null);
+  const firstStartDateRef = useRef(null);
+  const firstEndDateRef = useRef(null);
+  const firstAnnounceDateRef = useRef(null);
+  const hasSecondInterviewRef = useRef(null);
+  const secondStartDateRef = useRef(null);
+  const secondEndDateRef = useRef(null);
+  const secondAnnounceDateRef = useRef(null);
 
   const onTextFieldChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const onRadioChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value === 'true' });
+    setForm({ ...form, [e.target.name]: e.target.value });
+    console.log(e.target.value);
+    console.log(e.target.checked);
+    if (e.target.name === 'isContinuousRecruitment') {
+      // 상시모집 onChange
+      if (form.isContinuousRecruitment) {
+        //
+        firstEndDateRef.current.value = '';
+        firstAnnounceDateRef.current.value = '';
+        secondStartDateRef.current.value = '';
+        secondEndDateRef.current.value = '';
+        secondAnnounceDateRef.current.value = '';
+        console.log(firstEndDateRef.current);
+      }
+    }
+    if (e.target.name === 'hasSecondInterviewRef') {
+      // 2차 인터뷰 존재유뮤
+      if (form.isC) {
+      }
+    }
+  };
+
+  // 상시모집 여부와 2차 모집여부에 따라 Input값 활성화<->비활성화
+
+  const handleIsContinousRecruitmentChange = () => {
+    const isChecked = isContinuousRecruitmentRef.current.checked;
+    firstEndDateRef.current.disabled = isChecked;
+    firstAnnounceDateRef.current.disabled = isChecked;
+    // 2차 모집 여부 라디오 버튼을 활성화합니다.
+    hasSecondInterviewRef.current.disabled = !isChecked;
   };
 
   return (
@@ -37,6 +75,7 @@ export const MakePost = () => {
           <TextField
             type="text"
             name="title"
+            maxLength="30"
             value={form.title}
             onChange={onTextFieldChange}
           ></TextField>
@@ -54,16 +93,18 @@ export const MakePost = () => {
               type="radio"
               name="isContinuousRecruitment"
               value={true}
+              ref={isContinuousRecruitmentRef}
               onChange={onRadioChange}
-              checked={form.isContinuousRecruitment === true}
+              checked={form.isContinuousRecruitment === 'true'}
             />
             아니오
             <Radio
               type="radio"
               name="isContinuousRecruitment"
+              ref={isContinuousRecruitmentRef}
               value={false}
               onChange={onRadioChange}
-              checked={form.isContinuousRecruitment === false}
+              checked={form.isContinuousRecruitment === 'false'}
             />
           </RadioWrap>
 
@@ -73,6 +114,7 @@ export const MakePost = () => {
             <Date
               type="date"
               name="firstStartDate"
+              ref={firstStartDateRef}
               value={form.firstStartDate}
               onChange={onTextFieldChange}
             />
@@ -80,6 +122,7 @@ export const MakePost = () => {
             <Date
               type="date"
               name="firstEndDate"
+              ref={firstEndDateRef}
               value={form.firstEndDate}
               onChange={onTextFieldChange}
             />
@@ -87,6 +130,7 @@ export const MakePost = () => {
             <Date
               type="date"
               name="firstAnnounceDate"
+              ref={firstAnnounceDateRef}
               value={form.firstAnnounceDate}
               onChange={onTextFieldChange}
             />
@@ -101,16 +145,18 @@ export const MakePost = () => {
               type="radio"
               name="hasSecondInterview"
               value={true}
+              ref={hasSecondInterviewRef}
               onChange={onRadioChange}
-              checked={form.hasSecondInterview === true}
+              checked={form.hasSecondInterview === 'true'}
             />
             아니오
             <Radio
               type="radio"
               name="hasSecondInterview"
               value={false}
+              ref={hasSecondInterviewRef}
               onChange={onRadioChange}
-              checked={form.hasSecondInterview === false}
+              checked={form.hasSecondInterview === 'false'}
             />
           </RadioWrap>
           <H3>2차 면접 일정 설정</H3>
@@ -119,6 +165,7 @@ export const MakePost = () => {
             <Date
               type="date"
               name="secondStartDate"
+              ref={secondStartDateRef}
               value={form.secondStartDate}
               onChange={onTextFieldChange}
             />
@@ -126,6 +173,7 @@ export const MakePost = () => {
             <Date
               type="date"
               name="secondEndDate"
+              ref={secondEndDateRef}
               value={form.secondEndDate}
               onChange={onTextFieldChange}
             />
@@ -133,6 +181,7 @@ export const MakePost = () => {
             <Date
               type="date"
               name="secondAnnounceDate"
+              ref={secondAnnounceDateRef}
               value={form.secondAnnounceDate}
               onChange={onTextFieldChange}
             />
@@ -148,6 +197,7 @@ export const MakePost = () => {
           <TextField
             type="text"
             name="recruitWho"
+            maxLength="30"
             value={form.recruitWho}
             onChange={onTextFieldChange}
           />
@@ -158,6 +208,7 @@ export const MakePost = () => {
           <TextField
             type="text"
             name="applyQualify"
+            maxLength="30"
             value={form.applyQualify}
             onChange={onTextFieldChange}
           />
@@ -170,6 +221,7 @@ export const MakePost = () => {
           <TextField
             type="text"
             name="recruitProcedure"
+            maxLength="30"
             value={form.recruitProcedure}
             onChange={onTextFieldChange}
           />
@@ -183,6 +235,7 @@ export const MakePost = () => {
           <TextField
             type="text"
             name="membershipFee"
+            maxLength="30"
             value={form.membershipFee}
             onChange={onTextFieldChange}
           />
@@ -207,6 +260,7 @@ export const MakePost = () => {
           <TextField
             type="text"
             name="mainContent"
+            maxLength="30"
             value={form.mainContent}
             onChange={onTextFieldChange}
           />
