@@ -86,12 +86,11 @@ export const deleteQuestion = (id, questionData, setQuestionData) => {
   setQuestionData(newQuestionData);
 };
 
-export const addCheckboxQues = (
-  section_name,
-  questionData,
-  setQuestionData
-) => {
-  let lastId = questionData[questionData.length - 1].id + 1;
+export const addQuestion = (section_name, questionData, setQuestionData) => {
+  let lastId =
+    questionData.length === 0
+      ? 0
+      : questionData[questionData.length - 1].id + 1;
   setQuestionData([
     ...questionData,
     {
@@ -99,10 +98,10 @@ export const addCheckboxQues = (
       section_name,
       is_mandatory: false,
       question_type: 'checkbox',
-      question_description: `질문 ${lastId}`,
+      question_description: `생성된 질문 ${lastId}`,
       minimum_answer: 1,
       maximum_answer: 1,
-      options: [],
+      options: ['옵션을 추가해주세요!'],
     },
   ]);
 };

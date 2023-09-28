@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 
 // Imported Functions & Datas
-import { addCheckboxQues, deleteSecition } from './formFunctions';
+import { addQuestion, deleteSecition } from './formFunctions';
 import { sectionDataAtom, questionDataAtom } from './FormAtom';
 
 // Imported Components
 import { Space } from 'components/atoms';
-import CheckBoxQues from './CheckBoxQues';
 import SectionName from './SectionName';
+import QuestionBox from './QuestionBox';
 
 const SectionBox = ({ section }) => {
   const { section_name, section_description } = { ...section };
@@ -22,20 +22,10 @@ const SectionBox = ({ section }) => {
       <SectionDescriptionContainer children={section_description} />
 
       <Space height="50px" />
-      {questionData &&
-        questionData.map((ques) => {
-          if (ques.section_name === section_name)
-            return (
-              <>
-                <CheckBoxQues question={ques} />
-                <Space height="50px" />
-              </>
-            );
-        })}
+      <QuestionBox sectionName={section_name} />
+
       <MyButton
-        onClick={() =>
-          addCheckboxQues(section_name, questionData, setQuestionData)
-        }
+        onClick={() => addQuestion(section_name, questionData, setQuestionData)}
         children="질문 추가"
       />
       {section_name !== '공통' && (

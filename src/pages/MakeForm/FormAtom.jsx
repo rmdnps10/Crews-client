@@ -8,5 +8,5 @@ export const sectionDataAtom = atom({
 
 export const questionDataAtom = atom({
   key: 'questionData',
-  default: Dummy_Question_Data,
+  default: [],
 });
