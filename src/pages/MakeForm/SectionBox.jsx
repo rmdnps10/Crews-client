@@ -7,7 +7,7 @@ import { sectionDataAtom, questionDataAtom } from './FormAtom';
 
 // Imported Components
 import { Space } from 'components/atoms';
-import SectionName from './SectionName';
+import SectionContent from './SectionContent';
 import QuestionBox from './QuestionBox';
 
 const SectionBox = ({ section }) => {
@@ -17,9 +17,8 @@ const SectionBox = ({ section }) => {
 
   return (
     <SectionContainer>
-      <SectionName section_name={section_name} />
+      <SectionContent section={section} />
       <Space height="50px" />
-      <SectionDescriptionContainer children={section_description} />
 
       <Space height="50px" />
       <QuestionBox sectionName={section_name} />
@@ -52,11 +51,6 @@ const SectionContainer = styled.div`
   width: 1000px;
   margin: 0 auto;
   padding: 20px;
-`;
-
-const SectionDescriptionContainer = styled.div`
-  border: 1px solid black;
-  height: 100px;
 `;
 
 const MyButton = styled.button`

@@ -8,23 +8,35 @@ import { changeSection } from './formFunctions';
 // Imported Components
 import { sectionDataAtom, questionDataAtom } from './FormAtom';
 
-const SectionName = ({ section_name }) => {
+const SectionContent = ({ section }) => {
+  const { section_name, section_description } = { ...section };
+
   const [sectionData, setSectionData] = useRecoilState(sectionDataAtom);
   const [questionData, setQuestionData] = useRecoilState(questionDataAtom);
   const [changingSecName, setChangingSecName] = useState(false);
   const [inputSecName, setInputSecName] = useState(section_name);
+  const [inputDescription, setInputDescription] = useState(section_description);
 
   if (changingSecName)
     return (
       <SectionNameContainer>
-        <input
-          value={inputSecName}
-          onChange={(e) => setInputSecName(e.target.value)}
+        {section_name === '공통' ? (
+          section_name
+        ) : (
+          <input
+            value={inputSecName}
+            onChange={(e) => setInputSecName(e.target.value)}
+          />
+        )}
+        <SectionDescriptionContainer
+          onChange={(e) => setInputDescription(e.target.value)}
+          value={inputDescription}
         />
         <MyButton
           onClick={() =>
             changeSection(
               inputSecName,
+              inputDescription,
               section_name,
               sectionData,
               setSectionData,
@@ -41,18 +53,18 @@ const SectionName = ({ section_name }) => {
     return (
       <SectionNameContainer>
         {section_name}
-        {section_name !== '공통' && (
-          <MyButton
-            onClick={() => setChangingSecName(true)}
-            children="제목 수정"
-          />
-        )}
+        <div children={section_description} />
+        <MyButton
+          onClick={() => setChangingSecName(true)}
+          children="섹션 수정"
+        />
       </SectionNameContainer>
     );
 };
 
 const SectionNameContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   padding: 10px;
   border-bottom: 1px solid black;
@@ -66,4 +78,9 @@ const MyButton = styled.button`
   color: white;
 `;
 
-export default SectionName;
+const SectionDescriptionContainer = styled.textarea`
+  border: 1px solid black;
+  height: 100px;
+`;
+
+export default SectionContent;
