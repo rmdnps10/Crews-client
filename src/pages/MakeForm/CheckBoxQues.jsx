@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 // Imported Functions
 
-const CheckBoxQues = ({ changingQues, question, setInputQuesData }) => {
+const CheckBoxQues = ({ changingQues = false, question, setInputQuesData }) => {
   const {
     id,
     is_mandatory,
@@ -56,6 +56,10 @@ const CheckBoxQues = ({ changingQues, question, setInputQuesData }) => {
   };
 
   const deleteOption = (id) => {
+    if (options.length === 1) {
+      alert('옵션이 최소 한개 이상은 있어야함');
+      return;
+    }
     const newOptions = options.filter((op) => op.id !== id);
     setInputQuesData((prev) => {
       return {

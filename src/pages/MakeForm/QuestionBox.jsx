@@ -4,11 +4,16 @@ import { useState } from 'react';
 
 // Imported Functions & Datas
 import { questionDataAtom } from './FormAtom';
-import { deleteQuestion } from './formFunctions';
+import {
+  Default_CheckboxQues_Data,
+  Default_DescriptiveQues_Data,
+} from './formData';
+import { deleteQuestion, changeQuestion } from './formFunctions';
 
 // Imported Components
 import { Space } from 'components/atoms';
 import CheckBoxQues from './CheckBoxQues';
+import DescriptiveQues from './DescriptiveQues';
 
 const QuestionCard = ({ question }) => {
   const { id, is_mandatory, question_type } = { ...question };
@@ -17,13 +22,36 @@ const QuestionCard = ({ question }) => {
   const [inputQuesData, setInputQuesData] = useState({ ...question });
 
   const changeQuesType = (newQuesType) => {
-    setInputQuesData({ ...inputQuesData, question_type: newQuesType });
+    if (newQuesType === inputQuesData.question_type) return;
+    if (newQuesType === 'checkbox')
+      setInputQuesData({
+        id: inputQuesData.id,
+        section_name: inputQuesData.section_name,
+        is_mandatory: inputQuesData.is_mandatory,
+        question_description: inputQuesData.question_description,
+        ...Default_CheckboxQues_Data,
+      });
+    else if (newQuesType === 'descriptive')
+      setInputQuesData({
+        id: inputQuesData.id,
+        section_name: inputQuesData.section_name,
+        is_mandatory: inputQuesData.is_mandatory,
+        question_description: inputQuesData.question_description,
+        ...Default_DescriptiveQues_Data,
+      });
+    else alert('구현안함');
   };
 
   const changeIsMandatory = () => {
     setInputQuesData((prev) => {
       return { ...prev, is_mandatory: !prev.is_mandatory };
     });
+  };
+
+  const switchChangingQues = () => {
+    if (!changingQues) setInputQuesData({ ...question });
+    setChangingQues((prev) => !prev);
+    changeQuestion(id, inputQuesData, questionData, setQuestionData);
   };
 
   if (changingQues)
@@ -56,20 +84,24 @@ const QuestionCard = ({ question }) => {
           />
           필수 여부
         </label>
-        {question_type === 'checkbox' ? (
+        {inputQuesData.question_type === 'checkbox' ? (
           <CheckBoxQues
             changingQues={changingQues}
             question={inputQuesData}
             setInputQuesData={setInputQuesData}
           />
         ) : null}
-        {/* {question_type === 'descriptive' ? (
-          <CheckBoxQues question={question} />
+        {inputQuesData.question_type === 'descriptive' ? (
+          <DescriptiveQues
+            changingQues={changingQues}
+            question={inputQuesData}
+            setInputQuesData={setInputQuesData}
+          />
         ) : null}
-        {question_type === 'file' ? (
+        {/* {inputQuesData.question_type === 'file' ? (
           <CheckBoxQues question={question} />
         ) : null} */}
-        <ChangeButton onClick={() => setChangingQues(false)} children="확인" />
+        <ChangeButton onClick={switchChangingQues} children="확인" />
         <DeleteButton
           onClick={() => deleteQuestion(id, questionData, setQuestionData)}
           children="X"
@@ -91,22 +123,15 @@ const QuestionCard = ({ question }) => {
           필수 여부
         </label>
         {question_type === 'checkbox' ? (
-          <CheckBoxQues
-            changingQues={changingQues}
-            question={question}
-            setInputQuesData={setInputQuesData}
-          />
-        ) : null}
-        {/* {question_type === 'descriptive' ? (
           <CheckBoxQues question={question} />
         ) : null}
-        {question_type === 'file' ? (
+        {question_type === 'descriptive' ? (
+          <DescriptiveQues question={question} />
+        ) : null}
+        {/* {question_type === 'file' ? (
           <CheckBoxQues question={question} />
         ) : null} */}
-        <ChangeButton
-          onClick={() => setChangingQues(true)}
-          children="수정하기"
-        />
+        <ChangeButton onClick={switchChangingQues} children="수정하기" />
       </QuestionCardContainer>
     );
 };
