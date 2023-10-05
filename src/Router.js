@@ -1,7 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 import { Navigation } from 'components/molecules';
-import { Hello, MakeForm } from 'pages';
-import { SignIn } from 'pages/SignIn';
+
+import { Hello, MakeForm, MakePost, Login ,SignIn} from 'pages';
+
 
 const Router = () => {
   return (
@@ -11,6 +12,9 @@ const Router = () => {
         <Route path="/" element={<Hello />} />
         <Route path="/makeform" element={<MakeForm />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/makepost" element={<MakePost/>}/>
+        <Route path="/login" element={<Login />} />
+
       </Routes>
     </>
   );
