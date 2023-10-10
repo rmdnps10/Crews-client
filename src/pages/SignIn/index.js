@@ -2,8 +2,11 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { Flex, Space } from 'components/atoms';
 import { Text } from 'components/atoms';
+import { useNavigate } from 'react-router-dom';
 
 export const SignIn = () => {
+  const nav = useNavigate();
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -15,6 +18,7 @@ export const SignIn = () => {
     department3: '제 3전공',
     otherDepartment2: '',
     otherDepartment3: '',
+    schoolemail: '',
   });
 
   const [errors, setErrors] = useState({
@@ -23,6 +27,7 @@ export const SignIn = () => {
     password: '',
     confirmPassword: '',
     studentId: '',
+    schoolemail: '',
   });
 
   const [isOtherDepartmentVisible2, setIsOtherDepartmentVisible2] =
@@ -68,6 +73,7 @@ export const SignIn = () => {
       password: '',
       confirmPassword: '',
       studentId: '',
+      schoolemail: '',
     };
 
     if (formData.username.trim() === '') {
@@ -95,6 +101,14 @@ export const SignIn = () => {
 
     if (!/^\d{8}$/.test(formData.studentId)) {
       newErrors.studentId = '올바른 학번을 입력하세요 (8자리 숫자).';
+      valid = false;
+    }
+    if (
+      !formData.schoolemail.match(
+        /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
+      )
+    ) {
+      newErrors.schoolemail = '올바른 이메일 형식이 아닙니다.';
       valid = false;
     }
 
@@ -234,12 +248,19 @@ export const SignIn = () => {
         <FormGroup>
           <Text>학교 이메일 인증</Text>
           <Flex direction="row">
-            <Input value={formData.email} />
+            <Input
+              type="email"
+              id="schoolemail"
+              name="schoolemail"
+              value={formData.schoolemail}
+              onChange={handleInputChange}
+              required
+            />
             <button>
               <Text> 인증코드 전송</Text>
             </button>
           </Flex>{' '}
-          <ErrorMessage>{errors.email}</ErrorMessage>
+          <ErrorMessage>{errors.schoolemail}</ErrorMessage>
         </FormGroup>
         <FormGroup>
           <Text>인증코드</Text>
@@ -251,16 +272,14 @@ export const SignIn = () => {
           </Flex>
         </FormGroup>
 
-        <CompleteBtn>
-          <button type="submit" onClick={validateForm}>
-            <Text color="white"> 회원 가입 완료</Text>
-          </button>
+        <CompleteBtn type="submit" onClick={validateForm}>
+          <Text color="white"> 회원 가입 완료</Text>
         </CompleteBtn>
         <Flex>
           <Text size={12} color="grey">
             이미 회원이신가요?
           </Text>
-          <LoginBtn>로그인</LoginBtn>
+          <LoginBtn onClick={() => nav('/login')}>로그인</LoginBtn>
         </Flex>
       </form>
     </Flex>
