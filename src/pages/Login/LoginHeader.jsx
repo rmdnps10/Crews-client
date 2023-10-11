@@ -11,16 +11,16 @@ export const LoginHeader = () => {
       <Text
         children="동아리 모집과 지원을 한번에"
         color={BK02}
-        size="2rem"
+        size="32px"
         weight={700}
-        spacing="-0.04rem"
+        spacing="-0.64px"
       />
       <Text
         children="CREWS🚢"
         color={B05}
-        size="3rem"
+        size="48px"
         weight={700}
-        spacing="-0.06rem"
+        spacing="-0.64px"
       />
     </Flex>
   );

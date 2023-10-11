@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { BK02 } from 'style/palette';
 //imported components
-import { Flex, Input, Text } from 'components/atoms';
+import { Flex, Input, Space, Text } from 'components/atoms';
 
 export const LoginInput = () => {
   const [email, setEmail] = useState('');
@@ -54,18 +54,23 @@ export const LoginInput = () => {
       }
     }
   };
-  const storeCookie = () => {};
   return (
     <>
       <form onSubmit={onSumitHanlder}>
         <label>
-          <Text children="아이디" color={BK02} />
-          <br />
+          <Text
+            children="아이디"
+            color={BK02}
+            size="22px"
+            weight={600}
+            spacing="-0.44px"
+          />
+          <Space height="16px" />
           <Input
             status={emailStatus}
             placeholder="이메일을 입력해주세요."
-            width="32.625rem"
-            height="4.25rem"
+            width="522px"
+            height="68px"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -77,15 +82,22 @@ export const LoginInput = () => {
             }}
           />
         </label>
-        <br />
+        <Space height="28px" />
         <label>
-          <Text children="비밀번호" color={BK02} />
+          <Text
+            children="비밀번호"
+            color={BK02}
+            size="22px"
+            weight={600}
+            spacing="-0.44px"
+          />
           <br />
+          <Space height="16px" />
           <Input
             status={passwordStatus}
             placeholder="비밀번호를 입력해주세요."
-            width="32.625rem"
-            height="4.25rem"
+            width="522px"
+            height="68px"
             type={showPW ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
