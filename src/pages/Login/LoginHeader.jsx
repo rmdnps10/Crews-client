@@ -7,7 +7,7 @@ import { B05, BK02 } from '../../style/palette';
 
 export const LoginHeader = () => {
   return (
-    <Flex direction="column" gap="12" align="start">
+    <Flex direction="column" width="522px" gap="12" align="start">
       <Text
         children="동아리 모집과 지원을 한번에"
         color={BK02}
