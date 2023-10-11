@@ -1,13 +1,16 @@
+//imported components
 import { Flex, Space, Text } from 'components/atoms';
-// import { CollaboCrews } from './CollaboCrews';
 import { LoginInput } from './LoginInput';
+import { LoginHeader } from './LoginHeader';
+//imported styles
 import { BK01 } from '../../style/palette';
+// import { CollaboCrews } from './CollaboCrews';
+
 export const Login = () => {
   return (
     <div>
       <Flex direction="column">
-        <Text children="동아리 리크루팅과 지원을 한번에," />
-        <Text children="Crews🚢" color="#3172EA" />
+        <LoginHeader />
         <LoginInput />
         <Flex>
           <Text
