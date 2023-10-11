@@ -11,6 +11,7 @@ export const Login = () => {
     <div>
       <Flex direction="column">
         <LoginHeader />
+        <Space height="3.25rem" />
         <LoginInput />
         <Flex>
           <Text
