@@ -4,10 +4,7 @@ import { useCookies } from 'react-cookie';
 import { Button, Flex, Input, Space, Text } from 'components/atoms';
 //imported styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCircleXmark,
-  faCircleCheck,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { BK01, BK02 } from 'style/palette';
 import { LoginOptions } from './LoginOptions';
@@ -18,6 +15,9 @@ export const LoginInput = () => {
   //input box status
   const [emailStatus, setEmailStatus] = useState('inactive');
   const [passwordStatus, setPasswordStatus] = useState('inactive');
+  //x버튼 표시 toggle
+  const [showEmailX, setShowEmailX] = useState(false);
+  const [showPwX, setShowPwX] = useState(false);
   //비밀번호 표시 toggle
   const [showPW, setShowPW] = useState(false);
   //user id pw 쿠키
@@ -31,20 +31,22 @@ export const LoginInput = () => {
     // 컴포넌트가 렌더링될 때 쿠키가 있으면 바로 입력
     const savedEmail = cookies.userEmail;
     const savedPassword = cookies.userPassword;
-
     if (savedEmail && savedPassword) {
       setEmail(savedEmail);
       setPassword(savedPassword);
     }
   }, []);
+
   const toggleShowPW = (e) => {
     const isShowed = e.target.checked;
     setShowPW(isShowed);
   };
+
   const toggleIsStore = (e) => {
     const isStoreChecked = e.target.checked;
     setIsStore(isStoreChecked);
   };
+
   const onSubmitHanlder = (e) => {
     e.preventDefault();
     if (email.trim() === '') {
@@ -62,6 +64,7 @@ export const LoginInput = () => {
       }
     }
   };
+
   return (
     <LoginInputWrapper>
       <form onSubmit={onSubmitHanlder}>
@@ -85,17 +88,21 @@ export const LoginInput = () => {
               onChange={(e) => setEmail(e.target.value)}
               onFocus={() => {
                 setEmailStatus('active');
+                setShowEmailX(true);
               }}
               onBlur={() => {
                 setEmailStatus('inactive');
+                setTimeout(() => {
+                  setShowEmailX(false);
+                }, 90);
               }}
             />
           </label>
-          {emailStatus === 'active' && (
+          {showEmailX === true && (
             <FontAwesomeIcon
               className="deleteButton"
               icon={faCircleXmark}
-              style={{ color: '#101010', width: '36px', height: '36px' }}
+              style={{ color: '#999999', width: '32px', height: '32px' }}
               onClick={() => {
                 setEmail('');
               }}
@@ -113,7 +120,6 @@ export const LoginInput = () => {
               weight={600}
               spacing="-0.44px"
             />
-            <br />
             <Space height="16px" />
             <Input
               status={passwordStatus}
@@ -125,17 +131,21 @@ export const LoginInput = () => {
               onChange={(e) => setPassword(e.target.value)}
               onFocus={() => {
                 setPasswordStatus('active');
+                setShowPwX(true);
               }}
               onBlur={() => {
                 setPasswordStatus('inactive');
+                setTimeout(() => {
+                  setShowPwX(false);
+                }, 100);
               }}
             />
           </label>
-          {passwordStatus === 'active' && (
+          {showPwX === true && (
             <FontAwesomeIcon
               className="deleteButton"
               icon={faCircleXmark}
-              style={{ color: '#101010', width: '36px', height: '36px' }}
+              style={{ color: '#101010', width: '32px', height: '32px' }}
               onClick={(e) => {
                 setPassword('');
               }}
@@ -143,27 +153,25 @@ export const LoginInput = () => {
             />
           )}
         </LoginBoxWrapper>
-      </form>
-      <Space height="28px" />
-      <Flex justify="space-between">
-        <StyledLabel>
-          <StoreCheckInput
-            type="checkbox"
-            checked={isStore}
-            onChange={toggleIsStore}
-          />
-          <Text
-            children="아이디 저장"
-            color={BK01}
-            size={'20px'}
-            weight={500}
-            spacing="-0.4px"
-          />
-        </StyledLabel>
-        <LoginOptions />
-      </Flex>
-      <Space height="28px" />
-      <form onSubmit={onSubmitHanlder}>
+        <Space height="28px" />
+        <Flex justify="space-between">
+          <StyledLabel>
+            <StoreCheckInput
+              type="checkbox"
+              checked={isStore}
+              onChange={toggleIsStore}
+            />
+            <Text
+              children="아이디 저장"
+              color={BK01}
+              size={'20px'}
+              weight={500}
+              spacing="-0.4px"
+            />
+          </StyledLabel>
+          <LoginOptions />
+        </Flex>
+        <Space height="28px" />
         <Button
           children="로그인"
           width="522px"
@@ -173,6 +181,7 @@ export const LoginInput = () => {
       </form>
       <input type="checkbox" checked={showPW} onChange={toggleShowPW}></input>
       <Text children="비밀번호 표시" color={BK01} />
+      <FontAwesomeIcon icon={faEyeSlash} />
     </LoginInputWrapper>
   );
 };
@@ -184,7 +193,7 @@ const LoginBoxWrapper = styled.div`
   position: relative;
   .deleteButton {
     position: absolute;
-    top: 59px;
+    top: 61px;
     right: 22px;
   }
 `;

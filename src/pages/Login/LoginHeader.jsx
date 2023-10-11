@@ -3,7 +3,6 @@ import { Flex, Text } from 'components/atoms';
 import {} from './LoginInput';
 //imported styles
 import { B05, BK02 } from '../../style/palette';
-// import { CollaboCrews } from './CollaboCrews';
 
 export const LoginHeader = () => {
   return (

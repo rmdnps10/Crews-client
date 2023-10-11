@@ -16,7 +16,7 @@ export const LoginOptions = () => {
         spacing="-0.4px"
         cursor="pointer"
         onClick={() => {
-          navigate('/signin');
+          alert('아이디 찾기 창');
         }}
       />
       <Pipe />
@@ -28,7 +28,7 @@ export const LoginOptions = () => {
         spacing="-0.4px"
         cursor="pointer"
         onClick={() => {
-          navigate('/signin');
+          alert('비밀번호 찾기 창');
         }}
       />
       <Pipe />
