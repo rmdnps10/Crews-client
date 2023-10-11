@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { BK02 } from 'style/palette';
 //imported components
-import { Flex, Input, Space, Text } from 'components/atoms';
+import { Button, Flex, Input, Space, Text } from 'components/atoms';
+//imported styles
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
+import { BK01, BK02 } from 'style/palette';
 
 export const LoginInput = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   //input box status
@@ -37,7 +43,7 @@ export const LoginInput = () => {
     const isStoreChecked = e.target.checked;
     setIsStore(isStoreChecked);
   };
-  const onSumitHanlder = (e) => {
+  const onSubmitHanlder = (e) => {
     e.preventDefault();
     if (email.trim() === '') {
       alert('아이디를 입력하세요');
@@ -55,71 +61,127 @@ export const LoginInput = () => {
     }
   };
   return (
-    <>
-      <form onSubmit={onSumitHanlder}>
-        <label>
-          <Text
-            children="아이디"
-            color={BK02}
-            size="22px"
-            weight={600}
-            spacing="-0.44px"
-          />
-          <Space height="16px" />
-          <Input
-            status={emailStatus}
-            placeholder="이메일을 입력해주세요."
-            width="522px"
-            height="68px"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onFocus={() => {
-              setEmailStatus('active');
-            }}
-            onBlur={() => {
-              setEmailStatus('inactive');
-            }}
-          />
-        </label>
+    <LoginInputWrapper>
+      <form onSubmit={onSubmitHanlder}>
+        <LoginBoxWrapper>
+          <label>
+            <Text
+              children="아이디"
+              color={BK02}
+              size="22px"
+              weight={600}
+              spacing="-0.44px"
+            />
+            <Space height="16px" />
+            <Input
+              status={emailStatus}
+              placeholder="이메일을 입력해주세요."
+              width="522px"
+              height="68px"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onFocus={() => {
+                setEmailStatus('active');
+              }}
+              onBlur={() => {
+                setEmailStatus('inactive');
+              }}
+            />
+          </label>
+          {emailStatus === 'active' && (
+            <FontAwesomeIcon
+              className="deleteButton"
+              icon={faCircleXmark}
+              style={{ color: '#101010', width: '36px', height: '36px' }}
+              onClick={() => {
+                setEmail('');
+              }}
+              cursor={'pointer'}
+            />
+          )}
+        </LoginBoxWrapper>
         <Space height="28px" />
-        <label>
-          <Text
-            children="비밀번호"
-            color={BK02}
-            size="22px"
-            weight={600}
-            spacing="-0.44px"
-          />
-          <br />
-          <Space height="16px" />
-          <Input
-            status={passwordStatus}
-            placeholder="비밀번호를 입력해주세요."
-            width="522px"
-            height="68px"
-            type={showPW ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onFocus={() => {
-              setPasswordStatus('active');
-            }}
-            onBlur={() => {
-              setPasswordStatus('inactive');
-            }}
-          />
-        </label>
-        <br />
-        <button type="submit">
-          <Text>로그인</Text>
-        </button>
+        <LoginBoxWrapper>
+          <label>
+            <Text
+              children="비밀번호"
+              color={BK02}
+              size="22px"
+              weight={600}
+              spacing="-0.44px"
+            />
+            <br />
+            <Space height="16px" />
+            <Input
+              status={passwordStatus}
+              placeholder="비밀번호를 입력해주세요."
+              width="522px"
+              height="68px"
+              type={showPW ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => {
+                setPasswordStatus('active');
+              }}
+              onBlur={() => {
+                setPasswordStatus('inactive');
+              }}
+            />
+          </label>
+          {passwordStatus === 'active' && (
+            <FontAwesomeIcon
+              className="deleteButton"
+              icon={faCircleXmark}
+              style={{ color: '#101010', width: '36px', height: '36px' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setPassword('');
+              }}
+              cursor={'pointer'}
+            />
+          )}
+        </LoginBoxWrapper>
       </form>
+      <Space height="28px" />
+
       <Flex>
         <input type="checkbox" checked={isStore} onChange={toggleIsStore} />
         <Text>아이디 저장</Text>
         <input type="checkbox" checked={showPW} onChange={toggleShowPW}></input>
         <Text>비밀번호 표시</Text>
       </Flex>
-    </>
+      <Flex>
+        <Text
+          children="회원가입"
+          color={BK01}
+          cursor="pointer"
+          onClick={() => {
+            navigate('/signin');
+          }}
+        />
+      </Flex>
+      <form onSubmit={onSubmitHanlder}>
+        <Button
+          children="로그인"
+          width="522px"
+          height="68px"
+          onClick={onSubmitHanlder}
+        />
+      </form>
+    </LoginInputWrapper>
   );
 };
+
+const LoginInputWrapper = styled.div`
+  width: 522px;
+`;
+
+const LoginBoxWrapper = styled.div`
+  position: relative;
+  .deleteButton {
+    position: absolute;
+    top: 59px;
+    right: 22px;
+  }
+`;

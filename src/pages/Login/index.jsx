@@ -13,17 +13,6 @@ export const Login = () => {
         <LoginHeader />
         <Space height="52px" />
         <LoginInput />
-        <Flex>
-          <Text
-            children="회원가입"
-            color={BK01}
-            cursor="pointer"
-            onClick={() => {
-              alert('아직 미구현, 회원가입으로 navigate');
-            }}
-          />
-        </Flex>
-
         {/* <CollaboCrews /> */}
       </Flex>
     </div>
