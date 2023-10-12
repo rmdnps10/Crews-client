@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { Flex, Space } from 'components/atoms';
-import { Text } from 'components/atoms';
+import { Button, Flex, Text } from 'components/atoms';
 import { useNavigate } from 'react-router-dom';
 
 export const SignIn = () => {
@@ -34,12 +33,14 @@ export const SignIn = () => {
     useState(false);
   const [isOtherDepartmentVisible3, setIsOtherDepartmentVisible3] =
     useState(false);
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({
       ...formData,
       [name]: value,
     });
+    validateField(name, value);
   };
 
   const handleDepartmentChange = (event, departmentNumber) => {
@@ -65,70 +66,95 @@ export const SignIn = () => {
     event.preventDefault();
   };
 
-  const validateForm = () => {
-    let valid = true;
-    const newErrors = {
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      studentId: '',
-      schoolemail: '',
-    };
+  const validateField = (fieldName, value) => {
+    let errorMessage = '';
 
-    if (formData.username.trim() === '') {
-      newErrors.username = '사용자 이름을 입력하세요.';
-      valid = false;
+    switch (fieldName) {
+      case 'username':
+        errorMessage = value.trim() === '' ? '사용자 이름을 입력하세요.' : '';
+        break;
+      case 'email':
+        errorMessage = !value.match(
+          /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
+        )
+          ? '올바른 이메일 형식이 아닙니다.'
+          : '';
+        break;
+      case 'password':
+        errorMessage =
+          !value.match(/^(?=.*[!@#$%^&*])/) || value.length < 8
+            ? '비밀번호는 8자 이상으로 특수문자를 포함해주세요.'
+            : '';
+        break;
+      case 'confirmPassword':
+        errorMessage =
+          value !== formData.password ? '비밀번호가 일치하지 않습니다.' : '';
+        break;
+      case 'studentId':
+        errorMessage = !/^\d{8}$/.test(value)
+          ? '올바른 학번을 입력하세요 (8자리 숫자).'
+          : '';
+        break;
+      case 'schoolemail':
+        errorMessage = !value.match(
+          /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
+        )
+          ? '올바른 이메일 형식이 아닙니다.'
+          : '';
+        break;
+      default:
+        break;
     }
 
-    if (!formData.email.match(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/)) {
-      newErrors.email = '올바른 이메일 형식이 아닙니다.';
-      valid = false;
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [fieldName]: errorMessage,
+    }));
+    setIsButtonEnabled(isAllFieldsFilled());
+  };
+  const isAllFieldsFilled = () => {
+    for (const key in formData) {
+      if (formData.hasOwnProperty(key) && formData[key] === '') {
+        return false;
+      }
     }
-
-    if (
-      !formData.password.match(/^(?=.*[!@#$%^&*])/) ||
-      formData.password.length < 8
-    ) {
-      newErrors.password = '비밀번호는 8자 이상으로 특수문자를 포함해주세요.';
-      valid = false;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = '비밀번호가 일치하지 않습니다.';
-      valid = false;
-    }
-
-    if (!/^\d{8}$/.test(formData.studentId)) {
-      newErrors.studentId = '올바른 학번을 입력하세요 (8자리 숫자).';
-      valid = false;
-    }
-    if (
-      !formData.schoolemail.match(
-        /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
-      )
-    ) {
-      newErrors.schoolemail = '올바른 이메일 형식이 아닙니다.';
-      valid = false;
-    }
-
-    setErrors(newErrors);
-    return valid;
+    return true;
   };
 
   return (
-    <Flex width="441" height="831">
+    <SigninWrapper>
+      <TitleDiv>
+        <Flex direction="column" align="start">
+          <Text size={32} weight={700} color="#3172EA">
+            회원가입
+          </Text>
+
+          <Text size={20} weight={400} color="#999999">
+            CREWS에 오신 것을 환영합니다! 계정을 생성해주세요.
+          </Text>
+        </Flex>
+      </TitleDiv>
+
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <Text>이메일(아이디)</Text>
-          <Input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
+          <Text size={22} weight={600}>
+            이메일(아이디)
+          </Text>
+          <Flex>
+            <Input
+              width={380}
+              height={68}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+            />
+            <Button width="150" height="68" fontSize="20" buttonColor="#CCCCCC">
+              중복확인
+            </Button>
+          </Flex>
           <ErrorMessage>{errors.email}</ErrorMessage>
         </FormGroup>
         <FormGroup>
@@ -155,6 +181,9 @@ export const SignIn = () => {
           />
           <ErrorMessage>{errors.confirmPassword}</ErrorMessage>
         </FormGroup>
+        <Text size={20} weight={400} color="#999999">
+          학생 정보 등록 및 본인 인증을 진행해주세요.
+        </Text>
         <FormGroup>
           <Text>이름</Text>
           <Input
@@ -180,26 +209,26 @@ export const SignIn = () => {
           <ErrorMessage>{errors.studentId}</ErrorMessage>
         </FormGroup>
         <FormGroup>
-          <Text>전공</Text>
+          <Text>제 1전공 (필수)</Text>
           <Select
             name="department"
             value={formData.department}
             onChange={handleDepartmentChange}
           >
-            <option value="제 1전공">제 1전공</option>
+            <option value="제 1전공">직접 입력</option>
             <option value="컴퓨터 공학">컴퓨터 공학</option>
             <option value="전기 공학">전기 공학</option>
             <option value="기계 공학">기계 공학</option>
           </Select>
         </FormGroup>
         <FormGroup>
-          <Text>제 2전공</Text>
+          <Text>제 2전공 (선택)</Text>
           <Select
             name="department2"
             value={formData.department2}
             onChange={(e) => handleDepartmentChange(e, 2)}
           >
-            <option value="제 2전공">제 2전공</option>
+            <option value="제 2전공">직접 입력</option>
             <option value="컴퓨터 공학">컴퓨터 공학</option>
             <option value="전기 공학">전기 공학</option>
             <option value="기계 공학">기계 공학</option>
@@ -220,13 +249,13 @@ export const SignIn = () => {
         )}
 
         <FormGroup>
-          <Text>제 3전공</Text>
+          <Text>제 3전공 (선택)</Text>
           <Select
             name="department3"
             value={formData.department3}
             onChange={(e) => handleDepartmentChange(e, 3)}
           >
-            <option value="제 3전공">제 3전공</option>
+            <option value="제 3전공">직접 입력</option>
             <option value="컴퓨터 공학">컴퓨터 공학</option>
             <option value="전기 공학">전기 공학</option>
             <option value="기계 공학">기계 공학</option>
@@ -256,23 +285,27 @@ export const SignIn = () => {
               onChange={handleInputChange}
               required
             />
-            <button>
-              <Text> 인증코드 전송</Text>
-            </button>
+            <Button width="150" height="68" fontSize="20">
+              인증번호 전송
+            </Button>
           </Flex>{' '}
           <ErrorMessage>{errors.schoolemail}</ErrorMessage>
         </FormGroup>
         <FormGroup>
-          <Text>인증코드</Text>
+          <Text>인증번호</Text>
           <Flex direction="row">
             <Input />
-            <button>
-              <Text> 인증 확인</Text>
-            </button>
+            <Button width="150" height="68" fontSize="20">
+              인증번호 확인
+            </Button>
           </Flex>
         </FormGroup>
 
-        <CompleteBtn type="submit" onClick={validateForm}>
+        <CompleteBtn
+          type="submit"
+          onClick={validateField}
+          disabled={!isButtonEnabled}
+        >
           <Text color="white"> 회원 가입 완료</Text>
         </CompleteBtn>
         <Flex>
@@ -282,20 +315,31 @@ export const SignIn = () => {
           <LoginBtn onClick={() => nav('/login')}>로그인</LoginBtn>
         </Flex>
       </form>
-    </Flex>
+    </SigninWrapper>
   );
 };
 
+const SigninWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const TitleDiv = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
 const CompleteBtn = styled.button`
-  width: 263px;
-  height: 37px;
-  background-color: #3172ea;
+  width: 522px;
+  height: 68px;
+  background-color: ${(props) => (props.disabled ? '#ccc' : '#3172ea')};
   border-radius: 10px;
   border: none;
   margin-bottom: 10px;
 `;
-
 const FormGroup = styled.div`
+  width: 522px;
+  height: 68px;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
