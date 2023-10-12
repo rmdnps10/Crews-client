@@ -33,6 +33,8 @@ export const Input = ({
   value,
   placeholder,
   onChange,
+  onBlur,
+  onFocus,
   type = 'text',
 }) => {
   const borderColor = BorderColors[status];
@@ -48,6 +50,8 @@ export const Input = ({
       bgColor={bgColor}
       fontColor={fontColor}
       value={value}
+      onBlur={onBlur}
+      onFocus={onFocus}
       placeholder={placeholder}
       type={type}
     />
