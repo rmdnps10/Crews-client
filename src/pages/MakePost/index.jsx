@@ -48,22 +48,21 @@ export const MakePost = () => {
           <FormTitle index={4} content={'모집 일정'} />
         </FormItem>
         <FormItem>
-          <FormTitle
-            index={5}
-            content={'모집 절차'}
-            placeholder={textData.모집절차}
-          />
-          <FormTextArea />
+          <FormTitle index={5} content={'모집 절차'} />
+          <FormTextArea placeholder={textData.모집절차} />
         </FormItem>
         <FormItem>
-          <FormTitle index={6} content={'회비'} placeholder={textData.회비} />
-          <FormTextArea height={'68px'} />
+          <FormTitle index={6} content={'회비'} />
+          <FormTextArea height={'68px'} placeholder={textData.회비} />
         </FormItem>
         <FormItem>
           <FormTitle index={7} content={'이미지 첨부'} />
-          <FormTextArea height={'68px'} />
+          <GuideText>{textData.이미지첨부}</GuideText>
+          <ImageSection />
         </FormItem>
       </FormList>
+      <Space height={'52px'}></Space>
+      <GuideText>{textData.유의사항}</GuideText>
       <MoveButton>'STEP 02 지원서 양식 작성’ 으로 이동하기</MoveButton>
     </MakePostWrapper>
   );
@@ -84,6 +83,16 @@ const FormList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 52px;
+`;
+
+const GuideText = styled.div`
+  color: var(--gray-g-04, #b3b3b3);
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.4px;
 `;
 
 const MoveButton = styled.button`
