@@ -12,7 +12,7 @@ function ImageSection() {
   const getImageFiles = (e) => {
     const files = e.currentTarget.files;
     console.log(files);
-    if (files.length > 8) {
+    if (files.length > 8) { 
       alert('이미지는 최대 8개까지 업로드 가능합니다.');
       return;
     }
