@@ -7,6 +7,7 @@ import FormTitle from './FormTitle';
 import FormTextArea from './FormTextArea';
 import { Space } from 'components/atoms';
 import textData from './textData';
+import RecruitPlanSection from './RecruitPlanSection';
 
 export const MakePost = () => {
   const [form, setForm] = useState({
@@ -46,6 +47,7 @@ export const MakePost = () => {
         </FormItem>
         <FormItem>
           <FormTitle index={4} content={'모집 일정'} />
+          <RecruitPlanSection/>
         </FormItem>
         <FormItem>
           <FormTitle index={5} content={'모집 절차'} />
@@ -85,7 +87,7 @@ const FormList = styled.div`
   gap: 52px;
 `;
 
-const GuideText = styled.div`
+export const GuideText = styled.div`
   color: var(--gray-g-04, #b3b3b3);
   font-family: Pretendard;
   font-size: 20px;
