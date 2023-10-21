@@ -42,6 +42,10 @@ const StyledFormTextArea = styled.textarea.attrs(() => ({ type: 'text' }))`
     line-height: 30px;
     letter-spacing: -0.4px;
   }
+  :focus {
+    border: 2px solid var(--blue-b-05-m, #3172ea);
+    background: var(--blue-b-01, #f6f9fe);
+  }
 `;
 
 export default FormTextArea;
