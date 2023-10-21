@@ -10,6 +10,7 @@ import textData from './textData';
 import RecruitPlanSection from './RecruitPlanSection';
 
 export const MakePost = () => {
+  // 백엔드로 전달할 상태관리변수
   const [form, setForm] = useState({
     title: '',
     mainContent: '',
@@ -30,13 +31,11 @@ export const MakePost = () => {
 
   const onTextFieldChange = (name, value) => {
     setForm((prev) => {
-      console.log({ ...prev });
       return { ...prev, [name]: value };
     });
   };
   const onImageFieldChange = (value) => {
     setForm((prev) => {
-      console.log({ ...prev });
       return { ...prev, uploadImage: value };
     });
   };

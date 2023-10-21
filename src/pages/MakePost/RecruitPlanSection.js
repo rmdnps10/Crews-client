@@ -6,9 +6,51 @@ import calendarIcon from './calendar.svg';
 import clockIcon from './clock.svg';
 import textData from './textData';
 import { GuideText } from '.';
+import { useState } from 'react';
 // 모집 일정 입력받는 폼 섹션은 복잡성 때문에 따로 컴포넌트로 선언해줬음
 // 중간에 선언해준 클래스는 단순한 폼 영역간의 구분을 위해 선언됨
 function RecruitPlanSection() {
+  // RecruitPlan안에서 사용할 상태 관리 선언 
+  // 쌉노가다..........
+  const [state, setState] = useState({
+    // 상시 모집, 2차 면접여부
+    isAlways: false,
+    hasSecond: true,
+    //  first(1차,2차)s(시작,마감,발표)y(년,월,일,시,분) : 총 30개
+    firstsy: '',
+    firstsm: '',
+    firstsd: '',
+    firstsh: '',
+    firstsm: '',
+    firstey: '',
+    firstem: '',
+    firsted: '',
+    firsteh: '',
+    firstem: '',
+    firstay: '',
+    firstam: '',
+    firstad: '',
+    firstah: '',
+    firstam: '',
+
+    // 2차 서류 전형 일정 
+    secondsy: '',
+    secondsm: '',
+    secondsd: '',
+    secondsh: '',
+    secondsm: '',
+    secondey: '',
+    secondem: '',
+    seconded: '',
+    secondeh: '',
+    secondem: '',
+    seconday: '',
+    secondam: '',
+    secondad: '',
+    secondah: '',
+    secondam: '',
+  });
+
   return (
     <>
       <RecruitWrapper>
@@ -182,7 +224,7 @@ function RecruitPlanSection() {
               <Space width={'32px'} />
 
               <DateInputWrapper>
-                <DateYearInput width={'44px'}/>
+                <DateYearInput width={'44px'} />
                 <DateType>년</DateType>
                 <DateInput width={'23px'} />
                 <DateType>월</DateType>
@@ -240,7 +282,6 @@ const DateInput = styled.input.attrs({ type: 'text', maxLength: '2' })`
   border-bottom: 2px solid;
 `;
 
-
 const DateYearInput = styled.input.attrs({ type: 'text', maxLength: '4' })`
   border: none;
   outline: none;
@@ -256,8 +297,6 @@ const DateYearInput = styled.input.attrs({ type: 'text', maxLength: '4' })`
   text-align: center;
   border-bottom: 2px solid;
 `;
-
-
 
 const DateType = styled.div`
   font-size: 20px;
