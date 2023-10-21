@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import selectRadio from './selectRadio.svg';
 import calendarIcon from './calendar.svg';
 import clockIcon from './clock.svg';
+import textData from './textData';
 import { GuideText } from '.';
 // 모집 일정 입력받는 폼 섹션은 복잡성 때문에 따로 컴포넌트로 선언해줬음
 // 중간에 선언해준 클래스는 단순한 폼 영역간의 구분을 위해 선언됨
@@ -26,7 +27,7 @@ function RecruitPlanSection() {
         <div className="1차서류일정">
           <FormSubTitle>1차 서류전형 일정</FormSubTitle>
           <Space height={'20px'} />
-          <GuideText>전형 일자를 정확하게 기입해 주세요.</GuideText>
+          <GuideText>{textData.서류전형일정}</GuideText>
           <Space height={'24px'} />
           <DateRangeSection>
             {/* 시작일 */}
@@ -107,10 +108,7 @@ function RecruitPlanSection() {
         <div className="2차면접여부">
           <FormSubTitle>2차 면접 실시 여부</FormSubTitle>
           <Space height={'20px'} />
-          <GuideText>
-            서류 전형 합격자에 한해서 2차 면접을 계획 중이라면 ‘예’, 그렇지 않을
-            경우 ‘아니오’를 선택해주세요.
-          </GuideText>
+          <GuideText>{textData.면접실시여부}</GuideText>
           <RadioWrapper>
             <StyledLabel htmlFor="isAlways">
               <StyledRadio name="isAlways" /> <span>예</span>
