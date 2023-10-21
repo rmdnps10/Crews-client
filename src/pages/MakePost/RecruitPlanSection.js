@@ -37,7 +37,7 @@ function RecruitPlanSection() {
               <RangeType>시작일</RangeType>
               <Space width={'32px'} />
               <DateInputWrapper>
-                <DateInput width={'44px'} />
+                <DateYearInput width={'44px'} />
                 <DateType>년</DateType>
                 <DateInput width={'23px'} />
                 <DateType>월</DateType>
@@ -61,7 +61,7 @@ function RecruitPlanSection() {
               <RangeType>마감일</RangeType>
               <Space width={'32px'} />
               <DateInputWrapper>
-                <DateInput width={'44px'} />
+                <DateYearInput width={'44px'} />
                 <DateType>년</DateType>
                 <DateInput width={'23px'} />
                 <DateType>월</DateType>
@@ -85,7 +85,7 @@ function RecruitPlanSection() {
               <RangeType>발표일</RangeType>
               <Space width={'32px'} />
               <DateInputWrapper>
-                <DateInput width={'44px'} />
+                <DateYearInput width={'44px'} />
                 <DateType>년</DateType>
                 <DateInput width={'23px'} />
                 <DateType>월</DateType>
@@ -132,7 +132,7 @@ function RecruitPlanSection() {
               <Space width={'32px'} />
 
               <DateInputWrapper>
-                <DateInput width={'44px'} />
+                <DateYearInput width={'44px'} />
                 <DateType>년</DateType>
                 <DateInput width={'23px'} />
                 <DateType>월</DateType>
@@ -157,7 +157,7 @@ function RecruitPlanSection() {
               <Space width={'32px'} />
 
               <DateInputWrapper>
-                <DateInput width={'44px'} />
+                <DateYearInput width={'44px'} />
                 <DateType>년</DateType>
                 <DateInput width={'23px'} />
                 <DateType>월</DateType>
@@ -182,7 +182,7 @@ function RecruitPlanSection() {
               <Space width={'32px'} />
 
               <DateInputWrapper>
-                <DateInput width={'44px'} />
+                <DateYearInput width={'44px'}/>
                 <DateType>년</DateType>
                 <DateInput width={'23px'} />
                 <DateType>월</DateType>
@@ -223,7 +223,8 @@ const DateInputWrapper = styled.div`
 `;
 
 const ClockInputWrapper = styled(DateInputWrapper)``;
-const DateInput = styled.input`
+
+const DateInput = styled.input.attrs({ type: 'text', maxLength: '2' })`
   border: none;
   outline: none;
   height: 24px;
@@ -238,6 +239,25 @@ const DateInput = styled.input`
   text-align: center;
   border-bottom: 2px solid;
 `;
+
+
+const DateYearInput = styled.input.attrs({ type: 'text', maxLength: '4' })`
+  border: none;
+  outline: none;
+  height: 24px;
+  padding: 0px;
+  box-sizing: content-box;
+  width: ${(props) => props.width};
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.4px;
+  text-align: center;
+  border-bottom: 2px solid;
+`;
+
+
 
 const DateType = styled.div`
   font-size: 20px;

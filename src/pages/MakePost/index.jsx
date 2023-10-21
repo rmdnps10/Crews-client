@@ -12,22 +12,28 @@ import RecruitPlanSection from './RecruitPlanSection';
 export const MakePost = () => {
   const [form, setForm] = useState({
     title: '',
-    isContinuousRecruitment: 'false',
+    mainContent: '',
+    applyQualify: '',
+    recruitProcess: '',
+    isContinuousRecruitment: false,
     firstStartDate: '',
     firstEndDate: '',
     firstAnnounceDate: '',
-    hasSecondInterview: '',
+    hasSecondInterview: true,
     secondStartDate: '',
     secondEndDate: '',
     secondAnnounceDate: '',
-    recruitWho: '',
-    applyQualify: '',
     recruitProcedure: '',
     membershipFee: '',
-    uploadImage: {},
-    mainContent: '',
+    uploadImage: [],
   });
 
+  const onTextFieldChange = (name, value) => {
+    setForm((prev) => {
+      console.log({ ...prev });
+      return { ...prev, [name]: value };
+    });
+  };
   return (
     <MakePostWrapper>
       <H1 />
@@ -35,27 +41,57 @@ export const MakePost = () => {
       <FormList>
         <FormItem>
           <FormTitle index={1} content={'모집 제목'} />
-          <FormTextArea height={'68px'} placeholder={textData.모집제목} />
+          <FormTextArea
+            name="title"
+            value={form.title}
+            height={'68px'}
+            onTextFieldChange={onTextFieldChange}
+            placeholder={textData.모집제목}
+          />
         </FormItem>
         <FormItem>
           <FormTitle index={2} content={'공고할 내용'} />
-          <FormTextArea height={'220px'} placeholder={textData.공고내용} />
+          <FormTextArea
+            name="mainContent"
+            value={form.mainContent}
+            height={'220px'}
+            onTextFieldChange={onTextFieldChange}
+            placeholder={textData.공고내용}
+          />
         </FormItem>
         <FormItem>
           <FormTitle index={3} content={'지원 자격'} />
-          <FormTextArea height={'130px'} placeholder={textData.지원자격} />
+          <FormTextArea
+            name="applyQualify"
+            value={form.applyQualify}
+            height={'130px'}
+            onTextFieldChange={onTextFieldChange}
+            placeholder={textData.지원자격}
+          />
         </FormItem>
         <FormItem>
           <FormTitle index={4} content={'모집 일정'} />
-          <RecruitPlanSection/>
+          <RecruitPlanSection />
         </FormItem>
         <FormItem>
           <FormTitle index={5} content={'모집 절차'} />
-          <FormTextArea placeholder={textData.모집절차} />
+          <FormTextArea
+            name="recruitProcess"
+            value={form.recruitProcess}
+            placeholder={textData.모집절차}
+            height={'68px'}
+            onTextFieldChange={onTextFieldChange}
+          />
         </FormItem>
         <FormItem>
           <FormTitle index={6} content={'회비'} />
-          <FormTextArea height={'68px'} placeholder={textData.회비} />
+          <FormTextArea
+            name="membershipFee"
+            value={form.membershipFee}
+            onTextFieldChange={onTextFieldChange}
+            height={'68px'}
+            placeholder={textData.회비}
+          />
         </FormItem>
         <FormItem>
           <FormTitle index={7} content={'이미지 첨부'} />

@@ -2,11 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 
 // 모집공고에서 텍스트 입력 받는 컴포넌트
-function FormTextArea({ placeholder, height, onChange }) {
+function FormTextArea({ placeholder, height, onTextFieldChange, value, name }) {
   return (
     <StyledFormTextArea
+      name={name}
       height={height}
-      onChange={onChange}
+      value={value}
+      onChange={(e) => {
+        onTextFieldChange(name, e.target.value);
+      }}
       placeholder={placeholder}
     ></StyledFormTextArea>
   );
