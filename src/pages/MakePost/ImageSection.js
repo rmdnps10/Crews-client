@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import deleteIcon from './deleteButton.svg';
 import uploadIcon from './uploadButton.svg';
 // 이미지 미리보기를 포함하여 이미지를 업로드하는 컴포넌트
-function ImageSection({onImageFieldChange}) {
+function ImageSection({ onImageFieldChange }) {
   // 이미지 리스트를 useState로 관리
 
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -36,7 +36,6 @@ function ImageSection({onImageFieldChange}) {
     onImageFieldChange(imagePreviews);
   };
 
-  console.log(imagePreviews);
   return (
     <>
       <ImagePreviewList>
@@ -72,18 +71,19 @@ function ImageSection({onImageFieldChange}) {
           : ''}
 
         <ImageUploadItem>
-          <VirtualImageUploadBox htmlFor="uploadButton" />
-          <ImageUploadBox
-            type="file"
-            id="uploadButton"
-            multiple="multiple"
-            accept="image/*"
-            onChange={getImageFiles}
-          ></ImageUploadBox>
-          <ImageUploadCaption>
-            <ImageUploadImage src={uploadIcon}></ImageUploadImage>
-            <ImageUploadText>이미지 업로드</ImageUploadText>
-          </ImageUploadCaption>
+          <VirtualImageUploadBox htmlFor="uploadButton">
+            <ImageUploadBox
+              type="file"
+              id="uploadButton"
+              multiple="multiple"
+              accept="image/*"
+              onChange={getImageFiles}
+            ></ImageUploadBox>
+            <ImageUploadCaption>
+              <ImageUploadImage src={uploadIcon}></ImageUploadImage>
+              <ImageUploadText>이미지 업로드</ImageUploadText>
+            </ImageUploadCaption>
+          </VirtualImageUploadBox>
         </ImageUploadItem>
       </ImagePreviewList>
     </>
@@ -102,6 +102,7 @@ const ImageDeleteIcon = styled.img`
   position: absolute;
   top: 8px;
   right: 8px;
+  cursor: pointer;
 `;
 
 const ImageFirstCaption = styled.div`
@@ -162,6 +163,7 @@ const ImageUploadCaption = styled.div`
   right: 66px;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 `;
 
 const ImageUploadImage = styled.img`
