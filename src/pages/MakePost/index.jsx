@@ -34,6 +34,12 @@ export const MakePost = () => {
       return { ...prev, [name]: value };
     });
   };
+  const onImageFieldChange = (value) => {
+    setForm((prev) => {
+      console.log({ ...prev });
+      return { ...prev, uploadImage: value };
+    });
+  };
   return (
     <MakePostWrapper>
       <H1 />
@@ -96,7 +102,7 @@ export const MakePost = () => {
         <FormItem>
           <FormTitle index={7} content={'이미지 첨부'} />
           <GuideText>{textData.이미지첨부}</GuideText>
-          <ImageSection />
+          <ImageSection onImageFieldChange={onImageFieldChange} />
         </FormItem>
       </FormList>
       <Space height={'52px'}></Space>

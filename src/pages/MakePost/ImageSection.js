@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import deleteIcon from './deleteButton.svg';
 import uploadIcon from './uploadButton.svg';
 // 이미지 미리보기를 포함하여 이미지를 업로드하는 컴포넌트
-function ImageSection() {
+function ImageSection({onImageFieldChange}) {
   // 이미지 리스트를 useState로 관리
+
   const [imagePreviews, setImagePreviews] = useState([]);
 
   const getImageFiles = (e) => {
@@ -21,6 +22,7 @@ function ImageSection() {
       reader.onload = (event) => {
         newImagePreviews.push(event.target.result);
         setImagePreviews([...newImagePreviews]);
+        onImageFieldChange(imagePreviews);
       };
 
       reader.readAsDataURL(file);
@@ -31,6 +33,7 @@ function ImageSection() {
     const updatedImagePreviews = [...imagePreviews];
     updatedImagePreviews.splice(indexToDelete, 1);
     setImagePreviews(updatedImagePreviews);
+    onImageFieldChange(imagePreviews);
   };
 
   console.log(imagePreviews);
