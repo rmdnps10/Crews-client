@@ -6,7 +6,7 @@ import calendarIcon from './calendar.svg';
 import clockIcon from './clock.svg';
 import { GuideText } from '.';
 // 모집 일정 입력받는 폼 섹션은 복잡성 때문에 따로 컴포넌트로 선언해줬음
-// 중간에 선언해준 클래스는 단순히 영역간의 구분을 위해 선언해줬음
+// 중간에 선언해준 클래스는 단순한 폼 영역간의 구분을 위해 선언됨
 function RecruitPlanSection() {
   return (
     <>
@@ -29,12 +29,12 @@ function RecruitPlanSection() {
           <GuideText>전형 일자를 정확하게 기입해 주세요.</GuideText>
           <Space height={'24px'} />
           <DateRangeSection>
+            {/* 시작일 */}
             <DataRangeItem>
               <Icon src={calendarIcon} />
               <Space width={'8px'} />
               <RangeType>시작일</RangeType>
               <Space width={'32px'} />
-
               <DateInputWrapper>
                 <DateInput width={'44px'} />
                 <DateType>년</DateType>
@@ -44,7 +44,6 @@ function RecruitPlanSection() {
                 <DateType>일</DateType>
               </DateInputWrapper>
               <Space width={'69px'} />
-
               <Icon src={clockIcon} />
               <Space width={'8px'} />
               <ClockInputWrapper>
@@ -54,12 +53,12 @@ function RecruitPlanSection() {
                 <DateType>분</DateType>
               </ClockInputWrapper>
             </DataRangeItem>
+            {/* 마감일 */}
             <DataRangeItem>
               <Icon src={calendarIcon} />
               <Space width={'8px'} />
               <RangeType>마감일</RangeType>
               <Space width={'32px'} />
-
               <DateInputWrapper>
                 <DateInput width={'44px'} />
                 <DateType>년</DateType>
@@ -69,7 +68,6 @@ function RecruitPlanSection() {
                 <DateType>일</DateType>
               </DateInputWrapper>
               <Space width={'69px'} />
-
               <Icon src={clockIcon} />
               <Space width={'8px'} />
               <ClockInputWrapper>
@@ -79,12 +77,12 @@ function RecruitPlanSection() {
                 <DateType>분</DateType>
               </ClockInputWrapper>
             </DataRangeItem>
+            {/* 발표일 */}
             <DataRangeItem>
               <Icon src={calendarIcon} />
               <Space width={'8px'} />
               <RangeType>발표일</RangeType>
               <Space width={'32px'} />
-
               <DateInputWrapper>
                 <DateInput width={'44px'} />
                 <DateType>년</DateType>
@@ -94,7 +92,6 @@ function RecruitPlanSection() {
                 <DateType>일</DateType>
               </DateInputWrapper>
               <Space width={'69px'} />
-
               <Icon src={clockIcon} />
               <Space width={'8px'} />
               <ClockInputWrapper>

@@ -2,14 +2,14 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import deleteIcon from './deleteButton.svg';
 import uploadIcon from './uploadButton.svg';
-
+// 이미지 미리보기를 포함하여 이미지를 업로드하는 컴포넌트
 function ImageSection() {
+  // 이미지 리스트를 useState로 관리
   const [imagePreviews, setImagePreviews] = useState([]);
 
   const getImageFiles = (e) => {
     const files = e.currentTarget.files;
-    console.log(files);
-    if (files.length > 8) {
+    if (imagePreviews.length >= 8) {
       alert('이미지는 최대 8개까지 업로드 가능합니다.');
       return;
     }
@@ -26,10 +26,10 @@ function ImageSection() {
       reader.readAsDataURL(file);
     }
   };
-
+  // X누를시 해당 이미지 삭제
   const deleteImageFile = (indexToDelete) => {
     const updatedImagePreviews = [...imagePreviews];
-    updatedImagePreviews.splice(indexToDelete, 1); // Remove the image at the specified index
+    updatedImagePreviews.splice(indexToDelete, 1);
     setImagePreviews(updatedImagePreviews);
   };
 
