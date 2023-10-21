@@ -5,6 +5,8 @@ import selectRadio from './selectRadio.svg';
 import calendarIcon from './calendar.svg';
 import clockIcon from './clock.svg';
 import { GuideText } from '.';
+// 모집 일정 입력받는 폼 섹션은 복잡성 때문에 따로 컴포넌트로 선언해줬음
+// 중간에 선언해준 클래스는 단순히 영역간의 구분을 위해 선언해줬음
 function RecruitPlanSection() {
   return (
     <>

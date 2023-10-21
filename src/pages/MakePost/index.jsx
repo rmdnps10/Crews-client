@@ -98,7 +98,7 @@ export const GuideText = styled.div`
 `;
 
 const MoveButton = styled.button`
-  all: unset; // 버튼 css 초기화. 나중에 전역스타일링에서 바꿔줘야할듯
+  all: unset; // 버튼 css 초기화. 나중에 전역스타일링에서 바꿔주면 될듯함
   margin: 80px auto 80px;
   width: 522px;
   height: 68px;

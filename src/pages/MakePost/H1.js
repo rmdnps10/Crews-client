@@ -18,7 +18,7 @@ function H1() {
 const H1Wrapper = styled.div`
   display: flex;
   gap: 16px;
-  align-items: center;
+  height: 38px;
 `;
 
 const StepIndicate = styled.div`
@@ -32,6 +32,7 @@ const Line = styled.span`
   height: 26px;
   border-radius: 50px;
   background-color: rgba(153, 153, 153, 1);
+  margin-top: 4px;
 `;
 
 const SectionTitle = styled.span`

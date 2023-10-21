@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+
+// 모집공고에서 텍스트 입력 받는 컴포넌트
 function FormTextArea({ placeholder, height, onChange }) {
   return (
     <StyledFormTextArea
