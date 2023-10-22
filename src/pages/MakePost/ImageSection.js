@@ -125,7 +125,7 @@ const ImageFirstPreview = styled.div`
   width: 220px;
   height: 220px;
   border-radius: 10px;
-  position: relative
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
