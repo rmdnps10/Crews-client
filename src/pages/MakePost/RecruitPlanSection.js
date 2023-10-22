@@ -1,5 +1,5 @@
 import { Space } from 'components/atoms';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import selectRadio from './selectRadio.svg';
 import calendarIcon from './calendar.svg';
@@ -10,46 +10,56 @@ import { useState } from 'react';
 // 모집 일정 입력받는 폼 섹션은 복잡성 때문에 따로 컴포넌트로 선언해줬음
 // 중간에 선언해준 클래스는 단순한 폼 영역간의 구분을 위해 선언됨
 function RecruitPlanSection() {
-  // RecruitPlan안에서 사용할 상태 관리 선언 
-  // 쌉노가다..........
-  const [state, setState] = useState({
-    // 상시 모집, 2차 면접여부
-    isAlways: false,
-    hasSecond: true,
+  // 날짜 입력받는 폼에 대한 상태관리
+  const [planState, setPlanState] = useState({
     //  first(1차,2차)s(시작,마감,발표)y(년,월,일,시,분) : 총 30개
     firstsy: '',
     firstsm: '',
     firstsd: '',
     firstsh: '',
-    firstsm: '',
+    firstsmn: '',
     firstey: '',
     firstem: '',
     firsted: '',
     firsteh: '',
-    firstem: '',
+    firstemn: '',
     firstay: '',
     firstam: '',
     firstad: '',
     firstah: '',
-    firstam: '',
+    firstamn: '',
 
-    // 2차 서류 전형 일정 
+    // 2차 서류 전형 일정
     secondsy: '',
     secondsm: '',
     secondsd: '',
     secondsh: '',
-    secondsm: '',
+    secondsmn: '',
     secondey: '',
     secondem: '',
     seconded: '',
     secondeh: '',
-    secondem: '',
+    secondemn: '',
     seconday: '',
     secondam: '',
     secondad: '',
     secondah: '',
-    secondam: '',
+    secondamn: '',
   });
+
+  // 상시모집 여부, 2차면접여부에 대한 상태 관리
+  // Default: 상시모집 x, 2차 인터뷰 여부 x
+  const [radioState, setRadioState] = useState({
+    isAlways: false,
+    hasSecond: false,
+  });
+
+  const handleCheckRadioChange = (e) => {
+    let { name, value } = e.currentTarget;
+    setRadioState((prev) => {
+      return { ...prev, [name]: value === 'true' ? true : false };
+    });
+  };
 
   return (
     <>
@@ -58,10 +68,21 @@ function RecruitPlanSection() {
           <FormSubTitle>상시 모집 여부</FormSubTitle>
           <RadioWrapper>
             <StyledLabel htmlFor="isAlways">
-              <StyledRadio name="isAlways" /> <span>예</span>
+              <StyledRadio
+                name="isAlways"
+                value="true"
+                onChange={handleCheckRadioChange}
+              />{' '}
+              <span>예</span>
             </StyledLabel>
             <StyledLabel htmlFor="isAlways">
-              <StyledRadio name="isAlways" /> <span>아니오</span>
+              <StyledRadio
+                name="isAlways"
+                value="false"
+                onChange={handleCheckRadioChange}
+                defaultChecked
+              />{' '}
+              <span>아니오</span>
             </StyledLabel>
           </RadioWrapper>
         </div>
@@ -97,6 +118,7 @@ function RecruitPlanSection() {
               </ClockInputWrapper>
             </DataRangeItem>
             {/* 마감일 */}
+
             <DataRangeItem>
               <Icon src={calendarIcon} />
               <Space width={'8px'} />
@@ -152,11 +174,22 @@ function RecruitPlanSection() {
           <Space height={'20px'} />
           <GuideText>{textData.면접실시여부}</GuideText>
           <RadioWrapper>
-            <StyledLabel htmlFor="isAlways">
-              <StyledRadio name="isAlways" /> <span>예</span>
+            <StyledLabel htmlFor="hasSecond">
+              <StyledRadio
+                name="hasSecond"
+                value="true"
+                onChange={handleCheckRadioChange}
+              />{' '}
+              <span>예</span>
             </StyledLabel>
-            <StyledLabel htmlFor="isAlways">
-              <StyledRadio name="isAlways" /> <span>아니오</span>
+            <StyledLabel htmlFor="hasSecond">
+              <StyledRadio
+                name="hasSecond"
+                value="false"
+                onChange={handleCheckRadioChange}
+                defaultChecked
+              />{' '}
+              <span>아니오</span>
             </StyledLabel>
           </RadioWrapper>
         </div>
