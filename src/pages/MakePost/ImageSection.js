@@ -125,12 +125,15 @@ const ImageFirstPreview = styled.div`
   width: 220px;
   height: 220px;
   border-radius: 10px;
-  position: relative;
+  position: relative
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 5px solid var(--blue-b-05-m, #3172ea);
+  overflow: hidden;
   img {
     max-width: 100%;
     max-height: 100%;
-    border-radius: 10px;
   }
 `;
 
@@ -138,8 +141,11 @@ const ImagePreview = styled.div`
   width: 220px;
   height: 220px;
   border-radius: 10px;
-  background-color: gray;
+  border-radius: 10px;
+  border: 1.4px solid var(--gray-g-03, #ccc);
+  background: #fff;
   position: relative;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -148,7 +154,6 @@ const ImagePreview = styled.div`
   img {
     max-width: 100%;
     max-height: 100%;
-    border-radius: 10px;
   }
 `;
 const ImageUploadItem = styled.div`
