@@ -53,6 +53,7 @@ function RecruitPlanSection() {
     isAlways: false,
     hasSecond: false,
   });
+  const { isAlways, hasSecond } = radioState;
 
   const handleCheckRadioChange = (e) => {
     let { name, value } = e.currentTarget;
@@ -118,57 +119,63 @@ function RecruitPlanSection() {
               </ClockInputWrapper>
             </DataRangeItem>
             {/* 마감일 */}
-
-            <DataRangeItem>
-              <Icon src={calendarIcon} />
-              <Space width={'8px'} />
-              <RangeType>마감일</RangeType>
-              <Space width={'32px'} />
-              <DateInputWrapper>
-                <DateYearInput width={'44px'} />
-                <DateType>년</DateType>
-                <DateInput width={'23px'} />
-                <DateType>월</DateType>
-                <DateInput width={'23px'} />
-                <DateType>일</DateType>
-              </DateInputWrapper>
-              <Space width={'69px'} />
-              <Icon src={clockIcon} />
-              <Space width={'8px'} />
-              <ClockInputWrapper>
-                <DateInput width={'23px'} />
-                <DateType>시</DateType>
-                <DateInput width={'28px'} />
-                <DateType>분</DateType>
-              </ClockInputWrapper>
-            </DataRangeItem>
-            {/* 발표일 */}
-            <DataRangeItem>
-              <Icon src={calendarIcon} />
-              <Space width={'8px'} />
-              <RangeType>발표일</RangeType>
-              <Space width={'32px'} />
-              <DateInputWrapper>
-                <DateYearInput width={'44px'} />
-                <DateType>년</DateType>
-                <DateInput width={'23px'} />
-                <DateType>월</DateType>
-                <DateInput width={'23px'} />
-                <DateType>일</DateType>
-              </DateInputWrapper>
-              <Space width={'69px'} />
-              <Icon src={clockIcon} />
-              <Space width={'8px'} />
-              <ClockInputWrapper>
-                <DateInput width={'23px'} />
-                <DateType>시</DateType>
-                <DateInput width={'28px'} />
-                <DateType>분</DateType>
-              </ClockInputWrapper>
-            </DataRangeItem>
+            {isAlways ? (
+              ''
+            ) : (
+              <>
+                {' '}
+                <DataRangeItem>
+                  <Icon src={calendarIcon} />
+                  <Space width={'8px'} />
+                  <RangeType>마감일</RangeType>
+                  <Space width={'32px'} />
+                  <DateInputWrapper>
+                    <DateYearInput width={'44px'} />
+                    <DateType>년</DateType>
+                    <DateInput width={'23px'} />
+                    <DateType>월</DateType>
+                    <DateInput width={'23px'} />
+                    <DateType>일</DateType>
+                  </DateInputWrapper>
+                  <Space width={'69px'} />
+                  <Icon src={clockIcon} />
+                  <Space width={'8px'} />
+                  <ClockInputWrapper>
+                    <DateInput width={'23px'} />
+                    <DateType>시</DateType>
+                    <DateInput width={'28px'} />
+                    <DateType>분</DateType>
+                  </ClockInputWrapper>
+                </DataRangeItem>
+                <DataRangeItem>
+                  <Icon src={calendarIcon} />
+                  <Space width={'8px'} />
+                  <RangeType>발표일</RangeType>
+                  <Space width={'32px'} />
+                  <DateInputWrapper>
+                    <DateYearInput width={'44px'} />
+                    <DateType>년</DateType>
+                    <DateInput width={'23px'} />
+                    <DateType>월</DateType>
+                    <DateInput width={'23px'} />
+                    <DateType>일</DateType>
+                  </DateInputWrapper>
+                  <Space width={'69px'} />
+                  <Icon src={clockIcon} />
+                  <Space width={'8px'} />
+                  <ClockInputWrapper>
+                    <DateInput width={'23px'} />
+                    <DateType>시</DateType>
+                    <DateInput width={'28px'} />
+                    <DateType>분</DateType>
+                  </ClockInputWrapper>
+                </DataRangeItem>{' '}
+              </>
+            )}
           </DateRangeSection>
         </div>
         <Space height={'80px'} />
+
         <div className="2차면접여부">
           <FormSubTitle>2차 면접 실시 여부</FormSubTitle>
           <Space height={'20px'} />
@@ -194,89 +201,93 @@ function RecruitPlanSection() {
           </RadioWrapper>
         </div>
         <Space height={'48px'} />
-        <div className="2차면접일정">
-          <FormSubTitle>2차 서류전형 일정</FormSubTitle>
-          <Space height={'20px'} />
-          <GuideText>면접 일자를 정확하게 기입해 주세요.</GuideText>
-          <Space height={'24px'} />
-          <DateRangeSection>
-            <DataRangeItem>
-              <Icon src={calendarIcon} />
-              <Space width={'8px'} />
-              <RangeType>시작일</RangeType>
-              <Space width={'32px'} />
+        {hasSecond ? (
+          <div className="2차면접일정">
+            <FormSubTitle>2차 서류전형 일정</FormSubTitle>
+            <Space height={'20px'} />
+            <GuideText>면접 일자를 정확하게 기입해 주세요.</GuideText>
+            <Space height={'24px'} />
+            <DateRangeSection>
+              <DataRangeItem>
+                <Icon src={calendarIcon} />
+                <Space width={'8px'} />
+                <RangeType>시작일</RangeType>
+                <Space width={'32px'} />
 
-              <DateInputWrapper>
-                <DateYearInput width={'44px'} />
-                <DateType>년</DateType>
-                <DateInput width={'23px'} />
-                <DateType>월</DateType>
-                <DateInput width={'23px'} />
-                <DateType>일</DateType>
-              </DateInputWrapper>
-              <Space width={'69px'} />
+                <DateInputWrapper>
+                  <DateYearInput width={'44px'} />
+                  <DateType>년</DateType>
+                  <DateInput width={'23px'} />
+                  <DateType>월</DateType>
+                  <DateInput width={'23px'} />
+                  <DateType>일</DateType>
+                </DateInputWrapper>
+                <Space width={'69px'} />
 
-              <Icon src={clockIcon} />
-              <Space width={'8px'} />
-              <ClockInputWrapper>
-                <DateInput width={'23px'} />
-                <DateType>시</DateType>
-                <DateInput width={'28px'} />
-                <DateType>분</DateType>
-              </ClockInputWrapper>
-            </DataRangeItem>
-            <DataRangeItem>
-              <Icon src={calendarIcon} />
-              <Space width={'8px'} />
-              <RangeType>마감일</RangeType>
-              <Space width={'32px'} />
+                <Icon src={clockIcon} />
+                <Space width={'8px'} />
+                <ClockInputWrapper>
+                  <DateInput width={'23px'} />
+                  <DateType>시</DateType>
+                  <DateInput width={'28px'} />
+                  <DateType>분</DateType>
+                </ClockInputWrapper>
+              </DataRangeItem>
+              <DataRangeItem>
+                <Icon src={calendarIcon} />
+                <Space width={'8px'} />
+                <RangeType>마감일</RangeType>
+                <Space width={'32px'} />
 
-              <DateInputWrapper>
-                <DateYearInput width={'44px'} />
-                <DateType>년</DateType>
-                <DateInput width={'23px'} />
-                <DateType>월</DateType>
-                <DateInput width={'23px'} />
-                <DateType>일</DateType>
-              </DateInputWrapper>
-              <Space width={'69px'} />
+                <DateInputWrapper>
+                  <DateYearInput width={'44px'} />
+                  <DateType>년</DateType>
+                  <DateInput width={'23px'} />
+                  <DateType>월</DateType>
+                  <DateInput width={'23px'} />
+                  <DateType>일</DateType>
+                </DateInputWrapper>
+                <Space width={'69px'} />
 
-              <Icon src={clockIcon} />
-              <Space width={'8px'} />
-              <ClockInputWrapper>
-                <DateInput width={'23px'} />
-                <DateType>시</DateType>
-                <DateInput width={'28px'} />
-                <DateType>분</DateType>
-              </ClockInputWrapper>
-            </DataRangeItem>
-            <DataRangeItem>
-              <Icon src={calendarIcon} />
-              <Space width={'8px'} />
-              <RangeType>발표일</RangeType>
-              <Space width={'32px'} />
+                <Icon src={clockIcon} />
+                <Space width={'8px'} />
+                <ClockInputWrapper>
+                  <DateInput width={'23px'} />
+                  <DateType>시</DateType>
+                  <DateInput width={'28px'} />
+                  <DateType>분</DateType>
+                </ClockInputWrapper>
+              </DataRangeItem>
+              <DataRangeItem>
+                <Icon src={calendarIcon} />
+                <Space width={'8px'} />
+                <RangeType>발표일</RangeType>
+                <Space width={'32px'} />
 
-              <DateInputWrapper>
-                <DateYearInput width={'44px'} />
-                <DateType>년</DateType>
-                <DateInput width={'23px'} />
-                <DateType>월</DateType>
-                <DateInput width={'23px'} />
-                <DateType>일</DateType>
-              </DateInputWrapper>
-              <Space width={'69px'} />
+                <DateInputWrapper>
+                  <DateYearInput width={'44px'} />
+                  <DateType>년</DateType>
+                  <DateInput width={'23px'} />
+                  <DateType>월</DateType>
+                  <DateInput width={'23px'} />
+                  <DateType>일</DateType>
+                </DateInputWrapper>
+                <Space width={'69px'} />
 
-              <Icon src={clockIcon} />
-              <Space width={'8px'} />
-              <ClockInputWrapper>
-                <DateInput width={'23px'} />
-                <DateType>시</DateType>
-                <DateInput width={'28px'} />
-                <DateType>분</DateType>
-              </ClockInputWrapper>
-            </DataRangeItem>
-          </DateRangeSection>
-        </div>
+                <Icon src={clockIcon} />
+                <Space width={'8px'} />
+                <ClockInputWrapper>
+                  <DateInput width={'23px'} />
+                  <DateType>시</DateType>
+                  <DateInput width={'28px'} />
+                  <DateType>분</DateType>
+                </ClockInputWrapper>
+              </DataRangeItem>
+            </DateRangeSection>
+          </div>
+        ) : (
+          ''
+        )}
       </RecruitWrapper>
     </>
   );
