@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button, Flex } from 'components/atoms';
 import ImageSection from './ImageSection';
@@ -33,12 +33,22 @@ export const MakePost = () => {
     setForm((prev) => {
       return { ...prev, [name]: value };
     });
+    localStorage.setItem(name, value);
   };
   const onImageFieldChange = (value) => {
     setForm((prev) => {
       return { ...prev, uploadImage: value };
     });
   };
+  // 텍스트 데이터 임시저장
+  useEffect(() => {
+    for (const key in localStorage) {
+      const value = localStorage.getItem(key);
+      setForm((prev) => {
+        return { ...prev, [key]: value };
+      });
+    }
+  }, []);
   return (
     <MakePostWrapper>
       <H1 />
