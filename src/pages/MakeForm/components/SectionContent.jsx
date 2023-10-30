@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-// Imported Functions
+// Imported Functions & Datas
+import { B04 } from 'style/palette';
 import { changeSection } from '../formFunctions';
 
 // Imported Components
 import { sectionDataAtom, questionDataAtom } from '../FormAtom';
+import { Text } from 'components/atoms';
 
 const SectionContent = ({ section }) => {
   const { section_name, section_description } = { ...section };
@@ -19,7 +21,7 @@ const SectionContent = ({ section }) => {
 
   if (changingSecName)
     return (
-      <SectionNameContainer>
+      <SectionContentContainer>
         {section_name === '공통' ? (
           section_name
         ) : (
@@ -47,27 +49,49 @@ const SectionContent = ({ section }) => {
           }
           children="확인"
         />
-      </SectionNameContainer>
+      </SectionContentContainer>
     );
   else
     return (
-      <SectionNameContainer>
-        {section_name}
-        <div children={section_description} />
-        <MyButton
+      <SectionContentContainer>
+        <Text
+          size="22px"
+          weight={700}
+          children={`${section_name} 섹션`}
+          align="left"
+        />
+        <SectinoDescriptionInput
+          placeholder="섹션 설명 쓰기"
+          // value={section_description}
+        />
+        {/* <MyButton
           onClick={() => setChangingSecName(true)}
           children="섹션 수정"
-        />
-      </SectionNameContainer>
+        /> */}
+      </SectionContentContainer>
     );
 };
 
-const SectionNameContainer = styled.div`
+const SectionContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 10px;
-  border-bottom: 1px solid black;
+  text-align: left;
+  gap: 8px;
+  padding: 20px;
+  color: #fff;
+  background-color: ${B04};
+`;
+
+const SectinoDescriptionInput = styled.input`
+  color: white;
+
+  &::placeholder {
+    color: white;
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Pretendard-Regular';
+  }
 `;
 
 const MyButton = styled.button`
