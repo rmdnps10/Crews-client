@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 // Imported Functions
-import { changeSection } from './formFunctions';
+import { changeSection } from '../formFunctions';
 
 // Imported Components
-import { sectionDataAtom, questionDataAtom } from './FormAtom';
+import { sectionDataAtom, questionDataAtom } from '../FormAtom';
 
 const SectionContent = ({ section }) => {
   const { section_name, section_description } = { ...section };
