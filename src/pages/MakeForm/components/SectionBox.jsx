@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 
 // Imported Functions & Datas
-import { addQuestion, deleteSecition } from './formFunctions';
-import { sectionDataAtom, questionDataAtom } from './FormAtom';
+import { addQuestion, deleteSecition } from '../formFunctions';
+import { sectionDataAtom, questionDataAtom } from '../FormAtom';
 
 // Imported Components
 import { Space } from 'components/atoms';
-import SectionContent from './SectionContent';
-import QuestionBox from './QuestionBox';
+import SectionContent from '../SectionContent';
+import QuestionBox from '../QuestionBox';
 
 const SectionBox = ({ section }) => {
   const { section_name, section_description } = { ...section };
