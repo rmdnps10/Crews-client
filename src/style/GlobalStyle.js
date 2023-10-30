@@ -12,6 +12,13 @@ const GlobalStyle = createGlobalStyle`
         border: none;
         background: none;
     }
+    input {
+        padding: 0;
+        margin: 0;
+        border: none;
+        outline: none;
+        background: none;
+    }
 `;
 
 export default GlobalStyle;
