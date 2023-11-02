@@ -8,26 +8,45 @@ function ImageSection({ onImageFieldChange }) {
 
   const [imagePreviews, setImagePreviews] = useState([]);
 
-  const getImageFiles = (e) => {
+  const getImageFiles = async (e) => {
     const files = e.currentTarget.files;
-    if (imagePreviews.length >= 8) {
-      alert('이미지는 최대 8개까지 업로드 가능합니다.');
-      return;
-    }
+    const newImagePreviews = [];
 
-    const newImagePreviews = imagePreviews;
+    // Define a Promise that resolves when all file reading is complete
+    const loadFilePromises = [];
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const reader = new FileReader();
-      reader.onload = (event) => {
-        newImagePreviews.push(event.target.result);
-        setImagePreviews([...newImagePreviews]);
-        onImageFieldChange(imagePreviews);
-      };
 
-      reader.readAsDataURL(file);
+      // Create a Promise for each file read operation
+      const loadFilePromise = new Promise((resolve) => {
+        reader.onload = (event) => {
+          newImagePreviews.push(event.target.result);
+          resolve(); // Resolve the promise when the file is loaded
+        };
+        reader.readAsDataURL(file);
+      });
+
+      loadFilePromises.push(loadFilePromise);
     }
+
+    // Wait for all file reading operations to complete
+    await Promise.all(loadFilePromises);
+
+    if (newImagePreviews.length + imagePreviews.length > 8) {
+      alert('이미지는 최대 8개까지 업로드 가능합니다.');
+      console.log(newImagePreviews);
+      return;
+    }
+
+    console.log(newImagePreviews);
+
+    // Now, set the state after all files are loaded
+    setImagePreviews([...imagePreviews, ...newImagePreviews]);
+    onImageFieldChange([...imagePreviews, ...newImagePreviews]);
   };
+
   // X누를시 해당 이미지 삭제
   const deleteImageFile = (indexToDelete) => {
     const updatedImagePreviews = [...imagePreviews];
@@ -69,18 +88,16 @@ function ImageSection({ onImageFieldChange }) {
                   />
                 </ImageFirstPreview>
               ) : (
-                <>
-                  <ImagePreview key={index}>
-                    <img src={preview} alt={`Preview ${index}`} />
-                    <ImageDeleteIcon
-                      src={deleteIcon}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteImageFile(index);
-                      }}
-                    />
-                  </ImagePreview>
-                </>
+                <ImagePreview key={index}>
+                  <img src={preview} alt={`Preview ${index}`} />
+                  <ImageDeleteIcon
+                    src={deleteIcon}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteImageFile(index);
+                    }}
+                  />
+                </ImagePreview>
               )
             )
           : ''}
