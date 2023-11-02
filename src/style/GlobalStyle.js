@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
         margin: 0;
         border: none;
         background: none;
+        cursor: pointer;
     }
     input {
         padding: 0;
