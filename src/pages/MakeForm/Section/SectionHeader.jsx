@@ -3,15 +3,15 @@ import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 // Imported Functions & Datas
-import { B04 } from 'style/palette';
+import { B04, W01 } from 'style/palette';
 import { changeSection } from '../formFunctions';
 
 // Imported Components
 import { sectionDataAtom, questionDataAtom } from '../FormAtom';
 import { Text } from 'components/atoms';
 
-const SectionHeader = ({ section }) => {
-  const { section_name, section_description } = { ...section };
+const SectionHeader = ({ sectionData }) => {
+  const { sectionName, sectionDescription } = { ...sectionData };
 
   // const [sectionData, setSectionData] = useRecoilState(sectionDataAtom);
   // const [questionData, setQuestionData] = useRecoilState(questionDataAtom);
@@ -58,12 +58,12 @@ const SectionHeader = ({ section }) => {
         <Text
           size="22px"
           weight={700}
-          children={`${section_name} 섹션`}
+          children={`${sectionName} 섹션`}
           align="left"
         />
         <SectinoDescriptionInput
           placeholder="섹션 설명 쓰기"
-          // value={section_description}
+          // value={sectionDescription}
         />
         {/* <MyButton
           onClick={() => setChangingSecName(true)}
@@ -84,28 +84,15 @@ const SectionHeaderContainer = styled.div`
 `;
 
 const SectinoDescriptionInput = styled.input`
-  color: white;
+  color: ${W01};
 
   &::placeholder {
-    color: white;
+    color: ${W01};
     text-decoration: underline;
     font-size: 14px;
     font-weight: 400;
     font-family: 'Pretendard-Regular';
   }
 `;
-
-// const MyButton = styled.button`
-//   width: 100px;
-//   height: 50px;
-//   cursor: pointer;
-//   background-color: green;
-//   color: white;
-// `;
-
-// const SectionDescriptionContainer = styled.textarea`
-//   border: 1px solid black;
-//   height: 100px;
-// `;
 
 export default SectionHeader;
