@@ -52,7 +52,6 @@ export const MakePost = () => {
   return (
     <MakePostWrapper>
       <H1 />
-      <Space />
       <FormList>
         <FormItem>
           <FormTitle index={1} content={'모집 제목'} />
@@ -85,18 +84,18 @@ export const MakePost = () => {
           />
         </FormItem>
         <FormItem>
-          <FormTitle index={4} content={'모집 일정'} />
-          <RecruitPlanSection />
-        </FormItem>
-        <FormItem>
-          <FormTitle index={5} content={'모집 절차'} />
+          <FormTitle index={4} content={'모집 절차'} />
           <FormTextArea
             name="recruitProcess"
             value={form.recruitProcess}
             placeholder={textData.모집절차}
-            height={'68px'}
+            height={'130px'}
             onTextFieldChange={onTextFieldChange}
           />
+        </FormItem>
+        <FormItem>
+          <FormTitle index={5} content={'모집 일정'} />
+          <RecruitPlanSection />
         </FormItem>
         <FormItem>
           <FormTitle index={6} content={'회비'} />
@@ -123,25 +122,25 @@ export const MakePost = () => {
 
 const MakePostWrapper = styled.div`
   margin: 0 auto;
-  width: 920px;
+  width: 760px;
 `;
 
 const FormItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 `;
 
 const FormList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 52px;
+  gap: 32px;
 `;
 
 export const GuideText = styled.div`
   color: var(--gray-g-04, #b3b3b3);
   font-family: Pretendard;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -151,14 +150,15 @@ export const GuideText = styled.div`
 const MoveButton = styled.button`
   all: unset; // 버튼 css 초기화. 나중에 전역스타일링에서 바꿔주면 될듯함
   margin: 80px auto 80px;
-  width: 522px;
-  height: 68px;
+  width: 392px;
+  height: 65px;
   border-radius: 10px;
   background: var(--blue-b-05-m, #3172ea);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  color: white;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
   font-weight: 700;
 `;

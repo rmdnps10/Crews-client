@@ -19,7 +19,7 @@ function FormTextArea({ placeholder, height, onTextFieldChange, value, name }) {
 const StyledFormTextArea = styled.textarea.attrs(() => ({ type: 'text' }))`
   width: 100%;
   height: ${(props) => props.height};
-  padding: 20px;
+  padding: 22px;
   resize: none;
   border-radius: 10px;
   border: 1.4px solid #ccc;
@@ -27,20 +27,18 @@ const StyledFormTextArea = styled.textarea.attrs(() => ({ type: 'text' }))`
   font-size: 22px;
   color: var(--black-bk-02, #101010);
   font-family: Pretendard;
-  font-size: 22px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 600;
-  line-height: 30px;
-  letter-spacing: -0.44px;
+  line-height: normal;
 
   ::placeholder {
     color: var(--gray-g-04, #b3b3b3);
     font-family: Pretendard;
-    font-size: 20px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 400;
-    line-height: 30px;
-    letter-spacing: -0.4px;
+    line-height: 26px;
   }
   :focus {
     border: 2px solid var(--blue-b-05-m, #3172ea);

@@ -10,7 +10,7 @@ function H1() {
         <Line />
         <SectionTitle>모집공고 작성하기</SectionTitle>
       </H1Wrapper>
-      <Space height="48px"></Space>
+      <Space height="40px"></Space>
     </>
   );
 }
@@ -18,13 +18,13 @@ function H1() {
 const H1Wrapper = styled.div`
   display: flex;
   gap: 16px;
-  height: 38px;
+  height: 33px;
 `;
 
 const StepIndicate = styled.div`
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
-  line-height: 38px;
+  line-height: normal;
 `;
 
 const Line = styled.span`
@@ -32,12 +32,12 @@ const Line = styled.span`
   height: 26px;
   border-radius: 50px;
   background-color: rgba(153, 153, 153, 1);
-  margin-top: 4px;
+  margin-top: 2px;
 `;
 
 const SectionTitle = styled.span`
-  font-size: 32px;
-  line-height: 38px;
+  font-size: 28px;
+  line-height: normal;
   font-weight: 700;
 `;
 

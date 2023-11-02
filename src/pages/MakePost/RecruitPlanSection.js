@@ -112,9 +112,9 @@ function RecruitPlanSection() {
               <Icon src={clockIcon} />
               <Space width={'8px'} />
               <ClockInputWrapper>
-                <DateInput width={'23px'} />
+                <DateInput width={'20px'} />
                 <DateType>시</DateType>
-                <DateInput width={'28px'} />
+                <DateInput width={'23px'} />
                 <DateType>분</DateType>
               </ClockInputWrapper>
             </DataRangeItem>
@@ -141,9 +141,9 @@ function RecruitPlanSection() {
                   <Icon src={clockIcon} />
                   <Space width={'8px'} />
                   <ClockInputWrapper>
-                    <DateInput width={'23px'} />
+                    <DateInput width={'20px'} />
                     <DateType>시</DateType>
-                    <DateInput width={'28px'} />
+                    <DateInput width={'23px'} />
                     <DateType>분</DateType>
                   </ClockInputWrapper>
                 </DataRangeItem>
@@ -164,9 +164,9 @@ function RecruitPlanSection() {
                   <Icon src={clockIcon} />
                   <Space width={'8px'} />
                   <ClockInputWrapper>
-                    <DateInput width={'23px'} />
+                    <DateInput width={'20px'} />
                     <DateType>시</DateType>
-                    <DateInput width={'28px'} />
+                    <DateInput width={'23px'} />
                     <DateType>분</DateType>
                   </ClockInputWrapper>
                 </DataRangeItem>{' '}
@@ -174,7 +174,7 @@ function RecruitPlanSection() {
             )}
           </DateRangeSection>
         </div>
-        <Space height={'80px'} />
+        <Space height={'42px'} />
 
         <div className="2차면접여부">
           <FormSubTitle>2차 면접 실시 여부</FormSubTitle>
@@ -200,9 +200,10 @@ function RecruitPlanSection() {
             </StyledLabel>
           </RadioWrapper>
         </div>
-        <Space height={'48px'} />
+
         {hasSecond ? (
           <div className="2차면접일정">
+            <Space height={'42px'} />
             <FormSubTitle>2차 서류전형 일정</FormSubTitle>
             <Space height={'20px'} />
             <GuideText>면접 일자를 정확하게 기입해 주세요.</GuideText>
@@ -227,9 +228,9 @@ function RecruitPlanSection() {
                 <Icon src={clockIcon} />
                 <Space width={'8px'} />
                 <ClockInputWrapper>
-                  <DateInput width={'23px'} />
+                  <DateInput width={'20px'} />
                   <DateType>시</DateType>
-                  <DateInput width={'28px'} />
+                  <DateInput width={'23px'} />
                   <DateType>분</DateType>
                 </ClockInputWrapper>
               </DataRangeItem>
@@ -252,9 +253,9 @@ function RecruitPlanSection() {
                 <Icon src={clockIcon} />
                 <Space width={'8px'} />
                 <ClockInputWrapper>
-                  <DateInput width={'23px'} />
+                  <DateInput width={'20px'} />
                   <DateType>시</DateType>
-                  <DateInput width={'28px'} />
+                  <DateInput width={'23px'} />
                   <DateType>분</DateType>
                 </ClockInputWrapper>
               </DataRangeItem>
@@ -277,9 +278,9 @@ function RecruitPlanSection() {
                 <Icon src={clockIcon} />
                 <Space width={'8px'} />
                 <ClockInputWrapper>
-                  <DateInput width={'23px'} />
+                  <DateInput width={'20px'} />
                   <DateType>시</DateType>
-                  <DateInput width={'28px'} />
+                  <DateInput width={'23px'} />
                   <DateType>분</DateType>
                 </ClockInputWrapper>
               </DataRangeItem>
@@ -296,7 +297,7 @@ function RecruitPlanSection() {
 const DateRangeSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 26px;
 `;
 const DataRangeItem = styled.div`
   display: flex;
@@ -313,14 +314,15 @@ const ClockInputWrapper = styled(DateInputWrapper)``;
 const DateInput = styled.input.attrs({ type: 'text', maxLength: '2' })`
   border: none;
   outline: none;
-  height: 24px;
+  height: 18px;
+  align-self: center;
   padding: 0px;
   box-sizing: content-box;
   width: ${(props) => props.width};
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 700;
-  line-height: 0.8;
+  line-height: normal;
   letter-spacing: -0.4px;
   text-align: center;
   border-bottom: 2px solid;
@@ -329,21 +331,22 @@ const DateInput = styled.input.attrs({ type: 'text', maxLength: '2' })`
 const DateYearInput = styled.input.attrs({ type: 'text', maxLength: '4' })`
   border: none;
   outline: none;
-  height: 24px;
+  height: 18px;
+  align-self: center;
   padding: 0px;
   box-sizing: content-box;
   width: ${(props) => props.width};
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 700;
-  line-height: 0.8;
+  line-height: normal;
   letter-spacing: -0.4px;
   text-align: center;
   border-bottom: 2px solid;
 `;
 
 const DateType = styled.div`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 1.4;
   letter-spacing: -0.4px;
@@ -352,7 +355,7 @@ const DateType = styled.div`
 const RangeType = styled.span`
   color: var(--blue-b-05-m, #3172ea);
   font-family: Pretendard;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.36px;
@@ -364,13 +367,13 @@ const RecruitWrapper = styled.div`
 `;
 
 const Icon = styled.img`
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
 `;
 
 const FormSubTitle = styled.div`
   color: var(--black-bk-02, #101010);
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.44px;
 `;
@@ -389,15 +392,15 @@ const StyledLabel = styled.label`
   > span {
     min-width: fit-content;
     padding-left: 8px;
-    font-size: 20px;
+    font-size: 18px;
     line-height: normal;
     font-weight: 400;
   }
 `;
 const StyledRadio = styled.input.attrs(() => ({ type: 'radio' }))`
   appearance: none;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: 2px solid rgb(204, 204, 204);
   margin: 0; // 스타일 초기화가 안되있는거같음
@@ -405,7 +408,7 @@ const StyledRadio = styled.input.attrs(() => ({ type: 'radio' }))`
     cursor: pointer;
   }
   :checked {
-    background: center url('${selectRadio}') no-repeat;
+    background: no-repeat center/100% url('${selectRadio}');
     border: none;
   }
 `;

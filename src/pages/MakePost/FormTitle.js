@@ -11,7 +11,7 @@ function FormTitle({ index, content }) {
 
 const StyledFormTitle = styled.div`
   font-family: Pretendard;
-  font-size: 24px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;

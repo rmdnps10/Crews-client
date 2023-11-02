@@ -39,6 +39,21 @@ function ImageSection({ onImageFieldChange }) {
   return (
     <>
       <ImagePreviewList>
+        <ImageUploadItem>
+          <VirtualImageUploadBox htmlFor="uploadButton">
+            <ImageUploadBox
+              type="file"
+              id="uploadButton"
+              multiple="multiple"
+              accept="image/*"
+              onChange={getImageFiles}
+            ></ImageUploadBox>
+            <ImageUploadCaption>
+              <ImageUploadImage src={uploadIcon}></ImageUploadImage>
+              <ImageUploadText>이미지 업로드</ImageUploadText>
+            </ImageUploadCaption>
+          </VirtualImageUploadBox>
+        </ImageUploadItem>
         {imagePreviews
           ? imagePreviews.map((preview, index) =>
               index === 0 ? (
@@ -69,22 +84,6 @@ function ImageSection({ onImageFieldChange }) {
               )
             )
           : ''}
-
-        <ImageUploadItem>
-          <VirtualImageUploadBox htmlFor="uploadButton">
-            <ImageUploadBox
-              type="file"
-              id="uploadButton"
-              multiple="multiple"
-              accept="image/*"
-              onChange={getImageFiles}
-            ></ImageUploadBox>
-            <ImageUploadCaption>
-              <ImageUploadImage src={uploadIcon}></ImageUploadImage>
-              <ImageUploadText>이미지 업로드</ImageUploadText>
-            </ImageUploadCaption>
-          </VirtualImageUploadBox>
-        </ImageUploadItem>
       </ImagePreviewList>
     </>
   );
@@ -93,12 +92,12 @@ function ImageSection({ onImageFieldChange }) {
 const ImagePreviewList = styled.div`
   flex-wrap: wrap;
   display: flex;
-  gap: 10px;
+  gap: 14px;
 `;
 
 const ImageDeleteIcon = styled.img`
-  width: 36px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
   position: absolute;
   top: 8px;
   right: 8px;
@@ -112,18 +111,18 @@ const ImageFirstCaption = styled.div`
   top: 8px;
   left: 8px;
   display: flex;
-  width: 60px;
-  height: 40px;
+  width: 46px;
+  height: 30px;
   justify-content: center;
   align-items: center;
   color: #fff;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.4px;
 `;
 const ImageFirstPreview = styled.div`
-  width: 220px;
-  height: 220px;
+  width: 140px;
+  height: 140px;
   border-radius: 10px;
   position: relative;
   display: flex;
@@ -138,8 +137,8 @@ const ImageFirstPreview = styled.div`
 `;
 
 const ImagePreview = styled.div`
-  width: 220px;
-  height: 220px;
+  width: 140px;
+  height: 140px;
   border-radius: 10px;
   border-radius: 10px;
   border: 1.4px solid var(--gray-g-03, #ccc);
@@ -164,29 +163,29 @@ const ImageUploadCaption = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 70px;
-  right: 66px;
+  top: 41px;
+  right: 33px;
   align-items: center;
   gap: 8px;
   cursor: pointer;
 `;
 
 const ImageUploadImage = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 34px;
+  height: 34px;
 `;
 
 const ImageUploadText = styled.span`
   color: var(--gray-g-04, #b3b3b3);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.32px;
   text-decoration-line: underline;
 `;
 
 const VirtualImageUploadBox = styled.label`
-  width: 218px;
-  height: 218px;
+  width: 140px;
+  height: 140px;
   border-radius: 10px;
   display: block;
   background: var(--gray-g-01, #f2f2f2);
