@@ -4,61 +4,115 @@ import { sectionDataAtom } from './FormAtom';
 
 // Imported Functions & Datas
 import { addSection } from './formFunctions';
+import { BK02, G05, G06 } from 'style/palette';
 
 // Imported Components
 import SectionBox from './SectionBox';
-import { Space, Button, Input, Flex } from 'components/atoms';
+import { Space, Button, Input, Flex, Text } from 'components/atoms';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 export const MakeForm = () => {
   const [sectionData, setSectionData] = useRecoilState(sectionDataAtom);
 
   return (
-    <div>
-      <h1>지원서 양식 작성</h1>
-      {sectionData.map((it, idx) => (
+    <MakeFormWrapper>
+      <Space height="200px" />
+      <DescriptionBox>
+        <Flex justify="left" align="center" gap="15">
+          <Text children="STEP 02" size="32px" weight="bold" color={BK02} />
+          <TextLine color={G05} size="32px" />
+          <Text
+            children="지원서 양식 작성"
+            size="32px"
+            weight="bold"
+            color={BK02}
+          />
+          <QuestionButton>
+            <FontAwesomeIcon
+              onClick={() => alert('Modal!')}
+              icon={faCircleQuestion}
+              className="fa-2xl"
+              style={{ color: BK02 }}
+            />
+          </QuestionButton>
+        </Flex>
+        <Space height="20px" />
+        <Text
+          children="모집 공고는 등록 후에도 수정이 가능하지만, 지원서는 모집 기간 이후 수정이 불가능합니다."
+          size="20px"
+          weight="400"
+          color={G05}
+        />
+      </DescriptionBox>
+      <Space height="50px" />
+
+      <TmpBox />
+      {/* {sectionData.map((it, idx) => (
         <>
           <SectionBox section={it} />
           <Space height="50px" />
         </>
-      ))}
-
-      <Button
-        onClick={() => addSection(sectionData, setSectionData)}
-        children="섹션 추가하기"
-      />
+      ))} */}
       <Space height="50px" />
 
-      <Flex justify="center" direction="column" gap="30">
-        <Button
-          width="500px"
-          height="70px"
-          fontSize="24px"
-          children="회원가입 완료"
+      {/* onClick={() => addSection(sectionData, setSectionData)} */}
+      <TextButton color={G06}>
+        <Text
+          size="24px"
+          color={G06}
+          weight="400"
+          children="새로운 섹션 추가하기"
         />
-        <Button
-          width="500px"
-          height="70px"
-          status="inactive"
-          children="회원가입 완료"
-        />
-        <Input width="360px" height="70px" value="입력되는중" />
-        <Input status="active" width="360px" height="70px" value="입력됨" />
-        <Input
-          status="inactive"
-          width="360px"
-          height="70px"
-          placeholder="입력해주세요"
-        />
-        <Input status="error" width="360px" height="70px" value="잘못된 입력" />
-      </Flex>
-    </div>
+      </TextButton>
+      <Space height="80px" />
+      <CenteredButton
+        status="inactive"
+        width="530px"
+        height="70px"
+        children="모집 공고 등록하기"
+      />
+      <Space height="80px" />
+    </MakeFormWrapper>
   );
 };
 
-const AddSectionButton = styled.button`
-  width: 200px;
-  height: 50px;
-  color: white;
+const MakeFormWrapper = styled.div`
+  overflow: hidden;
+  width: fit-content;
+  height: auto;
+  margin: 0 auto;
+  text-align: center;
+`;
+
+const DescriptionBox = styled.div`
+  text-align: left;
+`;
+
+const QuestionButton = styled.button`
   cursor: pointer;
-  background-color: blue;
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const TextLine = styled.span`
+  border: 2px solid ${({ color }) => color};
+  border-radius: 999px;
+  height: ${({ size }) => size};
+`;
+
+const TextButton = styled.button`
+  border-bottom: 1px solid ${({ color }) => color};
+  cursor: pointer;
+`;
+
+const CenteredButton = styled(Button)`
+  margin: 0 auto;
+`;
+
+const TmpBox = styled.div`
+  width: 920px;
+  height: 600px;
+  border: 1px solid black;
 `;
