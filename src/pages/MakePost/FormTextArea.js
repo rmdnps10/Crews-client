@@ -19,7 +19,7 @@ function FormTextArea({ placeholder, height, onTextFieldChange, value, name }) {
 const StyledFormTextArea = styled.textarea.attrs(() => ({ type: 'text' }))`
   width: 100%;
   height: ${(props) => props.height};
-  padding: 22px;
+  padding: 20px;
   resize: none;
   border-radius: 10px;
   border: 1.4px solid #ccc;
