@@ -22,16 +22,19 @@ export const Button = ({
   fontWeight = 'bold',
   onClick,
   children,
+  className,
 }) => {
   const buttonColor = ButtonColors[status];
   const fontColor = FontColors[status];
 
   return (
     <StyledButton
+      status={status}
       width={width}
       height={height}
       buttonColor={buttonColor}
       onClick={onClick}
+      className={className}
     >
       <Text
         size={fontSize}
@@ -53,5 +56,5 @@ const StyledButton = styled.button`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
   background-color: ${({ buttonColor }) => buttonColor};
-  cursor: pointer;
+  cursor: ${({ status }) => (status === 'inactive' ? 'default' : 'pointer')};
 `;

@@ -5,6 +5,12 @@ const GlobalStyle = createGlobalStyle`
     ${reset};
     body * {
         box-sizing: border-box;
+    };
+    button {
+        padding: 0;
+        margin: 0;
+        border: none;
+        background: none;
     }
 `;
 
