@@ -1,20 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
-
-import EvaluateSummarySection from './EvaluateSummarySection';
-export const Evaluate = () => {
+import backArrowIcon from './backArrow.svg';
+function EvaluateSummarySection() {
   return (
-    <EvaluateContainer>
-      <EvaluateSummarySection />
-    </EvaluateContainer>
+    <EvalutateSummarySectionWrapper>
+      <EvaluateHeader>
+        <BackArrowIcon src={backArrowIcon}></BackArrowIcon>
+        <EvaluateH1>지원서 평가하기</EvaluateH1>
+        <EvaluateGuide>
+          ‘멋쟁이 사자처럼 서강대에서 19기 아기사자를 모집합니다!’ 에 제출된
+          지원서 리스트입니다.
+        </EvaluateGuide>
+      </EvaluateHeader>
+      <InformationBoard>
+        <MainInform>
+          {' '}
+          <MainText>지원자 </MainText> <TotalApplyCount>48</TotalApplyCount>
+          <MainText> 명 중 </MainText> <TotalPassCount>12</TotalPassCount>
+          <MainBlueText> 명이 합격했어요 🎉</MainBlueText>
+        </MainInform>
+        <SubInform>경쟁률 4.0 (최신 업데이트 13 : 07 : 23)</SubInform>
+      </InformationBoard>
+    </EvalutateSummarySectionWrapper>
   );
-};
-const EvaluateContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 800px;
-  margin: 0 auto;
-`;
+}
+
+export default EvaluateSummarySection;
+
+const EvalutateSummarySectionWrapper = styled.section``;
+
 const EvaluateHeader = styled.div`
   align-self: flex-start;
   margin-top: 40px;
