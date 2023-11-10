@@ -34,8 +34,6 @@ function ImageSection({ onImageFieldChange }) {
       console.log(newImagePreviews);
       return;
     }
-
-    console.log(newImagePreviews);
     setImagePreviews([...imagePreviews, ...newImagePreviews]);
     onImageFieldChange([...imagePreviews, ...newImagePreviews]);
   };
