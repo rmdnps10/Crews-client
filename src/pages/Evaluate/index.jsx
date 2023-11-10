@@ -1,12 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import EvaluateSummarySection from './EvaluateSummarySection';
+import BottomBar from './BottomBar';
 export const Evaluate = () => {
   return (
-    <EvaluateContainer>
-      <EvaluateSummarySection />
-    </EvaluateContainer>
+    <>
+      <EvaluateContainer>
+        <EvaluateSummarySection />
+      </EvaluateContainer>
+      <BottomBar />
+    </>
   );
 };
 const EvaluateContainer = styled.div`
