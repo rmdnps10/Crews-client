@@ -23,6 +23,7 @@ const EvaluateEndButton = styled.button`
   width: 250px;
   height: 60px;
   display: flex;
+  cursor: pointer;
   justify-content: center;
   align-items: center;
   color: #fff;

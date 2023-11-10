@@ -27,7 +27,11 @@ function EvaluateSummarySection() {
 
 export default EvaluateSummarySection;
 
-const EvalutateSummarySectionWrapper = styled.section``;
+const EvalutateSummarySectionWrapper = styled.section`
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+`;
 
 const EvaluateHeader = styled.div`
   align-self: flex-start;
@@ -73,6 +77,7 @@ const InformationBoard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  align-self: center;
   gap: 8px;
 `;
 
