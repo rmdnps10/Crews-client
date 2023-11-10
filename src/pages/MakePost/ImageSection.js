@@ -11,27 +11,22 @@ function ImageSection({ onImageFieldChange }) {
   const getImageFiles = async (e) => {
     const files = e.currentTarget.files;
     const newImagePreviews = [];
-
-    // Define a Promise that resolves when all file reading is complete
     const loadFilePromises = [];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const reader = new FileReader();
 
-      // Create a Promise for each file read operation
       const loadFilePromise = new Promise((resolve) => {
         reader.onload = (event) => {
           newImagePreviews.push(event.target.result);
-          resolve(); // Resolve the promise when the file is loaded
+          resolve(); 
         };
         reader.readAsDataURL(file);
       });
 
       loadFilePromises.push(loadFilePromise);
     }
-
-    // Wait for all file reading operations to complete
     await Promise.all(loadFilePromises);
 
     if (newImagePreviews.length + imagePreviews.length > 8) {
@@ -41,8 +36,6 @@ function ImageSection({ onImageFieldChange }) {
     }
 
     console.log(newImagePreviews);
-
-    // Now, set the state after all files are loaded
     setImagePreviews([...imagePreviews, ...newImagePreviews]);
     onImageFieldChange([...imagePreviews, ...newImagePreviews]);
   };
