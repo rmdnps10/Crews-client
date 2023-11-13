@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-
-function ApplyItem({ isActive }) {
+import selectRadio from './select.svg';
+function ApplyItem({}) {
+  const [isSelected, setIsSelcted] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const handleClickItem = () => {
+    setIsActive(!isActive);
+  };
+  const handleCheck = () => {
+    setIsSelcted(!isSelected);
+  };
   return (
     <ApplyItemContainer>
       {isActive ? (
-        <ActiveApplyItem>
-          <ApplicantDivideSection>
+        <ActiveApplyItem $isSelected={isSelected}>
+          <ApplicantDivideSection onClick={handleClickItem}>
             <ApplicantInform>
               <div className="student-id">20201148</div>
               <div className="name">정인영</div>
               <div className="class">아트엔테크놀리지학과</div>
             </ApplicantInform>
-            <IsSelectLabel />
+            <IsSelectedCheckBox checked={isSelected} onChange={handleCheck} />
           </ApplicantDivideSection>
 
           <AverageScoreSection>
@@ -45,13 +53,13 @@ function ApplyItem({ isActive }) {
           <CheckApplicationButton>지원서 확인하기</CheckApplicationButton>
         </ActiveApplyItem>
       ) : (
-        <UnActivateApplyItem>
+        <UnActivateApplyItem onClick={handleClickItem} $isSelected={isSelected}>
           <ApplicantInform>
             <div className="student-id">20201148</div>
             <div className="name">정인영</div>
             <div className="class">아트엔테크놀리지학과</div>
           </ApplicantInform>
-          <IsSelectLabel />
+          <IsSelectedCheckBox checked={isSelected} onClick={handleCheck} />
         </UnActivateApplyItem>
       )}
     </ApplyItemContainer>
@@ -67,7 +75,7 @@ const ActiveApplyItem = styled.div`
   height: 427px;
   border-radius: 10px;
   border: 1px solid var(--gray-g-02, #e6e6e6);
-  background: #fff;
+  background: ${(props) => (props.$isItemBlue ? '#E8EFFD' : '#fff')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,7 +86,7 @@ const UnActivateApplyItem = styled.div`
   height: 121px;
   border-radius: 10px;
   border: 1px solid var(--gray-g-02, #e6e6e6);
-  background: #fff;
+  background: ${(props) => (props.$isSelected ? '#E8EFFD' : '#fff')};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -173,11 +181,17 @@ const CheckApplicationButton = styled.div`
   font-weight: 600;
   margin-top: 24px;
 `;
-const IsSelectLabel = styled.label`
+const IsSelectedCheckBox = styled.input.attrs(() => ({ type: 'checkbox' }))`
   width: 24px;
   height: 24px;
+  appearance: none;
   border-radius: 50%;
   border: 2px solid gray;
+
+  &:checked {
+    background: no-repeat center/100% url('${selectRadio}');
+    border: none;
+  }
 `;
 
 export default ApplyItem;
