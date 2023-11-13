@@ -17,6 +17,10 @@ function ApplyListSection() {
         <ApplyItem isActive={true} />
         <ApplyItem isActive={false} />
         <ApplyItem isActive={false} />
+        <ApplyItem isActive={false} />
+        <ApplyItem isActive={false} />
+        <ApplyItem isActive={false} />
+        <ApplyItem isActive={false} />
       </ApplyList>
     </ApplyListSectionWrapper>
   );
