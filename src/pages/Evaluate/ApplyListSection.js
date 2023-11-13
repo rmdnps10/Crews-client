@@ -14,7 +14,7 @@ function ApplyListSection() {
       </SortMenu>
       <ApplyList>
         <ApplyItem isActive={false} />
-        <ApplyItem isActive={false} />
+        <ApplyItem isActive={true} />
         <ApplyItem isActive={false} />
         <ApplyItem isActive={false} />
       </ApplyList>
@@ -25,7 +25,7 @@ function ApplyListSection() {
 const ApplyListSectionWrapper = styled.section`
   display: flex;
   flex-direction: column;
-// 이 부분 유동적으로 바껴야함
+  // 이 부분 유동적으로 바껴야함
   width: 1200px;
 `;
 const ApplyListIndex = styled.div`
