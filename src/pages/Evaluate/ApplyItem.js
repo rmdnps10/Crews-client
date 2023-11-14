@@ -4,11 +4,13 @@ import selectRadio from './select.svg';
 function ApplyItem({}) {
   const [isSelected, setIsSelcted] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const handleClickItem = () => {
+  const handleClickItem = (event) => {
+    if (event.target.tagName == 'INPUT') {
+      setIsSelcted(!isSelected);
+      return;
+    }
+    event.stopPropagation();
     setIsActive(!isActive);
-  };
-  const handleCheck = () => {
-    setIsSelcted(!isSelected);
   };
   return (
     <ApplyItemContainer>
@@ -20,7 +22,10 @@ function ApplyItem({}) {
               <div className="name">정인영</div>
               <div className="class">아트엔테크놀리지학과</div>
             </ApplicantInform>
-            <IsSelectedCheckBox checked={isSelected} onChange={handleCheck} />
+            <IsSelectedCheckBox
+              checked={isSelected}
+              onChange={handleClickItem}
+            />
           </ApplicantDivideSection>
 
           <AverageScoreSection>
@@ -59,7 +64,7 @@ function ApplyItem({}) {
             <div className="name">정인영</div>
             <div className="class">아트엔테크놀리지학과</div>
           </ApplicantInform>
-          <IsSelectedCheckBox checked={isSelected} onClick={handleCheck} />
+          <IsSelectedCheckBox checked={isSelected} onChange={handleClickItem} />
         </UnActivateApplyItem>
       )}
     </ApplyItemContainer>
@@ -191,6 +196,10 @@ const IsSelectedCheckBox = styled.input.attrs(() => ({ type: 'checkbox' }))`
   &:checked {
     background: no-repeat center/100% url('${selectRadio}');
     border: none;
+  }
+
+  &:checked {
+    poinbter-events: none;
   }
 `;
 
