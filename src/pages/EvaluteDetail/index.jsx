@@ -8,8 +8,8 @@ import styled from 'styled-components';
 export const EvaluateDetail = () => {
   return (
     <>
-      <EvaluateDetailHeader />
       <EvaluateDetailContainer>
+        <EvaluateDetailHeader />
         <ApplicationSection />
         <AssessSection />
       </EvaluateDetailContainer>

@@ -41,7 +41,7 @@ const EvaluateHeader = styled.div`
   gap: 12px;
   position: relative;
 `;
-const EvaluateH1 = styled.div`
+export const EvaluateH1 = styled.div`
   color: var(--black-bk-02, #101010);
   font-family: Pretendard;
   font-size: 28px;
@@ -50,11 +50,12 @@ const EvaluateH1 = styled.div`
   line-height: normal;
   letter-spacing: -0.56px;
 `;
-const BackArrowIcon = styled.img`
+export const BackArrowIcon = styled.img`
   position: absolute;
   top: 3px;
   left: -46px;
   width: 34px;
+  cursor: pointer;
 `;
 const EvaluateGuide = styled.div`
   margin-top: 10px;
