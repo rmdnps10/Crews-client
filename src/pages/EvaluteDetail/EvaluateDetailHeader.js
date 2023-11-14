@@ -26,6 +26,8 @@ const EvaluateDetailHeaderWrapper = styled.div`
   background-color: white;
   height: 113px;
   width: 100%;
+
+  z-index: 3;
 `;
 
 const EvaluatePagenation = styled.div`

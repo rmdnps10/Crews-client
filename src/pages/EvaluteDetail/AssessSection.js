@@ -8,61 +8,59 @@ function AssessSection() {
   };
 
   return (
-    <>
-      <AssessTotalSection>
-        <AssessSectionWrapper>
-          <AssessWidthContainer>
-            <AverageScore>
-              <div className="average-label">평균 점수</div>
-              <div className="average-score">4.4 (상위 10%)</div>
-            </AverageScore>
-            <CommentList>
-              <CommentItem>
-                <div className="author">정고은</div>
-                <div className="score-comment">4 / 인영이 좀 치네</div>
-              </CommentItem>{' '}
-              <CommentItem>
-                <div className="author">한우석</div>
-                <div className="score-comment">4 / 인영이 좀 치네</div>
-              </CommentItem>{' '}
-              <CommentItem>
-                <div className="author">한우석</div>
-                <div className="score-comment">4 / 인영이 좀 치네</div>
-              </CommentItem>{' '}
-              <CommentItem>
-                <div className="author">한우석</div>
-                <div className="score-comment">4 / 인영이 좀 치네</div>
-              </CommentItem>
-              <CommentItem>
-                <div className="author">한우석</div>
-                <div className="score-comment">4 / 인영이 좀 치네</div>
-              </CommentItem>
-            </CommentList>
-            <MyScore>
-              <div className="label">내 점수</div>
-              <div className="description">최대 5점</div>
-            </MyScore>
-            <ScoreInput onChange={onTextFieldChange} value={score} />
-            <MyAssess>
-              <div className="label">나의 한 줄 평가</div>
-              <div className="description">글자 수 (0/200)</div>
-            </MyAssess>
-            <OneLinerInput onChange={onTextFieldChange} value={oneLiner} />
-            <ButtonContainer>
-              <ReviseAssessButton>내 평가 수정하기</ReviseAssessButton>
-              <FirstPassButton>1차 합격 시키기</FirstPassButton>
-            </ButtonContainer>
-          </AssessWidthContainer>
-        </AssessSectionWrapper>
-      </AssessTotalSection>
-    </>
+    <AssessTotalSection>
+      <AssessSectionWrapper>
+        <AssessWidthContainer>
+          <AverageScore>
+            <div className="average-label">평균 점수</div>
+            <div className="average-score">4.4 (상위 10%)</div>
+          </AverageScore>
+          <CommentList>
+            <CommentItem>
+              <div className="author">정고은</div>
+              <div className="score-comment">4 / 인영이 좀 치네</div>
+            </CommentItem>{' '}
+            <CommentItem>
+              <div className="author">한우석</div>
+              <div className="score-comment">4 / 인영이 좀 치네</div>
+            </CommentItem>{' '}
+            <CommentItem>
+              <div className="author">한우석</div>
+              <div className="score-comment">4 / 인영이 좀 치네</div>
+            </CommentItem>{' '}
+            <CommentItem>
+              <div className="author">한우석</div>
+              <div className="score-comment">4 / 인영이 좀 치네</div>
+            </CommentItem>
+            <CommentItem>
+              <div className="author">한우석</div>
+              <div className="score-comment">4 / 인영이 좀 치네</div>
+            </CommentItem>
+          </CommentList>
+          <MyScore>
+            <div className="label">내 점수</div>
+            <div className="description">최대 5점</div>
+          </MyScore>
+          <ScoreInput onChange={onTextFieldChange} value={score} />
+          <MyAssess>
+            <div className="label">나의 한 줄 평가</div>
+            <div className="description">글자 수 (0/200)</div>
+          </MyAssess>
+          <OneLinerInput onChange={onTextFieldChange} value={oneLiner} />
+          <ButtonContainer>
+            <ReviseAssessButton>내 평가 수정하기</ReviseAssessButton>
+            <FirstPassButton>1차 합격 시키기</FirstPassButton>
+          </ButtonContainer>
+        </AssessWidthContainer>
+      </AssessSectionWrapper>
+    </AssessTotalSection>
   );
 }
 
 const AssessTotalSection = styled.section`
-  position: fixed;
-  top: 113px;
-  right: 300px;
+  position: absolute;
+  top: 110px;
+  right: 0px;
 `;
 
 const AssessSectionWrapper = styled.div`
