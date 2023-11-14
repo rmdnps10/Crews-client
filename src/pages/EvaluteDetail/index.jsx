@@ -19,7 +19,7 @@ export const EvaluateDetail = () => {
 };
 
 const EvaluateDetailContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 1200px;
+  margin: 0 auto;
+  position: relative;
 `;

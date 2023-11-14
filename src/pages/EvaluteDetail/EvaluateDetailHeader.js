@@ -23,7 +23,6 @@ function EvaluateDetailHeader() {
 
 const EvaluateDetailHeaderWrapper = styled.div`
   margin-top: 40px;
-  width: 1200px;
   display: flex;
   position: relative;
 `;
