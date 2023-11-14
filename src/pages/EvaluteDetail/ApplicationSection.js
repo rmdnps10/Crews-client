@@ -6,7 +6,6 @@ function ApplicationSection() {
 }
 
 const ApplicationSectionWrapper = styled.div`
-  margin-top: 40px;
   width: 760px;
   height: 3000px;
   border-radius: 10px 10px 0px 0px;

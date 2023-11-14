@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import beforeArrowIcon from './beforeArrow.svg';
-import nextArrowIcon from './nextArrow.svg';
 function AssessSection() {
   const [text, setText] = useState({ score: '', oneLiner: '' });
   const { score, oneLiner } = text;
@@ -12,11 +10,6 @@ function AssessSection() {
   return (
     <>
       <AssessTotalSection>
-        <EvaluatePagenation>
-          <BeforeButton src={beforeArrowIcon} />
-          <IndexState>01 / 48</IndexState>
-          <AfterButton src={nextArrowIcon} />
-        </EvaluatePagenation>
         <AssessSectionWrapper>
           <AssessWidthContainer>
             <AverageScore>
@@ -69,10 +62,7 @@ function AssessSection() {
 const AssessTotalSection = styled.section`
   position: fixed;
   top: 113px;
-  right: 130px;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
+  right: 300px;
 `;
 
 const AssessSectionWrapper = styled.div`
@@ -80,28 +70,6 @@ const AssessSectionWrapper = styled.div`
   height: 762px;
   border-radius: 10px;
   background: #f7f7f7;
-`;
-
-const EvaluatePagenation = styled.div`
-  align-self: flex-end;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-`;
-
-const BeforeButton = styled.img`
-  cursor: pointer;
-`;
-const AfterButton = styled.img`
-  cursor: pointer;
-`;
-const IndexState = styled.div`
-  margin-top: 4px;
-  color: var(--black-bk-02, #101010);
-  font-size: 28px;
-  font-weight: 700;
-  line-height: normal;
-  letter-spacing: -0.56px;
 `;
 
 const AssessWidthContainer = styled.div`
