@@ -5,11 +5,11 @@ function ApplyItem({}) {
   const [isSelected, setIsSelcted] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const handleClickItem = (event) => {
+    event.stopPropagation();
     if (event.target.tagName == 'INPUT') {
       setIsSelcted(!isSelected);
       return;
     }
-    event.stopPropagation();
     setIsActive(!isActive);
   };
   return (
@@ -80,7 +80,7 @@ const ActiveApplyItem = styled.div`
   height: 427px;
   border-radius: 10px;
   border: 1px solid var(--gray-g-02, #e6e6e6);
-  background: ${(props) => (props.$isItemBlue ? '#E8EFFD' : '#fff')};
+  background: ${(props) => (props.$isSelected ? '#E8EFFD' : '#fff')};
   display: flex;
   flex-direction: column;
   align-items: center;
