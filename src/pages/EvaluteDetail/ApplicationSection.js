@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
+import styled from 'styled-components';
 
 function ApplicationSection() {
-  return (
-    <div>ApplicationSection</div>
-  )
+  return <ApplicationSectionWrapper></ApplicationSectionWrapper>;
 }
 
-export default ApplicationSection
+const ApplicationSectionWrapper = styled.div`
+  margin-top: 40px;
+  width: 760px;
+  height: 3000px;
+  border-radius: 10px 10px 0px 0px;
+  background: var(--blue-b-04, #5d90ee);
+`;
+export default ApplicationSection;
