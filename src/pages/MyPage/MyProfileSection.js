@@ -33,6 +33,10 @@ function MyProfileSection() {
       ...profileText.major.slice(0, idx),
       ...profileText.major.slice(idx + 1),
     ];
+    if (updatedMajor.length < 1) {
+      alert('전공을 최소 1개란을 입력해야 해요.');
+      return;
+    }
     setProfileText({ ...profileText, major: updatedMajor });
   };
   const toggleIsEdit = () => {
@@ -40,6 +44,10 @@ function MyProfileSection() {
   };
   const addMajor = () => {
     const updatedMajor = [...profileText.major, ''];
+    if (updatedMajor.length > 3) {
+      alert('전공을 3개이상 추가할 수 없어요.');
+      return;
+    }
     setProfileText({ ...profileText, major: updatedMajor });
   };
 

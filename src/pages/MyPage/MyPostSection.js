@@ -39,6 +39,7 @@ const ApplyPost = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  cursor: pointer;
   letter-spacing: -0.4px;
   border-bottom: ${(props) => (props.$isBlue ? '4px solid #1557d0' : 'none')};
 `;
