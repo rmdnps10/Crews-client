@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
+import PostItem from './PostItem';
 function MyPostSection() {
   const [isApplyPost, setIsApplyPost] = useState(true);
   const showApplyPost = () => {
@@ -18,8 +19,10 @@ function MyPostSection() {
         <SavePost $isBlue={!isApplyPost} onClick={showSavePost}>
           찜한 공고
         </SavePost>
-        <PostList></PostList>
       </SelectPostType>
+      <PostList>
+        <PostItem />
+      </PostList>
     </MyPostSectionWrapper>
   );
 }
@@ -45,6 +48,8 @@ const ApplyPost = styled.div`
 `;
 const SavePost = styled(ApplyPost)``;
 
-const PostList = styled.div``;
+const PostList = styled.div`
+  margin-top: 28px;
+`;
 
 export default MyPostSection;

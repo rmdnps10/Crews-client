@@ -208,7 +208,7 @@ const MajorInfo = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  gap: 15px;
+  gap: 8px;
   position: relative;
   align-items: flex-end;
 `;
