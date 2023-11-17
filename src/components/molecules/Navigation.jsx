@@ -13,6 +13,7 @@ export const Navigation = () => {
       <button onClick={() => nav('/signin')}>To SignIn</button>
       <button onClick={() => nav('/evaluate')}>To Evaluate</button>
       <button onClick={() => nav('/evaluatedetail')}>To EvaluateDetail</button>
+      <button onClick={() => nav('/mypage')}>mypage</button>
     </NavigationContainer>
   );
 };
