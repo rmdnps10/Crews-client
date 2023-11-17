@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import backArrow from './backArrow.svg';
 import { useState } from 'react';
 function MyProfileSection() {
   // input 폼으로 만들었고, 프로필 편집 누르면 여기에서 바로 편집되도록 함
+  const nameRef = useRef(null);
   const [isEdit, setIsEdit] = useState(false);
   const [profileText, setProfileText] = useState({
     name: '정인영',
@@ -28,6 +29,12 @@ function MyProfileSection() {
     setIsEdit(!isEdit);
   };
 
+  useEffect(() => {
+    if (isEdit === true) {
+      nameRef.current.focus();
+    }
+  }, [isEdit]);
+
   return (
     <MyProfileSectionWrapper>
       <BackArrow src={backArrow} />
@@ -39,11 +46,16 @@ function MyProfileSection() {
             value={profileText.name}
             name={'name'}
             onChange={onChangeProfileText}
+            $isEdit={isEdit}
+            disabled={isEdit ? false : true}
+            ref={nameRef}
           />
           <EmailInput
             value={profileText.email}
             name={'email'}
             onChange={onChangeProfileText}
+            $isEdit={isEdit}
+            disabled={isEdit ? false : true}
           />
         </ProfilBasicInfo>
         <MajorInfo>
@@ -55,6 +67,8 @@ function MyProfileSection() {
                   value={profileText.major[idx]}
                   name={`${idx}major`}
                   onChange={onChangeProfileText}
+                  $isEdit={isEdit}
+                  disabled={isEdit ? false : true}
                 />
               </MajorLabel>
             );
@@ -115,10 +129,13 @@ const ProfilBasicInfo = styled.div`
 const NameInput = styled.input`
   border: none;
   color: var(--black-bk-02, #101010);
+  background ${(props) =>
+    props.$isEdit ? 'var(--blue-b-01, #f6f9fe);' : 'none'}  ;
   font-family: Pretendard;
   font-size: 30px;
   font-style: normal;
   font-weight: 700;
+  border-radius: 8.046px;
   appearance: none;
   &:focus {
     outline: none;
@@ -128,9 +145,12 @@ const NameInput = styled.input`
 const EmailInput = styled.input`
   border: none;
   color: var(--gray-g-04, #b3b3b3);
+  background ${(props) =>
+    props.$isEdit ? 'var(--blue-b-01, #f6f9fe);' : 'none'}  ;
   font-family: Pretendard;
   font-size: 20px;
   font-style: normal;
+  border-radius: 8.046px;
   font-weight: 500;
   appearance: none;
   &:focus {
@@ -170,6 +190,8 @@ const MajorItem = styled.input`
   border-radius: 8.046px;
   border: 1px solid var(--gray-g-02, #e6e6e6);
   background: #fff;
+  background ${(props) =>
+    props.$isEdit ? 'var(--blue-b-01, #f6f9fe);' : 'none'}  ;
   &:focus {
     outline: none;
   }
