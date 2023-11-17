@@ -20,9 +20,17 @@ function MyPostSection() {
           찜한 공고
         </SavePost>
       </SelectPostType>
-      <PostList>
-        <PostItem />
-      </PostList>
+      {/* // 지원한 공고, 찜한 공고예 다라 다른 것 랜더링 */}
+      {isApplyPost ? (
+        <PostList>
+          <PostItem isEnd={true} isSave={false} />
+        </PostList>
+      ) : (
+        <PostList>
+          <PostItem isEnd={true} isSave={true} />
+          <PostItem isEnd={false} isSave={true} />
+        </PostList>
+      )}
     </MyPostSectionWrapper>
   );
 }
@@ -40,7 +48,7 @@ const ApplyPost = styled.div`
   font-family: Pretendard;
   font-size: 20px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: ${(props) => (props.$isBlue ? '700' : '400')};
   line-height: normal;
   cursor: pointer;
   letter-spacing: -0.4px;
@@ -50,6 +58,9 @@ const SavePost = styled(ApplyPost)``;
 
 const PostList = styled.div`
   margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 `;
 
 export default MyPostSection;
