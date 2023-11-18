@@ -64,12 +64,11 @@ function MyProfileSection() {
       const { data } = await instance.get(`${myPageRequest.allInOne}`, {
         headers: {
           Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzI2NTI0LCJpYXQiOjE3MDAzMjI5MjQsImp0aSI6ImNiZWQ5ZmFlNTZiZjRiYTBiZDJhODE1MDJkOGRiZTU0IiwidXNlcl9pZCI6M30.U4LuvBwbigFJYkwP3sqIxRd20TeFnHpwIlWqGCZz1TE',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzMwMzc1LCJpYXQiOjE3MDAzMjY3NzUsImp0aSI6ImQ0MjYyZDk1NjA4MzQzYjdhOTRmYTJlZjMyNjE1OTQ5IiwidXNlcl9pZCI6M30.34SzjIF50P_L408GzZxUSVqu7NUBIOEF3SXm1NepdPA',
         },
       });
       //동아리 관리자일경우
       if (data.crew_info) {
-        console.log(data.crew_info);
         const crewInfo = data.crew_info;
         console.log(crewInfo);
         setIsOperator(true);

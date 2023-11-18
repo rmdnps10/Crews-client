@@ -3,25 +3,35 @@ import styled from 'styled-components';
 import github from './github.svg';
 import scarp from './scrap.svg';
 import { Flex } from 'components/atoms';
-function PostItem({ isEnd, isSave }) {
+// isEnd: 모집종료여부
+// isSave: 찜여부
+// isOperator: 동아리관리자여부
+function PostItem({ name, category, title, enddate, isSave, isOperator }) {
+  const isEnd = true;
   return (
     <PostItemWrapper>
       <ClubImage src={github} />
       <Flex gap="12" direction="column" align="flex-start" justify="flex-start">
         <Flex gap="12">
-          <ClubType>IT 코딩</ClubType>
-          {isEnd ? <TimeLeft>8일 2시간 27분 남음</TimeLeft> : ''}
+          <ClubType>{category}</ClubType>
+          {isEnd ? <TimeLeft>{enddate}</TimeLeft> : ''}
         </Flex>
-        <PostTitle>
-          멋쟁이 사자처럼 서강대에서 19기 아기사자를 모집합니다!
-        </PostTitle>
-        <ClubName>멋쟁이사자처럼</ClubName>
+        <PostTitle>{title}</PostTitle>
+        <ClubName>{name}</ClubName>
       </Flex>
+
       {isSave ? (
         ''
       ) : (
         <ButotnWrapper>
-          {isEnd ? (
+          {isOperator ? (
+            (!isEnd && (
+              <OperatorEditButton>모집 공고 수정하기</OperatorEditButton>
+            ),
+            isEnd && (
+              <OperatorAssessButton>지원서 평가하기</OperatorAssessButton>
+            ))
+          ) : isEnd ? (
             <>
               {' '}
               <EditButton>수정하기</EditButton>{' '}
@@ -109,6 +119,18 @@ const EditButton = styled.div`
 
 const DeleteButton = styled(EditButton)`
   background: #f15454;
+`;
+
+const OperatorEditButton = styled(EditButton)`
+  background: #303030;
+  width: 179px;
+  height: 50px;
+`;
+
+const OperatorAssessButton = styled(OperatorEditButton)`
+  background: var(--blue-b-05-m, #3172ea);
+  width: 179px;
+  height: 50px;
 `;
 
 const SaveImage = styled.img`
