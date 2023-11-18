@@ -11,6 +11,8 @@ export const Navigation = () => {
       <button onClick={() => nav('/login')}>To Login</button>
       <button onClick={() => nav('/makepost')}>To MakePost</button>
       <button onClick={() => nav('/signin')}>To SignIn</button>
+      <button onClick={() => nav('/evaluate')}>To Evaluate</button>
+      <button onClick={() => nav('/evaluatedetail')}>To EvaluateDetail</button>
     </NavigationContainer>
   );
 };
@@ -18,5 +20,6 @@ export const Navigation = () => {
 const NavigationContainer = styled.div`
   display: flex;
   flex-direction: row;
-  background-color: blue;
+  background-color: yellow;
+  gap: 20px;
 `;
