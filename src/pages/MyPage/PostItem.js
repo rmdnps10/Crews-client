@@ -21,7 +21,7 @@ function PostItem({ name, category, title, enddate, isSave, isOperator }) {
     const days = diffDuration.days();
     const hours = diffDuration.hours();
     const minutes = diffDuration.minutes();
-    const formattedDiff = `${days}일 ${hours}시간 ${minutes}분`;
+    const formattedDiff = `${days}일 ${hours}시간 ${minutes}분 남음`;
     return formattedDiff;
   };
   return (
@@ -30,7 +30,7 @@ function PostItem({ name, category, title, enddate, isSave, isOperator }) {
       <Flex gap="12" direction="column" align="flex-start" justify="flex-start">
         <Flex gap="12">
           <ClubType>{category}</ClubType>
-          {!isEnd ? <TimeLeft>{showTimeLeft()}</TimeLeft> : ''}
+          {isEnd ? '' : <TimeLeft>{showTimeLeft()}</TimeLeft>}
         </Flex>
         <PostTitle>{title}</PostTitle>
         <ClubName>{name}</ClubName>
@@ -41,12 +41,13 @@ function PostItem({ name, category, title, enddate, isSave, isOperator }) {
       ) : (
         <ButotnWrapper>
           {isOperator ? (
-            (!isEnd && (
-              <OperatorEditButton>모집 공고 수정하기</OperatorEditButton>
-            ),
-            isEnd && (
+            isEnd ? (
               <OperatorAssessButton>지원서 평가하기</OperatorAssessButton>
-            ))
+            ) : (
+              <OperatorEditButton>
+                모집 공고 수정하기
+              </OperatorEditButton>
+            )
           ) : isEnd ? (
             <>
               {' '}
