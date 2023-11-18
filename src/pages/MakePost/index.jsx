@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Button, Flex } from 'components/atoms';
 import ImageSection from './ImageSection';
 import H1 from './H1';
 import FormTitle from './FormTitle';
@@ -11,6 +10,7 @@ import RecruitPlanSection from './RecruitPlanSection';
 
 export const MakePost = () => {
   // 백엔드로 전달할 상태관리변수
+  // 연결할거임
   const [form, setForm] = useState({
     title: '',
     mainContent: '',

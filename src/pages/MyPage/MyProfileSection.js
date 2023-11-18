@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import backArrow from './backArrow.svg';
+import basicImage from './basic-profile.svg';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
@@ -62,7 +63,7 @@ function MyProfileSection() {
       <BackArrow src={backArrow} />
       <H1>마이페이지</H1>
       <ProfileBox>
-        <ProfileCircle>
+        <ProfileCircle $backgroundImage={basicImage}>
           <EditButton onClick={toggleIsEdit}>
             {isEdit ? '프로필 수정 완료' : '프로필 수정'}
           </EditButton>
@@ -162,7 +163,7 @@ const ProfileCircle = styled.div`
   width: 120px;
   height: 120px;
   position: relative;
-  background-color: blue;
+  background-image: url(${(props) => props.$backgroundImage});
 `;
 
 const ProfilBasicInfo = styled.div`
