@@ -97,6 +97,11 @@ function MyPostSection() {
               />
             ))}
       </PostList>
+      {isOperator ? (
+        <WritePostButtton>새로운 모집 공고 작성하기</WritePostButtton>
+      ) : (
+        ''
+      )}
     </MyPostSectionWrapper>
   );
 }
@@ -137,6 +142,20 @@ const PostList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 14px;
+`;
+
+const WritePostButtton = styled.div`
+  margin: 32px 0px;
+  cursor: pointer;
+  color: var(--gray-g-04, #b3b3b3);
+  display: flex;
+  justify-content: center;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.36px;
+  text-decoration-line: underline;
 `;
 
 export default MyPostSection;
