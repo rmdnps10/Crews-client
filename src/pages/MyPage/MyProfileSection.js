@@ -1,18 +1,24 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import backArrow from './backArrow.svg';
 import basicImage from './basic-profile.svg';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { instance } from 'api/axios';
+import { myPageRequest } from 'api/request';
+import { ClubType } from './PostItem';
+
 function MyProfileSection() {
   // input 폼으로 만들었고, 프로필 편집 누르면 여기에서 바로 편집되도록 함
-  const nameRef = useRef(null);
   const [isEdit, setIsEdit] = useState(false);
+  const [isOperator, setIsOperator] = useState(true);
   const [profileText, setProfileText] = useState({
-    name: '정인영',
-    email: 'rmdnps10@gmail.com',
-    major: ['아트엔테크놀리지', '컴퓨터공학과', '미디어커뮤니케이션학과'],
+    name: '',
+    email: 'ceos@naver.com',
+    major: [],
+    description: '',
+    oneLiner: '',
   });
   const onChangeProfileText = (e) => {
     e.stopPropagation();
@@ -53,10 +59,51 @@ function MyProfileSection() {
   };
 
   useEffect(() => {
-    if (isEdit === true) {
-      nameRef.current.focus();
-    }
-  }, [isEdit]);
+    // 토큰은 로컬이든 쿠키에서 어떻게든 가져왔다고 가정, 테스트 토큰임
+    const fetchProfileData = async () => {
+      const { data } = await instance.get(`${myPageRequest.allInOne}`, {
+        headers: {
+          Authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzI2NTI0LCJpYXQiOjE3MDAzMjI5MjQsImp0aSI6ImNiZWQ5ZmFlNTZiZjRiYTBiZDJhODE1MDJkOGRiZTU0IiwidXNlcl9pZCI6M30.U4LuvBwbigFJYkwP3sqIxRd20TeFnHpwIlWqGCZz1TE',
+        },
+      });
+      //동아리 관리자일경우
+      if (data.crew_info) {
+        console.log(data.crew_info);
+        const crewInfo = data.crew_info;
+        console.log(crewInfo);
+        setIsOperator(true);
+        setProfileText({
+          name: crewInfo.crew_name,
+          // 동아리 email 받아와야됨 백엔드에게 문의
+          email: 'ceos@naver.com',
+          description: crewInfo.crew_description,
+        });
+      }
+      // 일반유저일경우
+      else {
+        const { user_nomal_info: userInfo } = data;
+        const majorList = [];
+        if (userInfo.first_major) {
+          majorList.push(userInfo.first_major);
+        }
+        if (userInfo.second_major) {
+          majorList.push(userInfo.second_major);
+        }
+        if (userInfo.third_major) {
+          majorList.push(userInfo.third_major);
+        }
+        setIsOperator(false);
+        setProfileText({
+          name: userInfo.name,
+          email: userInfo.email,
+          major: majorList,
+        });
+      }
+    };
+
+    fetchProfileData();
+  }, []);
 
   return (
     <MyProfileSectionWrapper>
@@ -69,60 +116,65 @@ function MyProfileSection() {
           </EditButton>
         </ProfileCircle>
         <ProfilBasicInfo>
-          <NameInput
-            value={profileText.name}
-            name={'name'}
-            onChange={onChangeProfileText}
-            $isEdit={isEdit}
-            disabled={isEdit ? false : true}
-            ref={nameRef}
-          />
-          <EmailInput
-            value={profileText.email}
-            name={'email'}
-            onChange={onChangeProfileText}
-            $isEdit={isEdit}
-            disabled={isEdit ? false : true}
-          />
-        </ProfilBasicInfo>
-        <MajorInfo>
-          {profileText.major.map((item, idx) => {
-            return (
-              <MajorLabel>
-                <LabelText>제{idx + 1}전공</LabelText>
-                <MajorItem
-                  value={profileText.major[idx]}
-                  name={`${idx}major`}
-                  onChange={onChangeProfileText}
-                  $isEdit={isEdit}
-                  disabled={isEdit ? false : true}
-                />
-                {isEdit ? (
-                  <FontAwesomeIcon
-                    icon={faCircleXmark}
-                    onClick={() => {
-                      deleteMajor(idx);
-                    }}
-                    size="lg"
-                    style={{
-                      position: 'absolute',
-                      top: '7px',
-                      left: '-25px',
-                      cursor: 'pointer',
-                    }}
-                  />
-                ) : (
-                  ''
-                )}
-              </MajorLabel>
-            );
-          })}
-          {isEdit ? (
-            <AddMajorButton onClick={addMajor}>전공 추가하기</AddMajorButton>
+          <NameInput>
+            {profileText.name}
+            {isOperator ? <ClubTagType>IT/코딩</ClubTagType> : ''}
+          </NameInput>
+          <EmailInput>{profileText.email}</EmailInput>
+          {isOperator ? (
+            <OneLinerInput
+              value={profileText.description}
+              name={'description'}
+              onChange={onChangeProfileText}
+              $isEdit={isEdit}
+              disabled={isEdit ? false : true}
+            />
           ) : (
             ''
           )}
-        </MajorInfo>
+        </ProfilBasicInfo>
+        {isOperator ? (
+          ''
+        ) : (
+          <MajorInfo>
+            {profileText.major.map((item, idx) => {
+              return (
+                <MajorLabel>
+                  <LabelText>제{idx + 1}전공</LabelText>
+                  <MajorItem
+                    value={profileText.major[idx]}
+                    name={`${idx}major`}
+                    onChange={onChangeProfileText}
+                    $isEdit={isEdit}
+                    disabled={isEdit ? false : true}
+                  />
+                  {isEdit ? (
+                    <FontAwesomeIcon
+                      icon={faCircleXmark}
+                      onClick={() => {
+                        deleteMajor(idx);
+                      }}
+                      size="lg"
+                      style={{
+                        position: 'absolute',
+                        top: '7px',
+                        left: '-25px',
+                        cursor: 'pointer',
+                      }}
+                    />
+                  ) : (
+                    ''
+                  )}
+                </MajorLabel>
+              );
+            })}
+            {isEdit ? (
+              <AddMajorButton onClick={addMajor}>전공 추가하기</AddMajorButton>
+            ) : (
+              ''
+            )}
+          </MajorInfo>
+        )}
       </ProfileBox>
     </MyProfileSectionWrapper>
   );
@@ -173,33 +225,43 @@ const ProfilBasicInfo = styled.div`
   gap: 10px;
 `;
 
-const NameInput = styled.input`
-  border: none;
+const NameInput = styled.div`
   color: var(--black-bk-02, #101010);
-  background ${(props) =>
-    props.$isEdit ? 'var(--blue-b-01, #f6f9fe);' : 'none'}  ;
   font-family: Pretendard;
   font-size: 30px;
   font-style: normal;
   font-weight: 700;
   border-radius: 8.046px;
-  appearance: none;
-  &:focus {
-    outline: none;
-  }
+  position: relative;
 `;
 
-const EmailInput = styled.input`
+const ClubTagType = styled(ClubType)`
+  position: absolute;
+  top: 0;
+  left: 90px;
+`;
+
+const EmailInput = styled.div`
   border: none;
   color: var(--gray-g-04, #b3b3b3);
-  background ${(props) =>
-    props.$isEdit ? 'var(--blue-b-01, #f6f9fe);' : 'none'}  ;
   font-family: Pretendard;
   font-size: 20px;
   font-style: normal;
   border-radius: 8.046px;
   font-weight: 500;
-  appearance: none;
+`;
+
+const OneLinerInput = styled.input`
+  color: var(--gray-g-06, #666);
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  background ${(props) =>
+    props.$isEdit ? 'var(--blue-b-01, #f6f9fe);' : 'none'}  ;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.4px;
+  border:none;
   &:focus {
     outline: none;
   }

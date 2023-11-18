@@ -21,9 +21,7 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/evaluate" element={<Evaluate />} />
         <Route path="/evaluatedetail" element={<EvaluateDetail />} />
-        <Route path="/mypage" element={<MyPage />}>
-          {' '}
-        </Route>
+        <Route path="/mypage" element={<MyPage />} />
       </Routes>
     </>
   );

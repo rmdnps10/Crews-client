@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
 import PostItem from './PostItem';
@@ -10,6 +10,8 @@ function MyPostSection() {
   const showSavePost = () => {
     setIsApplyPost(false);
   };
+  // 토큰이 있다고 가정.
+  
   return (
     <MyPostSectionWrapper>
       <SelectPostType>

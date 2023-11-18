@@ -56,7 +56,7 @@ const ClubImage = styled.img`
   border-radius: 50%;
 `;
 
-const ClubType = styled.div`
+export const ClubType = styled.div`
   border-radius: 15.5px;
   background: var(--blue-b-05-m, #3172ea);
   display: flex;
