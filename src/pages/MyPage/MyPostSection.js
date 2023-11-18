@@ -7,7 +7,11 @@ import { myPageRequest } from 'api/request';
 function MyPostSection() {
   const [isOperator, setIsOperator] = useState(true);
   const [isApplyPost, setIsApplyPost] = useState(true);
-  const [postLists, setPostLists] = useState();
+  const [postLists, setPostLists] = useState({
+    operatorList: [],
+    likedList: [],
+    appliedList: [],
+  });
   const showApplyPost = () => {
     setIsApplyPost(true);
   };
@@ -21,7 +25,7 @@ function MyPostSection() {
       const { data } = await instance.get(`${myPageRequest.allInOne}`, {
         headers: {
           Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzM0NDg4LCJpYXQiOjE3MDAzMzA4ODgsImp0aSI6ImEwZDVlYzk3YjcyMTQ4MDdiOGExZTNjYWU3NTk0N2FkIiwidXNlcl9pZCI6M30.Tkv9eaQO5ERtZLb0NctJ0Bb4s8QDuZkVXwNLpcZISx0',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzM2MDg4LCJpYXQiOjE3MDAzMzI0ODgsImp0aSI6IjI5ZWQxMWI0MDg1ZTRmY2ZhNzg4MTkyZTk5ZjZmNGUwIiwidXNlcl9pZCI6MX0.XLg8jI4FZJOMqM1S_sN_pI28CfPeE2kDASB1GOqlf0I',
         },
       });
       // 동아리 계정일경우
@@ -65,7 +69,7 @@ function MyPostSection() {
           ? isOperator
             ? postLists?.operatorList.map((item) => (
                 <PostItem
-                  id={item.id}
+                  key={item.id}
                   name={item.crew_name}
                   category={item.category_name}
                   title={item.title}
@@ -81,19 +85,21 @@ function MyPostSection() {
                   category={item.category_name}
                   title={item.title}
                   enddate={item.apply_end_date}
-                  isSave={true}
+                  isOperator={false}
+                  isSave={false}
                 />
               ))
           : isOperator
           ? ''
-          : postLists.LikedList.map((item) => (
+          : postLists.likedList.map((item) => (
               <PostItem
-                id={item.id}
+                key={item.id}
                 name={item.crew_name}
                 category={item.category_name}
                 title={item.title}
                 enddate={item.apply_end_date}
-                isSave={false}
+                isOperator={false}
+                isSave={true}
               />
             ))}
       </PostList>

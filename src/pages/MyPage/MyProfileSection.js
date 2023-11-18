@@ -64,7 +64,7 @@ function MyProfileSection() {
       const { data } = await instance.get(`${myPageRequest.allInOne}`, {
         headers: {
           Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzM0NDg4LCJpYXQiOjE3MDAzMzA4ODgsImp0aSI6ImEwZDVlYzk3YjcyMTQ4MDdiOGExZTNjYWU3NTk0N2FkIiwidXNlcl9pZCI6M30.Tkv9eaQO5ERtZLb0NctJ0Bb4s8QDuZkVXwNLpcZISx0',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzM2MDg4LCJpYXQiOjE3MDAzMzI0ODgsImp0aSI6IjI5ZWQxMWI0MDg1ZTRmY2ZhNzg4MTkyZTk5ZjZmNGUwIiwidXNlcl9pZCI6MX0.XLg8jI4FZJOMqM1S_sN_pI28CfPeE2kDASB1GOqlf0I',
         },
       });
       //동아리 관리자일경우

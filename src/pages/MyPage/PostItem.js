@@ -44,9 +44,7 @@ function PostItem({ name, category, title, enddate, isSave, isOperator }) {
             isEnd ? (
               <OperatorAssessButton>지원서 평가하기</OperatorAssessButton>
             ) : (
-              <OperatorEditButton>
-                모집 공고 수정하기
-              </OperatorEditButton>
+              <OperatorEditButton>모집 공고 수정하기</OperatorEditButton>
             )
           ) : isEnd ? (
             <>
@@ -132,6 +130,7 @@ const EditButton = styled.div`
   align-items: center;
   border-radius: 10px;
   background: #3172ea;
+  cursor: pointer;
 `;
 
 const DeleteButton = styled(EditButton)`
