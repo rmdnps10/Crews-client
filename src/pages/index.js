@@ -3,4 +3,5 @@ export * from './MakePost';
 export * from './Login';
 export * from './SignIn';
 export * from './Evaluate';
-export * from "./EvaluteDetail";
+export * from './EvaluteDetail';
+export * from './MyPage';

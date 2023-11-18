@@ -7,6 +7,7 @@ import {
   SignIn,
   Evaluate,
   EvaluateDetail,
+  MyPage,
 } from 'pages';
 
 const Router = () => {
@@ -20,6 +21,9 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/evaluate" element={<Evaluate />} />
         <Route path="/evaluatedetail" element={<EvaluateDetail />} />
+        <Route path="/mypage" element={<MyPage />}>
+          {' '}
+        </Route>
       </Routes>
     </>
   );
