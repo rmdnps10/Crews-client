@@ -21,7 +21,7 @@ function MyPostSection() {
       const { data } = await instance.get(`${myPageRequest.allInOne}`, {
         headers: {
           Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzMxNDczLCJpYXQiOjE3MDAzMjc4NzMsImp0aSI6ImZhMTNjMjI0MDk2MzQyZjhhNGM0YWJhYzUwNmZkYWVlIiwidXNlcl9pZCI6M30.fqF7Vo-u65_Ng-UwrmUkSumzXXf5VNdmfZOgUmi3ecc',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzM0NDg4LCJpYXQiOjE3MDAzMzA4ODgsImp0aSI6ImEwZDVlYzk3YjcyMTQ4MDdiOGExZTNjYWU3NTk0N2FkIiwidXNlcl9pZCI6M30.Tkv9eaQO5ERtZLb0NctJ0Bb4s8QDuZkVXwNLpcZISx0',
         },
       });
       // 동아리 계정일경우

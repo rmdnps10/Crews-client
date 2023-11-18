@@ -3,18 +3,34 @@ import styled from 'styled-components';
 import github from './github.svg';
 import scarp from './scrap.svg';
 import { Flex } from 'components/atoms';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
+
 // isEnd: 모집종료여부
 // isSave: 찜여부
 // isOperator: 동아리관리자여부
 function PostItem({ name, category, title, enddate, isSave, isOperator }) {
-  const isEnd = true;
+  const now = dayjs();
+  const endDate = dayjs(enddate, 'YYYY-MM-DD HH:mm:ss.SSS');
+  now.format();
+  endDate.format();
+  const isEnd = now.isAfter(enddate);
+  const showTimeLeft = () => {
+    const diffDuration = dayjs.duration(endDate.diff(now));
+    const days = diffDuration.days();
+    const hours = diffDuration.hours();
+    const minutes = diffDuration.minutes();
+    const formattedDiff = `${days}일 ${hours}시간 ${minutes}분`;
+    return formattedDiff;
+  };
   return (
     <PostItemWrapper>
       <ClubImage src={github} />
       <Flex gap="12" direction="column" align="flex-start" justify="flex-start">
         <Flex gap="12">
           <ClubType>{category}</ClubType>
-          {isEnd ? <TimeLeft>{enddate}</TimeLeft> : ''}
+          {!isEnd ? <TimeLeft>{showTimeLeft()}</TimeLeft> : ''}
         </Flex>
         <PostTitle>{title}</PostTitle>
         <ClubName>{name}</ClubName>
