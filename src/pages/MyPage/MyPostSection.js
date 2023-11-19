@@ -24,8 +24,9 @@ function MyPostSection() {
     const fetchProfileData = async () => {
       const { data } = await instance.get(`${myPageRequest.allInOne}`, {
         headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzM2MDg4LCJpYXQiOjE3MDAzMzI0ODgsImp0aSI6IjI5ZWQxMWI0MDg1ZTRmY2ZhNzg4MTkyZTk5ZjZmNGUwIiwidXNlcl9pZCI6MX0.XLg8jI4FZJOMqM1S_sN_pI28CfPeE2kDASB1GOqlf0I',
+          Authorization: '토큰입력',
+          // 테스트 토큰 주석처리, 새로 발급받아야함
+          // 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzM2MDg4LCJpYXQiOjE3MDAzMzI0ODgsImp0aSI6IjI5ZWQxMWI0MDg1ZTRmY2ZhNzg4MTkyZTk5ZjZmNGUwIiwidXNlcl9pZCI6MX0.XLg8jI4FZJOMqM1S_sN_pI28CfPeE2kDASB1GOqlf0I'
         },
       });
       // 동아리 계정일경우
