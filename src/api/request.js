@@ -1,3 +1,4 @@
+// 페이지별로 요청할 URL
 export const myPageRequest = {
   // 액세스 토큰의 유형에 따라서 get요청을 선택적으로 보내기 (normal user/ operoator user)?
   normalUserInfo: 'mypage/get-normal-user-info',
@@ -8,3 +9,6 @@ export const myPageRequest = {
   allInOne: 'mypage/get-all-mypage-info/',
 };
 
+export const applyPostPageRequest = {
+  applyPost: 'apply/post/',
+};

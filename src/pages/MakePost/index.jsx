@@ -7,6 +7,8 @@ import FormTextArea from './FormTextArea';
 import { Space } from 'components/atoms';
 import textData from './textData';
 import RecruitPlanSection from './RecruitPlanSection';
+import { instance } from 'api/axios';
+import { applyPostPageRequest, applyPostRequest } from 'api/request';
 
 export const MakePost = () => {
   // 백엔드로 전달할 상태관리변수
@@ -49,6 +51,33 @@ export const MakePost = () => {
       });
     }
   }, []);
+
+  const onClickPostFormData = () => {
+    // crew 같은 경우는 라우팅할 때 동아리 id를 설정, 토큰은 일단 예시로
+    instance.post(
+      applyPostPageRequest.applyPost,
+      {
+        title: form.title,
+        content: form.mainContent,
+        requirement_target: form.applyQualify,
+        progress: form.recruitProcess,
+        apply_start_date: form.firstStartDate,
+        apply_end_date: form.firstEndDate,
+        document_result_date: form.secondEndDate,
+        has_interview: form.hasSecondInterview,
+        interview_start_date: form.secondStartDate,
+        interview_end_date: form.secondEndDate,
+        final_result_date: form.secondAnnounceDate,
+        membership_fee: form.membershipFee,
+        crew: 1,
+      },
+      {
+        header:
+          'Beader eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNDEwODU1LCJpYXQiOjE3MDA0MDcyNTUsImp0aSI6ImMwNTk0YmMxY2IwZDQ0Nzc4Y2E5YzRmYzc5MTE4ZWJjIiwidXNlcl9pZCI6M30.lNH9OXRCDNYRhpGQAb6RgVaYWBAXtDr_3YymLpTqdlk',
+      }
+    );
+  };
+
   return (
     <MakePostWrapper>
       <H1 />
@@ -115,7 +144,9 @@ export const MakePost = () => {
       </FormList>
       <Space height={'52px'}></Space>
       <GuideText>{textData.유의사항}</GuideText>
-      <MoveButton>'STEP 02 지원서 양식 작성’ 으로 이동하기</MoveButton>
+      <MoveButton onClick={onClickPostFormData}>
+        'STEP 02 지원서 양식 작성’ 으로 이동하기
+      </MoveButton>
     </MakePostWrapper>
   );
 };

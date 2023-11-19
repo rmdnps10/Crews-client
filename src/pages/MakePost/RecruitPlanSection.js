@@ -204,7 +204,7 @@ function RecruitPlanSection() {
         {hasSecond ? (
           <div className="2차면접일정">
             <Space height={'42px'} />
-            <FormSubTitle>2차 서류전형 일정</FormSubTitle>
+            <FormSubTitle>2차 면접 일정</FormSubTitle>
             <Space height={'20px'} />
             <GuideText>면접 일자를 정확하게 기입해 주세요.</GuideText>
             <Space height={'24px'} />
