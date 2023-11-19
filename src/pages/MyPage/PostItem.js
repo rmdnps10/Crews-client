@@ -3,25 +3,50 @@ import styled from 'styled-components';
 import github from './github.svg';
 import scarp from './scrap.svg';
 import { Flex } from 'components/atoms';
-function PostItem({ isEnd, isSave }) {
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
+
+// isEnd: 모집종료여부
+// isSave: 찜여부
+// isOperator: 동아리관리자여부
+function PostItem({ name, category, title, enddate, isSave, isOperator }) {
+  const now = dayjs();
+  const endDate = dayjs(enddate, 'YYYY-MM-DD HH:mm:ss.SSS');
+  now.format();
+  endDate.format();
+  const isEnd = now.isAfter(enddate);
+  const showTimeLeft = () => {
+    const diffDuration = dayjs.duration(endDate.diff(now));
+    const days = diffDuration.days();
+    const hours = diffDuration.hours();
+    const minutes = diffDuration.minutes();
+    const formattedDiff = `${days}일 ${hours}시간 ${minutes}분 남음`;
+    return formattedDiff;
+  };
   return (
     <PostItemWrapper>
       <ClubImage src={github} />
       <Flex gap="12" direction="column" align="flex-start" justify="flex-start">
         <Flex gap="12">
-          <ClubType>IT 코딩</ClubType>
-          {isEnd ? <TimeLeft>8일 2시간 27분 남음</TimeLeft> : ''}
+          <ClubType>{category}</ClubType>
+          {isEnd ? '' : <TimeLeft>{showTimeLeft()}</TimeLeft>}
         </Flex>
-        <PostTitle>
-          멋쟁이 사자처럼 서강대에서 19기 아기사자를 모집합니다!
-        </PostTitle>
-        <ClubName>멋쟁이사자처럼</ClubName>
+        <PostTitle>{title}</PostTitle>
+        <ClubName>{name}</ClubName>
       </Flex>
+
       {isSave ? (
         ''
       ) : (
         <ButotnWrapper>
-          {isEnd ? (
+          {isOperator ? (
+            isEnd ? (
+              <OperatorAssessButton>지원서 평가하기</OperatorAssessButton>
+            ) : (
+              <OperatorEditButton>모집 공고 수정하기</OperatorEditButton>
+            )
+          ) : isEnd ? (
             <>
               {' '}
               <EditButton>수정하기</EditButton>{' '}
@@ -56,7 +81,7 @@ const ClubImage = styled.img`
   border-radius: 50%;
 `;
 
-const ClubType = styled.div`
+export const ClubType = styled.div`
   border-radius: 15.5px;
   background: var(--blue-b-05-m, #3172ea);
   display: flex;
@@ -105,10 +130,23 @@ const EditButton = styled.div`
   align-items: center;
   border-radius: 10px;
   background: #3172ea;
+  cursor: pointer;
 `;
 
 const DeleteButton = styled(EditButton)`
   background: #f15454;
+`;
+
+const OperatorEditButton = styled(EditButton)`
+  background: #303030;
+  width: 179px;
+  height: 50px;
+`;
+
+const OperatorAssessButton = styled(OperatorEditButton)`
+  background: var(--blue-b-05-m, #3172ea);
+  width: 179px;
+  height: 50px;
 `;
 
 const SaveImage = styled.img`

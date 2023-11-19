@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import MyProfileSection from './MyProfileSection';
 import MyPostSection from './MyPostSection';
 export const MyPage = () => {
+ 
   return (
     <MyPageContainer>
       <MyProfileSection />
