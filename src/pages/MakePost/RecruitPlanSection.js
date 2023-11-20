@@ -1,5 +1,5 @@
 import { Space } from 'components/atoms';
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import selectRadio from './selectRadio.svg';
 import calendarIcon from './calendar.svg';
@@ -13,6 +13,7 @@ import { intPlanAtom } from './atom';
 // 중간에 선언해준 클래스는 단순한 폼 영역간의 구분을 위해 선언됨
 function RecruitPlanSection() {
   // 날짜 입력받는 폼에 대한 상태관리
+  // ipas: int plan atom state
   const [ipas, setIntPlanAtomState] = useRecoilState(intPlanAtom);
   const onChangeIntData = (e) => {
     setIntPlanAtomState({ ...ipas, [e.target.name]: e.target.value });

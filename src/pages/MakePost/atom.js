@@ -34,7 +34,7 @@ export const intPlanAtom = atom({
     seconded: '',
     secondeh: '',
     secondemn: '',
-    
+
     seconday: '',
     secondam: '',
     secondad: '',

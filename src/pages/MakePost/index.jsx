@@ -8,7 +8,9 @@ import { Space } from 'components/atoms';
 import textData from './textData';
 import RecruitPlanSection from './RecruitPlanSection';
 import { instance } from 'api/axios';
-import { applyPostPageRequest, applyPostRequest } from 'api/request';
+import { applyPostPageRequest } from 'api/request';
+import { useRecoilValue } from 'recoil';
+import { intPlanAtom } from './atom';
 
 export const MakePost = () => {
   // 백엔드로 전달할 상태관리변수
@@ -19,18 +21,12 @@ export const MakePost = () => {
     applyQualify: '',
     recruitProcess: '',
     isContinuousRecruitment: false,
-    firstStartDate: '',
-    firstEndDate: '',
-    firstAnnounceDate: '',
     hasSecondInterview: true,
-    secondStartDate: '',
-    secondEndDate: '',
-    secondAnnounceDate: '',
     recruitProcedure: '',
     membershipFee: '',
     uploadImage: [],
   });
-
+  const ipas = useRecoilValue(intPlanAtom);
   const onTextFieldChange = (name, value) => {
     setForm((prev) => {
       return { ...prev, [name]: value };
@@ -42,6 +38,7 @@ export const MakePost = () => {
       return { ...prev, uploadImage: value };
     });
   };
+
   // 텍스트 데이터 임시저장
   useEffect(() => {
     for (const key in localStorage) {
@@ -61,19 +58,19 @@ export const MakePost = () => {
         content: form.mainContent,
         requirement_target: form.applyQualify,
         progress: form.recruitProcess,
-        apply_start_date: form.firstStartDate,
-        apply_end_date: form.firstEndDate,
-        document_result_date: form.secondEndDate,
+        apply_start_date: `${ipas.firstsy}-${ipas.firstsm}-${ipas.firstsd} ${ipas.firstsh}:${ipas.firstsmn}:00`,
+        apply_end_date: `${ipas.firstey}-${ipas.firstem}-${ipas.firsted} ${ipas.firsteh}:${ipas.firstemn}:00`,
+        document_result_date: `${ipas.firstay}-${ipas.firstam}-${ipas.firstad} ${ipas.firstah}:${ipas.firstamn}:00`,
         has_interview: form.hasSecondInterview,
-        interview_start_date: form.secondStartDate,
-        interview_end_date: form.secondEndDate,
-        final_result_date: form.secondAnnounceDate,
+        interview_start_date: `${ipas.secondsy}-${ipas.secondsm}-${ipas.secondsd} ${ipas.secondsh}:${ipas.secondsmn}:00`,
+        interview_end_date: `${ipas.secondey}-${ipas.secondem}-${ipas.seconded} ${ipas.secondeh}:${ipas.secondemn}:00`,
+        final_result_date: `${ipas.seconday}-${ipas.secondam}-${ipas.secondad} ${ipas.secondah}:${ipas.secondamn}:00`,
         membership_fee: form.membershipFee,
         crew: 1,
       },
       {
         header:
-          'Beader eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNDEwODU1LCJpYXQiOjE3MDA0MDcyNTUsImp0aSI6ImMwNTk0YmMxY2IwZDQ0Nzc4Y2E5YzRmYzc5MTE4ZWJjIiwidXNlcl9pZCI6M30.lNH9OXRCDNYRhpGQAb6RgVaYWBAXtDr_3YymLpTqdlk',
+          'Beader eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNDg4MTEzLCJpYXQiOjE3MDA0ODQ1MTMsImp0aSI6IjIyNjg0ZTg4YmIzZjQ2ZGViMTlmZmY1ZjM4NTQzZjRlIiwidXNlcl9pZCI6M30.VKLfT5AQxXvXw-PmRdY1hRBRuc7zFVP3RBNHEFBbS9Q',
       }
     );
   };
@@ -192,4 +189,5 @@ const MoveButton = styled.button`
   text-align: center;
   font-size: 20px;
   font-weight: 700;
+  cursor: pointer;
 `;
