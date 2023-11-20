@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 //imported components
-import { Button, Flex, Input, Space, Text } from 'components/atoms';
+import { Button, Input, Space, Text } from 'components/atoms';
 //imported styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCircleXmark,
+  faEyeSlash,
+  faEye,
+} from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-import { BK01, BK02 } from 'style/palette';
+import { BK02 } from 'style/palette';
 import { LoginOptions } from './LoginOptions';
 
 export const LoginInput = () => {
@@ -37,9 +41,8 @@ export const LoginInput = () => {
     }
   }, []);
 
-  const toggleShowPW = (e) => {
-    const isShowed = e.target.checked;
-    setShowPW(isShowed);
+  const toggleShowPW = () => {
+    setShowPW(!showPW);
   };
 
   const toggleIsStore = (e) => {
@@ -64,6 +67,8 @@ export const LoginInput = () => {
       }
     }
   };
+
+  useEffect(() => {}, [showEmailX]);
 
   return (
     <LoginInputWrapper>
@@ -92,9 +97,7 @@ export const LoginInput = () => {
               }}
               onBlur={() => {
                 setEmailStatus('inactive');
-                setTimeout(() => {
-                  setShowEmailX(false);
-                }, 90);
+                setShowEmailX(false);
               }}
             />
           </label>
@@ -103,7 +106,7 @@ export const LoginInput = () => {
               className="deleteButton"
               icon={faCircleXmark}
               style={{ color: '#999999', width: '32px', height: '32px' }}
-              onClick={() => {
+              onMouseDown={() => {
                 setEmail('');
               }}
               cursor={'pointer'}
@@ -135,9 +138,7 @@ export const LoginInput = () => {
               }}
               onBlur={() => {
                 setPasswordStatus('inactive');
-                setTimeout(() => {
-                  setShowPwX(false);
-                }, 100);
+                setShowPwX(false);
               }}
             />
           </label>
@@ -146,7 +147,7 @@ export const LoginInput = () => {
               className="deleteButton"
               icon={faCircleXmark}
               style={{ color: '#101010', width: '32px', height: '32px' }}
-              onClick={(e) => {
+              onMouseDown={() => {
                 setPassword('');
               }}
               cursor={'pointer'}
@@ -154,23 +155,9 @@ export const LoginInput = () => {
           )}
         </LoginBoxWrapper>
         <Space height="28px" />
-        <Flex justify="space-between">
-          <StyledLabel>
-            <StoreCheckInput
-              type="checkbox"
-              checked={isStore}
-              onChange={toggleIsStore}
-            />
-            <Text
-              children="아이디 저장"
-              color={BK01}
-              size={'20px'}
-              weight={500}
-              spacing="-0.4px"
-            />
-          </StyledLabel>
-          <LoginOptions />
-        </Flex>
+
+        <LoginOptions isStore={isStore} toggleIsStore={toggleIsStore} />
+
         <Space height="28px" />
         <Button
           children="로그인"
@@ -179,9 +166,10 @@ export const LoginInput = () => {
           onClick={onSubmitHanlder}
         />
       </form>
-      <input type="checkbox" checked={showPW} onChange={toggleShowPW}></input>
-      <Text children="비밀번호 표시" color={BK01} />
-      <FontAwesomeIcon icon={faEyeSlash} />
+      {/* <input type="checkbox" checked={showPW} onChange={toggleShowPW}></input>
+      <Text children="비밀번호 표시" color={BK01} /> */}
+      <FontAwesomeIcon icon={faEyeSlash} onClick={toggleShowPW} />
+      <FontAwesomeIcon icon={faEye} onClick={toggleShowPW} />
     </LoginInputWrapper>
   );
 };
@@ -196,26 +184,4 @@ const LoginBoxWrapper = styled.div`
     top: 61px;
     right: 22px;
   }
-`;
-const StoreCheckInput = styled.input`
-  appearance: none;
-  border: 2.5px solid #cccccc;
-  border-radius: 50px;
-  width: 34px;
-  height: 34px;
-  cursor: pointer;
-  transition : opacity 0.1s;
-  &:checked {
-    border-color: transparent;
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-    background-color: #3172ea;
-  }
-  &:hover {
-    opacity 0.9;
-  }
-`;
-const StyledLabel = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 6px;
 `;

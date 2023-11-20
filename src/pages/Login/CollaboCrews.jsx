@@ -1,4 +1,4 @@
-import { Flex } from 'components/atoms';
+import { Flex, Text } from 'components/atoms';
 import { useState } from 'react';
 import styled from 'styled-components';
 export const CollaboCrews = () => {
