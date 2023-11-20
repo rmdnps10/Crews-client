@@ -1,5 +1,5 @@
 import { Space } from 'components/atoms';
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import selectRadio from './selectRadio.svg';
 import calendarIcon from './calendar.svg';
@@ -7,45 +7,17 @@ import clockIcon from './clock.svg';
 import textData from './textData';
 import { GuideText } from '.';
 import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { intPlanAtom } from './atom';
 // 모집 일정 입력받는 폼 섹션은 복잡성 때문에 따로 컴포넌트로 선언해줬음
 // 중간에 선언해준 클래스는 단순한 폼 영역간의 구분을 위해 선언됨
 function RecruitPlanSection() {
   // 날짜 입력받는 폼에 대한 상태관리
-  const [planState, setPlanState] = useState({
-    //  first(1차,2차)s(시작,마감,발표)y(년,월,일,시,분) : 총 30개
-    firstsy: '',
-    firstsm: '',
-    firstsd: '',
-    firstsh: '',
-    firstsmn: '',
-    firstey: '',
-    firstem: '',
-    firsted: '',
-    firsteh: '',
-    firstemn: '',
-    firstay: '',
-    firstam: '',
-    firstad: '',
-    firstah: '',
-    firstamn: '',
-
-    // 2차 서류 전형 일정
-    secondsy: '',
-    secondsm: '',
-    secondsd: '',
-    secondsh: '',
-    secondsmn: '',
-    secondey: '',
-    secondem: '',
-    seconded: '',
-    secondeh: '',
-    secondemn: '',
-    seconday: '',
-    secondam: '',
-    secondad: '',
-    secondah: '',
-    secondamn: '',
-  });
+  // ipas: int plan atom state
+  const [ipas, setIntPlanAtomState] = useRecoilState(intPlanAtom);
+  const onChangeIntData = (e) => {
+    setIntPlanAtomState({ ...ipas, [e.target.name]: e.target.value });
+  };
 
   // 상시모집 여부, 2차면접여부에 대한 상태 관리
   // Default: 상시모집 x, 2차 인터뷰 여부 x
@@ -61,7 +33,7 @@ function RecruitPlanSection() {
       return { ...prev, [name]: value === 'true' ? true : false };
     });
   };
-
+  console.log(ipas);
   return (
     <>
       <RecruitWrapper>
@@ -101,20 +73,45 @@ function RecruitPlanSection() {
               <RangeType>시작일</RangeType>
               <Space width={'32px'} />
               <DateInputWrapper>
-                <DateYearInput width={'44px'} />
+                <DateYearInput
+                  width={'44px'}
+                  name="firstsy"
+                  value={ipas.firstsy}
+                  onChange={onChangeIntData}
+                />
                 <DateType>년</DateType>
-                <DateInput width={'23px'} />
+                <DateInput
+                  width={'23px'}
+                  name="firstsm"
+                  value={ipas.firstsm}
+                  onChange={onChangeIntData}
+                />
                 <DateType>월</DateType>
-                <DateInput width={'23px'} />
+                <DateInput
+                  width={'23px'}
+                  name="firstsd"
+                  value={ipas.firstsd}
+                  onChange={onChangeIntData}
+                />
                 <DateType>일</DateType>
               </DateInputWrapper>
               <Space width={'69px'} />
               <Icon src={clockIcon} />
               <Space width={'8px'} />
               <ClockInputWrapper>
-                <DateInput width={'20px'} />
+                <DateInput
+                  width={'20px'}
+                  name="firstsh"
+                  value={ipas.firstsh}
+                  onChange={onChangeIntData}
+                />
                 <DateType>시</DateType>
-                <DateInput width={'23px'} />
+                <DateInput
+                  width={'23px'}
+                  name="firstsmn"
+                  value={ipas.firstsmn}
+                  onChange={onChangeIntData}
+                />
                 <DateType>분</DateType>
               </ClockInputWrapper>
             </DataRangeItem>
@@ -130,20 +127,45 @@ function RecruitPlanSection() {
                   <RangeType>마감일</RangeType>
                   <Space width={'32px'} />
                   <DateInputWrapper>
-                    <DateYearInput width={'44px'} />
+                    <DateYearInput
+                      width={'44px'}
+                      name="firstey"
+                      value={ipas.firstey}
+                      onChange={onChangeIntData}
+                    />
                     <DateType>년</DateType>
-                    <DateInput width={'23px'} />
+                    <DateInput
+                      width={'23px'}
+                      name="firstem"
+                      value={ipas.firstem}
+                      onChange={onChangeIntData}
+                    />
                     <DateType>월</DateType>
-                    <DateInput width={'23px'} />
+                    <DateInput
+                      width={'23px'}
+                      name="firsted"
+                      value={ipas.firsted}
+                      onChange={onChangeIntData}
+                    />
                     <DateType>일</DateType>
                   </DateInputWrapper>
                   <Space width={'69px'} />
                   <Icon src={clockIcon} />
                   <Space width={'8px'} />
                   <ClockInputWrapper>
-                    <DateInput width={'20px'} />
+                    <DateInput
+                      width={'20px'}
+                      name="firsteh"
+                      value={ipas.firsteh}
+                      onChange={onChangeIntData}
+                    />
                     <DateType>시</DateType>
-                    <DateInput width={'23px'} />
+                    <DateInput
+                      width={'23px'}
+                      name="firstemn"
+                      value={ipas.firstemn}
+                      onChange={onChangeIntData}
+                    />
                     <DateType>분</DateType>
                   </ClockInputWrapper>
                 </DataRangeItem>
@@ -153,20 +175,45 @@ function RecruitPlanSection() {
                   <RangeType>발표일</RangeType>
                   <Space width={'32px'} />
                   <DateInputWrapper>
-                    <DateYearInput width={'44px'} />
+                    <DateYearInput
+                      width={'44px'}
+                      name="firstay"
+                      value={ipas.firstay}
+                      onChange={onChangeIntData}
+                    />
                     <DateType>년</DateType>
-                    <DateInput width={'23px'} />
+                    <DateInput
+                      width={'23px'}
+                      name="firstam"
+                      value={ipas.firstam}
+                      onChange={onChangeIntData}
+                    />
                     <DateType>월</DateType>
-                    <DateInput width={'23px'} />
+                    <DateInput
+                      width={'23px'}
+                      name="firstad"
+                      value={ipas.firstad}
+                      onChange={onChangeIntData}
+                    />
                     <DateType>일</DateType>
                   </DateInputWrapper>
                   <Space width={'69px'} />
                   <Icon src={clockIcon} />
                   <Space width={'8px'} />
                   <ClockInputWrapper>
-                    <DateInput width={'20px'} />
+                    <DateInput
+                      width={'20px'}
+                      name="firstah"
+                      value={ipas.firstah}
+                      onChange={onChangeIntData}
+                    />
                     <DateType>시</DateType>
-                    <DateInput width={'23px'} />
+                    <DateInput
+                      width={'23px'}
+                      name="firstamn"
+                      value={ipas.firstamn}
+                      onChange={onChangeIntData}
+                    />
                     <DateType>분</DateType>
                   </ClockInputWrapper>
                 </DataRangeItem>{' '}
@@ -216,11 +263,26 @@ function RecruitPlanSection() {
                 <Space width={'32px'} />
 
                 <DateInputWrapper>
-                  <DateYearInput width={'44px'} />
+                  <DateYearInput
+                    width={'44px'}
+                    name="secondsy"
+                    value={ipas.secondsy}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>년</DateType>
-                  <DateInput width={'23px'} />
+                  <DateInput
+                    width={'23px'}
+                    name="secondsm"
+                    value={ipas.secondsm}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>월</DateType>
-                  <DateInput width={'23px'} />
+                  <DateInput
+                    width={'23px'}
+                    name="secondsd"
+                    value={ipas.secondsd}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>일</DateType>
                 </DateInputWrapper>
                 <Space width={'69px'} />
@@ -228,9 +290,19 @@ function RecruitPlanSection() {
                 <Icon src={clockIcon} />
                 <Space width={'8px'} />
                 <ClockInputWrapper>
-                  <DateInput width={'20px'} />
+                  <DateInput
+                    width={'20px'}
+                    name="secondsh"
+                    value={ipas.secondsh}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>시</DateType>
-                  <DateInput width={'23px'} />
+                  <DateInput
+                    width={'23px'}
+                    name="secondsmn"
+                    value={ipas.secondsmn}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>분</DateType>
                 </ClockInputWrapper>
               </DataRangeItem>
@@ -241,11 +313,26 @@ function RecruitPlanSection() {
                 <Space width={'32px'} />
 
                 <DateInputWrapper>
-                  <DateYearInput width={'44px'} />
+                  <DateYearInput
+                    width={'44px'}
+                    name="secondey"
+                    value={ipas.secondey}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>년</DateType>
-                  <DateInput width={'23px'} />
+                  <DateInput
+                    width={'23px'}
+                    name="secondem"
+                    value={ipas.secondem}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>월</DateType>
-                  <DateInput width={'23px'} />
+                  <DateInput
+                    width={'23px'}
+                    name="seconded"
+                    value={ipas.seconded}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>일</DateType>
                 </DateInputWrapper>
                 <Space width={'69px'} />
@@ -253,9 +340,19 @@ function RecruitPlanSection() {
                 <Icon src={clockIcon} />
                 <Space width={'8px'} />
                 <ClockInputWrapper>
-                  <DateInput width={'20px'} />
+                  <DateInput
+                    width={'20px'}
+                    name="secondeh"
+                    value={ipas.secondeh}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>시</DateType>
-                  <DateInput width={'23px'} />
+                  <DateInput
+                    width={'23px'}
+                    name="secondemn"
+                    value={ipas.secondemn}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>분</DateType>
                 </ClockInputWrapper>
               </DataRangeItem>
@@ -266,11 +363,26 @@ function RecruitPlanSection() {
                 <Space width={'32px'} />
 
                 <DateInputWrapper>
-                  <DateYearInput width={'44px'} />
+                  <DateYearInput
+                    width={'44px'}
+                    name="seconday"
+                    value={ipas.seconday}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>년</DateType>
-                  <DateInput width={'23px'} />
+                  <DateInput
+                    width={'23px'}
+                    name="secondam"
+                    value={ipas.secondam}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>월</DateType>
-                  <DateInput width={'23px'} />
+                  <DateInput
+                    width={'23px'}
+                    name="secondad"
+                    value={ipas.secondad}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>일</DateType>
                 </DateInputWrapper>
                 <Space width={'69px'} />
@@ -278,9 +390,19 @@ function RecruitPlanSection() {
                 <Icon src={clockIcon} />
                 <Space width={'8px'} />
                 <ClockInputWrapper>
-                  <DateInput width={'20px'} />
+                  <DateInput
+                    width={'20px'}
+                    name="secondah"
+                    value={ipas.secondah}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>시</DateType>
-                  <DateInput width={'23px'} />
+                  <DateInput
+                    width={'23px'}
+                    name="secondamn"
+                    value={ipas.secondamn}
+                    onChange={onChangeIntData}
+                  />
                   <DateType>분</DateType>
                 </ClockInputWrapper>
               </DataRangeItem>
