@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { BK01 } from 'style/palette';
+import { BK02 } from 'style/palette';
 import { Flex, Text } from 'components/atoms';
 //imported styles
 
@@ -16,17 +16,17 @@ export const LoginOptions = (props) => {
         />
         <Text
           children="아이디 저장"
-          color={BK01}
-          size={'20px'}
+          color={BK02}
+          size={'18px'}
           weight={500}
-          spacing="-0.4px"
+          spacing="-0.36px"
         />
       </StyledLabel>
       <Flex gap="11">
         <Text
           children="아이디 찾기"
-          color={BK01}
-          size="20px"
+          color={BK02}
+          size="18px"
           weight={500}
           spacing="-0.4px"
           cursor="pointer"
@@ -37,8 +37,8 @@ export const LoginOptions = (props) => {
         <Pipe />
         <Text
           children="비밀번호 찾기"
-          color={BK01}
-          size="20px"
+          color={BK02}
+          size="18px"
           weight={500}
           spacing="-0.4px"
           cursor="pointer"
@@ -49,8 +49,8 @@ export const LoginOptions = (props) => {
         <Pipe />
         <Text
           children="회원가입"
-          color={BK01}
-          size="20px"
+          color={BK02}
+          size="18px"
           weight={500}
           spacing="-0.4px"
           cursor="pointer"
@@ -72,8 +72,8 @@ const StoreCheckInput = styled.input`
   appearance: none;
   border: 2.5px solid #cccccc;
   border-radius: 50px;
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
   transition : opacity 0.1s;
   &:checked {

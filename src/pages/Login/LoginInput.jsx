@@ -4,15 +4,12 @@ import { useCookies } from 'react-cookie';
 import { Button, Input, Space, Text } from 'components/atoms';
 //imported styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCircleXmark,
-  faEyeSlash,
-  faEye,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { BK02 } from 'style/palette';
 import { LoginOptions } from './LoginOptions';
-
+import eyeIcon from './eye.svg';
+import eyeXIcon from './eyeX.svg';
 export const LoginInput = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -78,16 +75,16 @@ export const LoginInput = () => {
             <Text
               children="아이디"
               color={BK02}
-              size="22px"
+              size="20px"
               weight={600}
-              spacing="-0.44px"
+              spacing="-0.4px"
             />
             <Space height="16px" />
             <Input
               status={emailStatus}
               placeholder="이메일을 입력해주세요."
-              width="522px"
-              height="68px"
+              width="512px"
+              height="65px"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -105,7 +102,7 @@ export const LoginInput = () => {
             <FontAwesomeIcon
               className="deleteButton"
               icon={faCircleXmark}
-              style={{ color: '#999999', width: '32px', height: '32px' }}
+              style={{ color: '#999999', width: '24px', height: '24px' }}
               onMouseDown={() => {
                 setEmail('');
               }}
@@ -113,22 +110,22 @@ export const LoginInput = () => {
             />
           )}
         </LoginBoxWrapper>
-        <Space height="28px" />
+        <Space height="26px" />
         <LoginBoxWrapper>
           <label>
             <Text
               children="비밀번호"
               color={BK02}
-              size="22px"
+              size="20px"
               weight={600}
-              spacing="-0.44px"
+              spacing="-0.4px"
             />
             <Space height="16px" />
             <Input
               status={passwordStatus}
               placeholder="비밀번호를 입력해주세요."
-              width="522px"
-              height="68px"
+              width="512px"
+              height="65px"
               type={showPW ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -142,11 +139,33 @@ export const LoginInput = () => {
               }}
             />
           </label>
+          {showPwX === true &&
+            (showPW === true ? (
+              <EyeXIcon
+                className="showPwEyeX"
+                src={eyeXIcon}
+                onMouseDown={(e) => {
+                  e.preventDefault(); // 기본 동작(예: 텍스트 선택) 방지
+                  e.stopPropagation();
+                  setShowPW(!showPW);
+                }}
+              />
+            ) : (
+              <EyeIcon
+                className="showPwEye"
+                src={eyeIcon}
+                onMouseDown={(e) => {
+                  e.preventDefault(); // 기본 동작(예: 텍스트 선택) 방지
+                  e.stopPropagation();
+                  setShowPW(!showPW);
+                }}
+              />
+            ))}
           {showPwX === true && (
             <FontAwesomeIcon
               className="deleteButton"
               icon={faCircleXmark}
-              style={{ color: '#101010', width: '32px', height: '32px' }}
+              style={{ color: '#999999', width: '24px', height: '24px' }}
               onMouseDown={() => {
                 setPassword('');
               }}
@@ -161,21 +180,17 @@ export const LoginInput = () => {
         <Space height="28px" />
         <Button
           children="로그인"
-          width="522px"
-          height="68px"
+          width="512px"
+          height="65px"
           onClick={onSubmitHanlder}
         />
       </form>
-      {/* <input type="checkbox" checked={showPW} onChange={toggleShowPW}></input>
-      <Text children="비밀번호 표시" color={BK01} /> */}
-      <FontAwesomeIcon icon={faEyeSlash} onClick={toggleShowPW} />
-      <FontAwesomeIcon icon={faEye} onClick={toggleShowPW} />
     </LoginInputWrapper>
   );
 };
 
 const LoginInputWrapper = styled.div`
-  width: 522px;
+  width: 512px;
 `;
 const LoginBoxWrapper = styled.div`
   position: relative;
@@ -184,4 +199,20 @@ const LoginBoxWrapper = styled.div`
     top: 61px;
     right: 22px;
   }
+  .showPwEye {
+    position: absolute;
+    top: 57px;
+    right: 56px;
+  }
+  .showPwEyeX {
+    position: absolute;
+    top: 54px;
+    right: 56px;
+  }
+`;
+const EyeIcon = styled.img`
+  padding: 5.833px 2.333px;
+`;
+const EyeXIcon = styled.img`
+  padding: 5.833px 2.333px;
 `;

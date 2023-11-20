@@ -2,17 +2,15 @@
 import { Flex, Space } from 'components/atoms';
 import { LoginInput } from './LoginInput';
 import { LoginHeader } from './LoginHeader';
-// import { CollaboCrews } from './CollaboCrews';
 
 export const Login = () => {
   return (
     <div>
-      <Space height="130px" />
+      <Space height="150px" />
       <Flex direction="column">
         <LoginHeader />
-        <Space height="52px" />
+        <Space height="34px" />
         <LoginInput />
-        {/* <CollaboCrews /> */}
       </Flex>
     </div>
   );
