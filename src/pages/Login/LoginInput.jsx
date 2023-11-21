@@ -204,8 +204,7 @@ export const LoginInput = () => {
         </LoginBoxWrapper>
         <Space height="16px" />
         {notMatch === true ? (
-          <Text color={R02}>
-            {' '}
+          <Text color={R02} size="18px" weight={500} spacing="-0.36px">
             아이디 혹은 비밀번호가 일치하지 않아요. 다시 확인해 주세요.
           </Text>
         ) : null}
