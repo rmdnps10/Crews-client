@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Space } from 'components/atoms';
 import searchIcon from './search.svg';
 import arrowUpIcon from './arrowUpICon.svg';
+import MainCrewCard from './MainCrewCard';
 function MainCrewListSection() {
   const [searchInput, setSearchInput] = useState('');
   const [isLabelBlue, setIsLabelBlue] = useState({
@@ -112,6 +113,12 @@ function MainCrewListSection() {
           <ArrowIcon src={arrowUpIcon} />
         </SortingType>
       </SortingTypeList>
+
+      <MainCrewCardList>
+        <MainCrewCard />
+        <MainCrewCard />
+        <MainCrewCard />
+      </MainCrewCardList>
     </>
   );
 }
@@ -198,4 +205,10 @@ const SortingType = styled.div`
   letter-spacing: -0.36px;
 `;
 
+const MainCrewCardList = styled.div`
+  display: flex;
+  margin-top: 20px;
+  gap: 26px;
+  flex-wrap: wrap;
+`;
 export default MainCrewListSection;
