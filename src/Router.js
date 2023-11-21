@@ -10,6 +10,7 @@ import {
   MyPage,
 } from 'pages';
 import { Home } from 'pages/Home';
+import MainCrewListSection from 'pages/Home/MainCrewListSection';
 
 const Router = () => {
   return (
@@ -23,7 +24,10 @@ const Router = () => {
         <Route path="/evaluate" element={<Evaluate />} />
         <Route path="/evaluatedetail" element={<EvaluateDetail />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />}>
+          <Route path="" element={<MainCrewListSection />}></Route>
+          <Route path="/hot" element={<MainCrewListSection />}></Route>
+        </Route>
       </Routes>
     </>
   );
