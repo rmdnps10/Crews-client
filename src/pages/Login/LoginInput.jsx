@@ -1,10 +1,29 @@
 import { useEffect, useState } from 'react';
-import { Flex, Text } from 'components/atoms';
 import { useCookies } from 'react-cookie';
-
+//imported components
+import { Button, Input, Space, Text } from 'components/atoms';
+//imported styles
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
+import { BK02, R02 } from 'style/palette';
+import { LoginOptions } from './LoginOptions';
+import eyeIcon from './eye.svg';
+import eyeXIcon from './eyeX.svg';
+//import api
+import { loginRequest } from 'api/request';
+import { instance } from 'api/axios';
 export const LoginInput = () => {
+  //state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  //input box status
+  const [emailStatus, setEmailStatus] = useState('inactive');
+  const [passwordStatus, setPasswordStatus] = useState('inactive');
+  //x버튼 표시 toggle
+  const [showEmailX, setShowEmailX] = useState(false);
+  const [showPwX, setShowPwX] = useState(false);
+  //비밀번호 표시 toggle
   const [showPW, setShowPW] = useState(false);
   //user id pw 쿠키
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -13,32 +32,34 @@ export const LoginInput = () => {
   ]);
   //id 저장할건지 체크박스 유무
   const [isStore, setIsStore] = useState(false);
+  //로그인이 일치하지않아요 toggle
+  const [notMatch, setNotMatch] = useState(false);
   useEffect(() => {
     // 컴포넌트가 렌더링될 때 쿠키가 있으면 바로 입력
     const savedEmail = cookies.userEmail;
     const savedPassword = cookies.userPassword;
-
     if (savedEmail && savedPassword) {
       setEmail(savedEmail);
       setPassword(savedPassword);
     }
   }, []);
-  const toggleShowPW = (e) => {
-    const isShowed = e.target.checked;
-    setShowPW(isShowed);
-  };
+
   const toggleIsStore = (e) => {
     const isStoreChecked = e.target.checked;
     setIsStore(isStoreChecked);
   };
-  const onSumitHanlder = (e) => {
+
+  const onSubmitHanlder = (e) => {
     e.preventDefault();
+    if (notMatch === true) {
+      setNotMatch(false);
+    }
     if (email.trim() === '') {
       alert('아이디를 입력하세요');
     } else if (password.trim() === '') {
       alert('비밀번호를 입력하세요');
     } else {
-      //아이디 비번 input 초기화, 서버에서 있는지 확인하고 처리 여기서
+      loginUser(email, password);
       setEmail('');
       setPassword('');
       if (isStore) {
@@ -48,40 +69,185 @@ export const LoginInput = () => {
       }
     }
   };
-  const storeCookie = () => {};
+
+  //login
+  let isLoginPending = false;
+  const loginUser = async (id, pw) => {
+    try {
+      if (isLoginPending) {
+        return;
+      }
+      isLoginPending = true;
+      const response = await instance.post(loginRequest.loginPost, {
+        email: id,
+        password: pw,
+      });
+      // 로그인이 성공한 경우
+      const accessToken = response.data.access;
+      const refreshToken = response.data.refresh;
+      // console.log(accessToken);
+      // console.log(refreshToken);
+    } catch (error) {
+      setEmailStatus('error');
+      setPasswordStatus('error');
+      setNotMatch(true);
+    } finally {
+      // 로그인 요청 완료 후 상태를 false로 설정
+      isLoginPending = false;
+    }
+  };
   return (
-    <>
-      <form onSubmit={onSumitHanlder}>
-        <label>
-          <Text>아이디</Text>
-          <br />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          <Text>비밀번호</Text>
-          <br />
-          <input
-            type={showPW ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <br />
-        <button type="submit">
-          <Text>로그인</Text>
-        </button>
+    <LoginInputWrapper>
+      <form onSubmit={onSubmitHanlder}>
+        <LoginBoxWrapper>
+          <label>
+            <Text
+              children="아이디"
+              color={BK02}
+              size="20px"
+              weight={600}
+              spacing="-0.4px"
+            />
+            <Space height="16px" />
+            <Input
+              status={emailStatus}
+              placeholder="이메일을 입력해주세요."
+              width="512px"
+              height="65px"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onFocus={() => {
+                setEmailStatus('active');
+                setShowEmailX(true);
+              }}
+              onBlur={() => {
+                setEmailStatus('inactive');
+                setShowEmailX(false);
+              }}
+            />
+          </label>
+          {showEmailX === true && (
+            <FontAwesomeIcon
+              className="deleteButton"
+              icon={faCircleXmark}
+              style={{ color: '#999999', width: '24px', height: '24px' }}
+              onMouseDown={() => {
+                setEmail('');
+              }}
+              cursor={'pointer'}
+            />
+          )}
+        </LoginBoxWrapper>
+        <Space height="26px" />
+        <LoginBoxWrapper>
+          <label>
+            <Text
+              children="비밀번호"
+              color={BK02}
+              size="20px"
+              weight={600}
+              spacing="-0.4px"
+            />
+            <Space height="16px" />
+            <Input
+              status={passwordStatus}
+              placeholder="비밀번호를 입력해주세요."
+              width="512px"
+              height="65px"
+              type={showPW ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => {
+                setPasswordStatus('active');
+                setShowPwX(true);
+              }}
+              onBlur={() => {
+                setPasswordStatus('inactive');
+                setShowPwX(false);
+              }}
+            />
+          </label>
+          {showPwX === true &&
+            (showPW === true ? (
+              <EyeXIcon
+                className="showPwEyeX"
+                src={eyeXIcon}
+                onMouseDown={(e) => {
+                  e.preventDefault(); // 기본 동작(예: 텍스트 선택) 방지
+                  e.stopPropagation();
+                  setShowPW(!showPW);
+                }}
+              />
+            ) : (
+              <EyeIcon
+                className="showPwEye"
+                src={eyeIcon}
+                onMouseDown={(e) => {
+                  e.preventDefault(); // 기본 동작(예: 텍스트 선택) 방지
+                  e.stopPropagation();
+                  setShowPW(!showPW);
+                }}
+              />
+            ))}
+          {showPwX === true && (
+            <FontAwesomeIcon
+              className="deleteButton"
+              icon={faCircleXmark}
+              style={{ color: '#999999', width: '24px', height: '24px' }}
+              onMouseDown={() => {
+                setPassword('');
+              }}
+              cursor={'pointer'}
+            />
+          )}
+        </LoginBoxWrapper>
+        <Space height="16px" />
+        {notMatch === true ? (
+          <Text color={R02} size="18px" weight={500} spacing="-0.36px">
+            아이디 혹은 비밀번호가 일치하지 않아요. 다시 확인해 주세요.
+          </Text>
+        ) : null}
+        <Space height="26px" />
+
+        <LoginOptions isStore={isStore} toggleIsStore={toggleIsStore} />
+
+        <Space height="40px" />
+        <Button
+          children="로그인"
+          width="512px"
+          height="65px"
+          onClick={onSubmitHanlder}
+        />
       </form>
-      <Flex>
-        <input type="checkbox" checked={isStore} onChange={toggleIsStore} />
-        <Text>아이디 저장</Text>
-        <input type="checkbox" checked={showPW} onChange={toggleShowPW}></input>
-        <Text>비밀번호 표시</Text>
-      </Flex>
-    </>
+    </LoginInputWrapper>
   );
 };
+
+const LoginInputWrapper = styled.div`
+  width: 512px;
+`;
+const LoginBoxWrapper = styled.div`
+  position: relative;
+  .deleteButton {
+    position: absolute;
+    top: 61px;
+    right: 22px;
+  }
+  .showPwEye {
+    position: absolute;
+    top: 57px;
+    right: 56px;
+  }
+  .showPwEyeX {
+    position: absolute;
+    top: 57.5px;
+    right: 56px;
+  }
+`;
+const EyeIcon = styled.img`
+  padding: 5.833px 2.333px;
+`;
+const EyeXIcon = styled.img`
+  padding: 2.333px;
+`;
