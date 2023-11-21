@@ -6,11 +6,15 @@ import { Button, Input, Space, Text } from 'components/atoms';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-import { BK02 } from 'style/palette';
+import { BK02, R02 } from 'style/palette';
 import { LoginOptions } from './LoginOptions';
 import eyeIcon from './eye.svg';
 import eyeXIcon from './eyeX.svg';
+//import api
+import { loginRequest } from 'api/request';
+import { instance } from 'api/axios';
 export const LoginInput = () => {
+  //state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   //input box status
@@ -28,6 +32,8 @@ export const LoginInput = () => {
   ]);
   //id 저장할건지 체크박스 유무
   const [isStore, setIsStore] = useState(false);
+  //로그인이 일치하지않아요 toggle
+  const [notMatch, setNotMatch] = useState(false);
   useEffect(() => {
     // 컴포넌트가 렌더링될 때 쿠키가 있으면 바로 입력
     const savedEmail = cookies.userEmail;
@@ -38,10 +44,6 @@ export const LoginInput = () => {
     }
   }, []);
 
-  const toggleShowPW = () => {
-    setShowPW(!showPW);
-  };
-
   const toggleIsStore = (e) => {
     const isStoreChecked = e.target.checked;
     setIsStore(isStoreChecked);
@@ -49,12 +51,15 @@ export const LoginInput = () => {
 
   const onSubmitHanlder = (e) => {
     e.preventDefault();
+    if (notMatch === true) {
+      setNotMatch(false);
+    }
     if (email.trim() === '') {
       alert('아이디를 입력하세요');
     } else if (password.trim() === '') {
       alert('비밀번호를 입력하세요');
     } else {
-      //아이디 비번 input 초기화, 서버에서 있는지 확인하고 처리 여기서
+      loginUser(email, password);
       setEmail('');
       setPassword('');
       if (isStore) {
@@ -65,8 +70,32 @@ export const LoginInput = () => {
     }
   };
 
-  useEffect(() => {}, [showEmailX]);
-
+  //login
+  let isLoginPending = false;
+  const loginUser = async (id, pw) => {
+    try {
+      if (isLoginPending) {
+        return;
+      }
+      isLoginPending = true;
+      const response = await instance.post(loginRequest.loginPost, {
+        email: id,
+        password: pw,
+      });
+      // 로그인이 성공한 경우
+      const accessToken = response.data.access;
+      const refreshToken = response.data.refresh;
+      // console.log(accessToken);
+      // console.log(refreshToken);
+    } catch (error) {
+      setEmailStatus('error');
+      setPasswordStatus('error');
+      setNotMatch(true);
+    } finally {
+      // 로그인 요청 완료 후 상태를 false로 설정
+      isLoginPending = false;
+    }
+  };
   return (
     <LoginInputWrapper>
       <form onSubmit={onSubmitHanlder}>
@@ -173,11 +202,18 @@ export const LoginInput = () => {
             />
           )}
         </LoginBoxWrapper>
-        <Space height="28px" />
+        <Space height="16px" />
+        {notMatch === true ? (
+          <Text color={R02}>
+            {' '}
+            아이디 혹은 비밀번호가 일치하지 않아요. 다시 확인해 주세요.
+          </Text>
+        ) : null}
+        <Space height="26px" />
 
         <LoginOptions isStore={isStore} toggleIsStore={toggleIsStore} />
 
-        <Space height="28px" />
+        <Space height="40px" />
         <Button
           children="로그인"
           width="512px"
@@ -206,7 +242,7 @@ const LoginBoxWrapper = styled.div`
   }
   .showPwEyeX {
     position: absolute;
-    top: 54px;
+    top: 57.5px;
     right: 56px;
   }
 `;
@@ -214,5 +250,5 @@ const EyeIcon = styled.img`
   padding: 5.833px 2.333px;
 `;
 const EyeXIcon = styled.img`
-  padding: 5.833px 2.333px;
+  padding: 2.333px;
 `;
