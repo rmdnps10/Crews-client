@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Space } from 'components/atoms';
 import searchIcon from './search.svg';
+import arrowUpIcon from './arrowUpICon.svg';
 function MainCrewListSection() {
   const [searchInput, setSearchInput] = useState('');
   const [isLabelBlue, setIsLabelBlue] = useState({
@@ -101,6 +102,16 @@ function MainCrewListSection() {
           </SearchLabel>
         </SearchLabelList>
       </SearchLabelListContainer>
+      <Space height={'30px'}></Space>
+      <SortingTypeList>
+        <SortingType>
+          모집 마감순 <ArrowIcon src={arrowUpIcon} />
+        </SortingType>
+        <SortingType>
+          모집 기간 유형
+          <ArrowIcon src={arrowUpIcon} />
+        </SortingType>
+      </SortingTypeList>
     </>
   );
 }
@@ -164,6 +175,27 @@ const SearchLabel = styled.label`
   border-radius: 99px;
   border: ${(props) => (props.$isLabelBlue ? 'none' : '1px solid #ccc')};
   cursor: pointer;
+`;
+
+const SortingTypeList = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+`;
+
+const ArrowIcon = styled.img``;
+
+const SortingType = styled.div`
+  display: flex;
+  cursor: pointer;
+  color: var(--gray-g-05, #999);
+  align-items: center;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.36px;
 `;
 
 export default MainCrewListSection;
