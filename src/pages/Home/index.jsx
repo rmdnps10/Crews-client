@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import IntroSection from './IntroSection';
 import { Space } from 'components/atoms';
 import MainCrewListSection from './MainCrewListSection';
 export const Home = () => {
   const [isActive, setIsActive] = useState({
-    list: true,
+    list: false,
     popular: false,
     how: false,
     crews: false,
   });
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname === '/') {
+      setIsActive({ list: true, popular: false, how: false, crews: false });
+    } else if (pathname === '/hot') {
+      setIsActive({ list: false, popular: true, how: false, crews: false });
+    } else if (pathname === '/how') {
+      setIsActive({ list: false, popular: false, how: true, crews: false });
+    } else if (pathname == '/crews') {
+      setIsActive({ list: false, popular: false, how: false, crews: true });
+    }
+  }, [pathname]);
 
   return (
     <HomeContainer>
