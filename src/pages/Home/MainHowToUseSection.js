@@ -1,12 +1,17 @@
 import { Space } from 'components/atoms';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import firstImage from './1.jpg';
 import secondImage from './2.png';
 import thirdImage from './3.png';
 import fouthImage from './4.png';
 import fifthImage from './5.png';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 function MainHowToUseSection() {
+  useEffect(() => {
+    AOS.init();
+  });
   return (
     <MainHowtoUseSectionWrapper>
       <Space height={'100px'} />
@@ -14,7 +19,7 @@ function MainHowToUseSection() {
         <BlueCircle />
       </BlueCircleContainer>
       <Figure>
-        <FigCaption>
+        <FigCaption data-aos="fade-up" data-aos-duration="1000">
           동아리 지원자 관리, <br />
           홍보부터 모집까지 간단하게
         </FigCaption>
@@ -23,7 +28,7 @@ function MainHowToUseSection() {
       </Figure>
 
       <Figure2>
-        <FigCaption2>
+        <FigCaption2 data-aos="fade-up" data-aos-duration="1000">
           우리 동아리만의 지원서를 <br />
           직접 만들어 <span>체계적인 리쿠르팅</span>
         </FigCaption2>
@@ -33,7 +38,7 @@ function MainHowToUseSection() {
       </Figure2>
       <Space height={'1000px'} />
       <Figure3>
-        <FigCaption3>
+        <FigCaption3 data-aos="fade-up" data-aos-duration="1000">
           지원서 평가와 면접시간 조율도 <br />
           <span>간편</span>하고 <span>효율</span>적이게
         </FigCaption3>
