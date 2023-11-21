@@ -12,6 +12,7 @@ import {
 import { Home } from 'pages/Home';
 import MainCrewListSection from 'pages/Home/MainCrewListSection';
 import MainPopularSection from 'pages/Home/MainPopularSection';
+import MainHowToUseSection from 'pages/Home/MainHowToUseSection';
 
 const Router = () => {
   return (
@@ -28,7 +29,7 @@ const Router = () => {
         <Route path="/" element={<Home />}>
           <Route path="" element={<MainCrewListSection />}></Route>
           <Route path="/hot" element={<MainPopularSection />}></Route>
-          <Route path="/how" element={<MainCrewListSection />}></Route>
+          <Route path="/how" element={<MainHowToUseSection />}></Route>
           <Route path="/crews" element={<MainCrewListSection />}></Route>
         </Route>
       </Routes>
