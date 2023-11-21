@@ -12,3 +12,8 @@ export const myPageRequest = {
 export const applyPostPageRequest = {
   applyPost: 'apply/post/',
 };
+
+//로그인 페이지
+export const loginRequest = {
+  loginPost: 'accounts/login/',
+};
