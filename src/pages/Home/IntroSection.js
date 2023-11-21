@@ -2,6 +2,7 @@ import { Flex, Space } from 'components/atoms';
 import React from 'react';
 import styled from 'styled-components';
 import background from './background.svg';
+
 function IntroSection() {
   return (
     <IntroContainer>
@@ -23,8 +24,9 @@ function IntroSection() {
 }
 
 const IntroContainer = styled.section`
-  height: 300px;
+  height: 350px;
   position: relative;
+  overflow: hidden;
 `;
 
 const StyledH1 = styled.h1`
