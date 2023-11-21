@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import IntroSection from './H1';
+import IntroSection from './IntroSection';
 export const Home = () => {
   return (
     <HomeContainer>
