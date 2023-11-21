@@ -9,6 +9,7 @@ import {
   EvaluateDetail,
   MyPage,
 } from 'pages';
+import { Home } from 'pages/Home';
 
 const Router = () => {
   return (
@@ -22,6 +23,7 @@ const Router = () => {
         <Route path="/evaluate" element={<Evaluate />} />
         <Route path="/evaluatedetail" element={<EvaluateDetail />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </>
   );
