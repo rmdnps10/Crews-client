@@ -11,6 +11,7 @@ import {
 } from 'pages';
 import { Home } from 'pages/Home';
 import MainCrewListSection from 'pages/Home/MainCrewListSection';
+import MainPopularSection from 'pages/Home/MainPopularSection';
 
 const Router = () => {
   return (
@@ -26,7 +27,7 @@ const Router = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/" element={<Home />}>
           <Route path="" element={<MainCrewListSection />}></Route>
-          <Route path="/hot" element={<MainCrewListSection />}></Route>
+          <Route path="/hot" element={<MainPopularSection />}></Route>
           <Route path="/how" element={<MainCrewListSection />}></Route>
           <Route path="/crews" element={<MainCrewListSection />}></Route>
         </Route>

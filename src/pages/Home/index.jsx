@@ -73,4 +73,5 @@ const MainNav = styled.div`
 const Li = styled.li`
   color: ${(props) => (props.$isActive ? '#1557D0' : '#B3B3B3')};
   border-bottom: ${(props) => (props.$isActive ? '4px solid #1557D0' : '')};
+  padding-bottom: 2px;
 `;

@@ -5,9 +5,10 @@ import basicProfile from './basic-profile.svg';
 import dummyImage from './dummyImage.png';
 import saveImage from './save.svg';
 import saveBlueImage from './save-blue.svg';
-function MainCrewCard() {
+function MainCrewCard({ isSmall }) {
   return (
-    <MainCrewCardItem>
+    <MainCrewCardItem $isSmall={isSmall}>
+      <DdayLabel>모집 마감 D-1</DdayLabel>
       <CrewPostImage src={dummyImage} />
       <Space height={'10px'} />
       <PostDataContainer>
@@ -33,6 +34,21 @@ const MainCrewCardItem = styled.div`
   border-radius: 10px;
   border: 1px solid var(--gray-g-02, #e6e6e6);
   background: #fff;
+  position: relative;
+  transform: ${(props) => (props.$isSmall ? 'scale(0.8)' : 'scale(1)')};
+`;
+
+const DdayLabel = styled.div`
+  border-radius: 30px;
+  background: var(--red-r-02, #f15454);
+  display: flex;
+  padding: 6px 14px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: #ffffff;
 `;
 
 const CrewPostImage = styled.img`
