@@ -5,6 +5,7 @@
 export const homePageRequest = {
   normalPostInfo: 'home/normal-get-main/',
   specificPostInfo: 'home/search-post/',
+  likePost: '/post/like-post/',
 };
 
 // 마이페이지

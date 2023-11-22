@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Flex, Space } from 'components/atoms';
 import basicProfile from './basic-profile.svg';
 import dummyImage from './dummyImage.png';
 import saveImage from './save.svg';
 import saveBlueImage from './save-blue.svg';
+import { instance } from 'api/axios';
+import { homePageRequest } from 'api/request';
+import { useNavigate } from 'react-router-dom';
 function MainCrewCard({
   title,
   endDate,
@@ -16,6 +19,36 @@ function MainCrewCard({
   isLiked,
   isSmall,
 }) {
+  const [isSaveBlue, setIsSaveBlue] = useState(isLiked);
+  const [countLikes, setCountLikes] = useState(likeCount);
+  const navigate = useNavigate();
+  const postLikePost = async (id) => {
+    await instance.post(
+      `${homePageRequest.likePost}`,
+      {
+        post_id: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      }
+    );
+    setIsSaveBlue(!isSaveBlue);
+    if (isSaveBlue) {
+      setCountLikes(countLikes - 1);
+    } else {
+      setCountLikes(countLikes + 1);
+    }
+  };
+  const onClickSaveButton = () => {
+    if (localStorage.getItem('access')) {
+      postLikePost(id);
+    } else {
+      navigate('/login');
+    }
+  };
+  useEffect(() => {}, [isSaveBlue]);
   return (
     <MainCrewCardItem $isSmall={isSmall}>
       <DdayLabel>모집 마감 {dayLeft}</DdayLabel>
@@ -29,13 +62,13 @@ function MainCrewCard({
         <PostTitle>{title}</PostTitle>
         <PostCategory>{category}</PostCategory>
         <PostSaveView>
-          {isLiked ? (
-            <SaveImage src={saveImage} />
+          {isSaveBlue ? (
+            <SaveImage src={saveImage} onClick={onClickSaveButton} />
           ) : (
-            <SaveImage src={saveBlueImage} />
+            <SaveImage src={saveBlueImage} onClick={onClickSaveButton} />
           )}
 
-          <SaveCount $isLiked={isLiked}>{likeCount}</SaveCount>
+          <SaveCount $isLiked={isSaveBlue}>{countLikes}</SaveCount>
         </PostSaveView>
       </PostDataContainer>
     </MainCrewCardItem>
@@ -129,6 +162,7 @@ const PostSaveView = styled.div`
 const SaveImage = styled.img`
   width: 20px;
   height: 20px;
+  cursor: pointer;
 `;
 const SaveCount = styled.div`
   color: ${(props) => (props.$isLiked ? '#3172ea' : '#101010')};

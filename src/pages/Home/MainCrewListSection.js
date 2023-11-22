@@ -35,7 +35,7 @@ function MainCrewListSection() {
       // 로그인했을 경우
       if (localStorage.getItem('access')) {
         const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
-          header: {
+          headers: {
             Authorization: `Bearer ${localStorage.getItem('access')}`,
           },
         });
@@ -49,8 +49,6 @@ function MainCrewListSection() {
     };
     fetchData();
   }, []);
-
-  console.log(postData);
   return (
     <>
       <MainSearchSection>
