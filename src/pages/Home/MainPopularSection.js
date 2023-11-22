@@ -1,9 +1,37 @@
 import { Space } from 'components/atoms';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import MainCrewCard from './MainCrewCard';
-
+import { homePageRequest } from 'api/request';
+import { useState } from 'react';
+import { instance } from 'api/axios';
 function MainPopularSection() {
+  // 저장 수 많은 상위 3개 게시물 데이터
+  const [hotPostData, setHotPostData] = useState([]);
+  useEffect(() => {
+    const fetchPopularData = async () => {
+      // 로그인했을 경우
+      if (localStorage.getItem('access')) {
+        const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('access')}`,
+          },
+        });
+        const postList = res.data;
+        postList.sort((a, b) => b.is_liked - a.is_liked);
+        setHotPostData(postList.slice(0, 3));
+      }
+      // 로그인하지 않을 경우
+      else {
+        const res = await instance.get(`${homePageRequest.normalPostInfo}`);
+        const postList = res.data;
+        postList.sort((a, b) => b.is_liked - a.is_liked);
+        setHotPostData(postList.slice(0, 3));
+      }
+    };
+    fetchPopularData();
+  }, []);
+  console.log(hotPostData);
   return (
     <>
       <Space height={'50px'} />
@@ -13,9 +41,41 @@ function MainPopularSection() {
       </HotCaption>
       <Space height={'30px'} />
       <HotPostList>
-        <MainCrewCard isSmall={true} />
-        <MainCrewCard isSmall={false} />
-        <MainCrewCard isSmall={true} />
+        {/* 오류방지 */}
+        {hotPostData.length > 0 ? (
+          <>
+            <MainCrewCard
+              isSmall={true}
+              category={hotPostData[1].category}
+              likeCount={hotPostData[1].current_like_count}
+              isLiked={hotPostData[1].is_liked}
+              crewName={hotPostData[1].crew_name}
+              title={hotPostData[1].title}
+              dayLeft={hotPostData[1].d_minus_info}
+            />
+            <MainCrewCard
+              isSmall={false}
+              category={hotPostData[0].category}
+              likeCount={hotPostData[0].current_like_count}
+              isLiked={hotPostData[0].is_liked}
+              crewName={hotPostData[0].crew_name}
+              title={hotPostData[0].title}
+              dayLeft={hotPostData[0].d_minus_info}
+            />
+            {/* // 백엔드 연동할 때 2로바꾸자 */}
+            <MainCrewCard
+              isSmall={true}
+              category={hotPostData[1].category}
+              likeCount={hotPostData[1].current_like_count}
+              isLiked={hotPostData[1].is_liked}
+              crewName={hotPostData[1].crew_name}
+              title={hotPostData[1].title}
+              dayLeft={hotPostData[1].d_minus_info}
+            />{' '}
+          </>
+        ) : (
+          ''
+        )}
       </HotPostList>
     </>
   );
