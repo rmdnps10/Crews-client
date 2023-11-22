@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Space } from 'components/atoms';
 import searchIcon from './search.svg';
 import arrowUpIcon from './arrowUpICon.svg';
 import MainCrewCard from './MainCrewCard';
+import { instance } from 'api/axios';
+import { homePageRequest } from 'api/request';
 function MainCrewListSection() {
   const [searchInput, setSearchInput] = useState('');
   const [isLabelBlue, setIsLabelBlue] = useState({
@@ -17,6 +19,8 @@ function MainCrewListSection() {
     friend: false,
     etc: false,
   });
+  // 랜더링할 게시글 데이터 리스트
+  const [postData, setPostData] = useState([]);
   const onSearchChange = (e) => {
     setSearchInput(e.target.value);
   };
@@ -25,6 +29,85 @@ function MainCrewListSection() {
     if (isLabelBlue[name]) setIsLabelBlue({ ...isLabelBlue, [name]: false });
     else setIsLabelBlue({ ...isLabelBlue, [name]: true });
   };
+  useEffect(() => {
+    const userCategoriesArray = Object.keys(isLabelBlue).filter(
+      (key) => isLabelBlue[key]
+    );
+    if (userCategoriesArray.length === 0) {
+      fetchData();
+    } else {
+      fetchFilteredData();
+    }
+  }, [isLabelBlue]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    // 로그인했을 경우
+    if (localStorage.getItem('access')) {
+      const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      });
+      setPostData(res.data);
+    }
+    // 로그인하지 않을 경우
+    else {
+      const res = await instance.get(`${homePageRequest.normalPostInfo}`);
+      setPostData(res.data);
+    }
+  };
+
+  const fetchFilteredData = async () => {
+    const userCategoriesArray = Object.keys(isLabelBlue).filter(
+      (key) => isLabelBlue[key]
+    );
+    const categoriesQueryString = userCategoriesArray.join('&categories=');
+    // 로그인 O
+    if (localStorage.getItem('access')) {
+      const headers = {
+        Authorization: `Bearer ${localStorage.getItem('access')}`,
+      };
+      try {
+        let url = homePageRequest.specificPostInfo;
+        if (searchInput) {
+          url += `?query=${searchInput}`;
+        }
+        if (userCategoriesArray.length > 0) {
+          url += `${
+            searchInput ? '&' : '?'
+          }categories=${categoriesQueryString}`;
+        }
+
+        const res = await instance.get(url, { headers });
+        setPostData(res.data);
+      } catch (error) {
+        console.error('Error fetching filtered data:', error);
+      }
+    }
+    // 로그인 X
+    else {
+      try {
+        let url = homePageRequest.specificPostInfo;
+        if (searchInput) {
+          url += `?query=${searchInput}`;
+        }
+        if (userCategoriesArray.length > 0) {
+          url += `${
+            searchInput ? '&' : '?'
+          }categories=${categoriesQueryString}`;
+        }
+        const res = await instance.get(url);
+        setPostData(res.data);
+      } catch (error) {
+        console.error('Error fetching filtered data:', error);
+      }
+    }
+  };
+
   return (
     <>
       <MainSearchSection>
@@ -33,7 +116,7 @@ function MainCrewListSection() {
           value={searchInput}
           onChange={onSearchChange}
         />
-        <SearchIcon src={searchIcon} />
+        <SearchIcon src={searchIcon} onClick={fetchFilteredData} />
       </MainSearchSection>
       <Space height={'30px'} />
       <SearchLabelListContainer>
@@ -115,9 +198,19 @@ function MainCrewListSection() {
       </SortingTypeList>
 
       <MainCrewCardList>
-        <MainCrewCard />
-        <MainCrewCard />
-        <MainCrewCard />
+        {postData.map((item) => (
+          <MainCrewCard
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            endDate={item.apply_end_date}
+            crewName={item.crew_name}
+            dayLeft={item.d_minus_info}
+            likeCount={item.current_like_count}
+            category={item.category}
+            isLiked={item.is_liked}
+          />
+        ))}
       </MainCrewCardList>
     </>
   );
@@ -137,7 +230,6 @@ const MainSearchSection = styled.section`
 `;
 const SearchInput = styled.input.attrs({ type: 'text' })`
   width: 80%;
-  color: var(--gray-g-04, #b3b3b3);
   flex-grow: 1;
   font-family: Pretendard;
   font-size: 18px;
@@ -148,10 +240,14 @@ const SearchInput = styled.input.attrs({ type: 'text' })`
   margin-left: 10px;
   border: none;
   outline: none;
+  &:placeholder {
+    color: var(--gray-g-04, #b3b3b3);
+  }
 `;
 
 const SearchIcon = styled.img`
   margin-right: 22px;
+  cursor: pointer;
 `;
 
 const SearchLabelListContainer = styled.div`
