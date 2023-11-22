@@ -23,21 +23,17 @@ function MainCrewCard({
   const [countLikes, setCountLikes] = useState(likeCount);
   const navigate = useNavigate();
   const postLikePost = async (id) => {
-    try {
-      await instance.post(
-        `${homePageRequest.likePost}`,
-        {
-          post_id: id,
+    await instance.post(
+      `${homePageRequest.likePost}`,
+      {
+        post_id: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('access')}`,
-          },
-        }
-      );
-    } catch (err) {
-      navigate('/login');
-    }
+      }
+    );
     if (isSaveBlue) {
       setCountLikes(countLikes - 1);
     } else {
@@ -59,7 +55,7 @@ function MainCrewCard({
     if (e.target.className === 'save') {
       return;
     }
-    navigate('/postdetail');
+    navigate(`/postdetail/${id}`);
   };
   return (
     <MainCrewCardItem $isSmall={isSmall} onClick={onClickGoDetailPost}>

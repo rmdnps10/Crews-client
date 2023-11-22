@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 export const SignIn = () => {
   const nav = useNavigate();
-
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -394,8 +393,6 @@ const SmallBtn = styled.button`
 `;
 const FormGroup = styled.div`
   width: 522px;
-  height: 68px;
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -413,6 +410,11 @@ const LongInput = styled.input`
   font-size: 18px;
   font-weight: 600;
   margin-top: 16px;
+  &:focus {
+    border-radius: 10px;
+    border: 2px solid #db4242;
+    background: #fdf2f3;
+  }
 `;
 const ShortInput = styled.input`
   height: 65px;
@@ -425,7 +427,13 @@ const ShortInput = styled.input`
   padding: 22px;
   font-family: 'Pretendard';
   font-size: 18px;
+  outline: none;
   font-weight: 600;
+  &:focus {
+    border-radius: 10px;
+    border: 2px solid #db4242;
+    background: #fdf2f3;
+  }
 `;
 const Select = styled.select`
   height: 68px;
