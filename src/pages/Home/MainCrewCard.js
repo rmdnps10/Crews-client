@@ -8,6 +8,7 @@ import saveBlueImage from './save-blue.svg';
 import { instance } from 'api/axios';
 import { homePageRequest } from 'api/request';
 import { useNavigate } from 'react-router-dom';
+import PostCategoryData from './PostCategory';
 function MainCrewCard({
   title,
   endDate,
@@ -65,7 +66,9 @@ function MainCrewCard({
           <CrewName>{crewName}</CrewName>
         </Flex>
         <PostTitle>{title}</PostTitle>
-        <PostCategory>{category}</PostCategory>
+        <PostCategory>
+          <PostCategoryData category={category} />
+        </PostCategory>
         <PostSaveView>
           {isSaveBlue ? (
             <SaveImage
