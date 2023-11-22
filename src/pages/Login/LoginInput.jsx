@@ -13,6 +13,7 @@ import eyeXIcon from './eyeX.svg';
 //import api
 import { loginRequest } from 'api/request';
 import { instance } from 'api/axios';
+import { useNavigate } from 'react-router-dom';
 export const LoginInput = () => {
   //state
   const [email, setEmail] = useState('');
@@ -34,6 +35,7 @@ export const LoginInput = () => {
   const [isStore, setIsStore] = useState(false);
   //로그인이 일치하지않아요 toggle
   const [notMatch, setNotMatch] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     // 컴포넌트가 렌더링될 때 쿠키가 있으면 바로 입력
     const savedEmail = cookies.userEmail;
@@ -85,6 +87,9 @@ export const LoginInput = () => {
       // 로그인이 성공한 경우
       const accessToken = response.data.access;
       const refreshToken = response.data.refresh;
+      localStorage.setItem('access', accessToken);
+      localStorage.setItem('refresh', refreshToken);
+      navigate('/');
       // console.log(accessToken);
       // console.log(refreshToken);
     } catch (error) {

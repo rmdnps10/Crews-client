@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Space } from 'components/atoms';
 import searchIcon from './search.svg';
 import arrowUpIcon from './arrowUpICon.svg';
 import MainCrewCard from './MainCrewCard';
+import { instance } from 'api/axios';
+import { homePageRequest } from 'api/request';
 function MainCrewListSection() {
   const [searchInput, setSearchInput] = useState('');
   const [isLabelBlue, setIsLabelBlue] = useState({
@@ -17,6 +19,8 @@ function MainCrewListSection() {
     friend: false,
     etc: false,
   });
+
+  const [postData, setPostData] = useState([]);
   const onSearchChange = (e) => {
     setSearchInput(e.target.value);
   };
@@ -25,6 +29,28 @@ function MainCrewListSection() {
     if (isLabelBlue[name]) setIsLabelBlue({ ...isLabelBlue, [name]: false });
     else setIsLabelBlue({ ...isLabelBlue, [name]: true });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // 로그인했을 경우
+      if (localStorage.getItem('access')) {
+        const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
+          header: {
+            Authorization: `Bearer ${localStorage.getItem('access')}`,
+          },
+        });
+        setPostData(res.data);
+      }
+      // 로그인하지 않을 경우
+      else {
+        const res = await instance.get(`${homePageRequest.normalPostInfo}`);
+        setPostData(res.data);
+      }
+    };
+    fetchData();
+  }, []);
+
+  console.log(postData);
   return (
     <>
       <MainSearchSection>
@@ -115,9 +141,19 @@ function MainCrewListSection() {
       </SortingTypeList>
 
       <MainCrewCardList>
-        <MainCrewCard />
-        <MainCrewCard />
-        <MainCrewCard />
+        {postData.map((item) => (
+          <MainCrewCard
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            endDate={item.apply_end_date}
+            crewName={item.crew_name}
+            dayLeft={item.d_minus_info}
+            likeCount={item.current_like_count}
+            category={item.category}
+            isLiked={item.is_liked}
+          />
+        ))}
       </MainCrewCardList>
     </>
   );

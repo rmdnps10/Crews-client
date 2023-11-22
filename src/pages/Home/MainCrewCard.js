@@ -5,22 +5,37 @@ import basicProfile from './basic-profile.svg';
 import dummyImage from './dummyImage.png';
 import saveImage from './save.svg';
 import saveBlueImage from './save-blue.svg';
-function MainCrewCard({ isSmall }) {
+function MainCrewCard({
+  title,
+  endDate,
+  id,
+  crewName,
+  dayLeft,
+  likeCount,
+  category,
+  isLiked,
+  isSmall,
+}) {
   return (
     <MainCrewCardItem $isSmall={isSmall}>
-      <DdayLabel>모집 마감 D-1</DdayLabel>
+      <DdayLabel>모집 마감 {dayLeft}</DdayLabel>
       <CrewPostImage src={dummyImage} />
       <Space height={'10px'} />
       <PostDataContainer>
         <Flex justify="flex-start" gap={'7'}>
           <CrewImage src={basicProfile} />
-          <CrewName>멋쟁이사자처럼</CrewName>
+          <CrewName>{crewName}</CrewName>
         </Flex>
-        <PostTitle>멋쟁이 사자처럼 11기 신입기수 모집</PostTitle>
-        <PostCategory>IT / 코딩</PostCategory>
+        <PostTitle>{title}</PostTitle>
+        <PostCategory>{category}</PostCategory>
         <PostSaveView>
-          <SaveImage src={saveImage} />
-          <SaveCount>25</SaveCount>
+          {isLiked ? (
+            <SaveImage src={saveImage} />
+          ) : (
+            <SaveImage src={saveBlueImage} />
+          )}
+
+          <SaveCount $isLiked={isLiked}>{likeCount}</SaveCount>
         </PostSaveView>
       </PostDataContainer>
     </MainCrewCardItem>
@@ -89,13 +104,10 @@ const PostTitle = styled.p`
   font-weight: 700;
   line-height: 26px; /* 130% */
   letter-spacing: -0.4px;
-  // 단어 단위 줄바꿈 적용함
-  word-break: keep-all;
 `;
 
 const PostCategory = styled.div`
   display: flex;
-  align-self: flex-start;
   padding: 6px 14px;
   justify-content: center;
   align-items: center;
@@ -103,10 +115,14 @@ const PostCategory = styled.div`
   border-radius: 30px;
   background: var(--blue-b-05-m, #3172ea);
   color: #fff;
+  position: absolute;
+  bottom: 53px;
 `;
 const PostSaveView = styled.div`
   display: flex;
-  align-self: flex-end;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
   gap: 4px;
 `;
 
@@ -115,11 +131,11 @@ const SaveImage = styled.img`
   height: 20px;
 `;
 const SaveCount = styled.div`
-  color: var(--blue-b-05-m, #3172ea);
+  color: ${(props) => (props.$isLiked ? '#3172ea' : '#101010')};
   font-family: Pretendard;
   font-size: 18px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: ${(props) => (props.$isLiked ? '700' : '400')};
   line-height: normal;
   letter-spacing: -0.36px;
 `;
