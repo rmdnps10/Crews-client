@@ -2,9 +2,35 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'components/atoms';
 import basicProfile from './basic-profile.svg';
+import { useEffect, useState } from 'react';
+import { SignIn } from 'pages';
 export const Navigation = () => {
   const nav = useNavigate();
-
+  const [isLogin, setLogin] = useState();
+  const onClickLogout = () => {
+    localStorage.removeItem('access');
+    nav('/');
+  };
+  const onClickGoHome = () => {
+    nav('/');
+  };
+  const onClickGoLogin = () => {
+    nav('/login');
+  };
+  const onClickGoSignIn = () => {
+    nav('/signin');
+  };
+  const onClickMyPage = () => {
+    nav('/mypage');
+  };
+  useEffect(() => {
+    const token = localStorage.getItem('access');
+    if (token) {
+      setLogin(true);
+    } else {
+      setLogin(false);
+    }
+  }, []);
   return (
     <>
       <NavigationContainer>
@@ -20,13 +46,23 @@ export const Navigation = () => {
         <button onClick={() => nav('/mypage')}>mypage</button>
       </NavigationContainer>
       <CrewsNav>
-        <CrewsLogo>Crews 🛳️</CrewsLogo>
+        <CrewsLogo onClick={onClickGoHome}>Crews 🛳️</CrewsLogo>
         <ProfileSection>
-          <ProfileImage src={basicProfile} />
-          <Flex direction="column" align="flex-start">
-            <UserName>C123456 김서강</UserName>
-            <LoginButton>로그아웃</LoginButton>
-          </Flex>
+          {isLogin ? (
+            <>
+              <ProfileImage src={basicProfile} onClick={onClickMyPage} />
+              <Flex direction="column" align="flex-start">
+                <UserName>20201148 정인영</UserName>
+                <LogoutButton onClick={onClickLogout}>로그아웃</LogoutButton>
+              </Flex>{' '}
+            </>
+          ) : (
+            <>
+              <LoginButton onClick={onClickGoLogin}>로그인</LoginButton>
+              <DivideLine />
+              <SignInButton onClick={onClickGoSignIn}>회원가입</SignInButton>
+            </>
+          )}
         </ProfileSection>
       </CrewsNav>
     </>
@@ -55,6 +91,7 @@ const CrewsLogo = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  cursor: pointer;
   letter-spacing: -0.6px;
 `;
 
@@ -65,7 +102,9 @@ const ProfileSection = styled.div`
   gap: 12px;
 `;
 
-const ProfileImage = styled.img``;
+const ProfileImage = styled.img`
+  cursor: pointer;
+`;
 
 const UserName = styled.div`
   color: var(--black-bk-01, #303030);
@@ -76,7 +115,7 @@ const UserName = styled.div`
   line-height: normal;
   letter-spacing: -0.36px;
 `;
-const LoginButton = styled.div`
+const LogoutButton = styled.div`
   color: var(--black-bk-01, #303030);
   font-family: Pretendard;
   font-size: 14px;
@@ -84,5 +123,37 @@ const LoginButton = styled.div`
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.28px;
+  cursor: pointer;
   text-decoration-line: underline;
+`;
+
+const SignInButton = styled.div`
+  color: var(--black-bk-01, #303030);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  letter-spacing: -0.36px;
+`;
+
+const LoginButton = styled.div`
+  color: var(--black-bk-01, #303030);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  letter-spacing: -0.36px;
+`;
+
+const DivideLine = styled.div`
+  width: 1.8px;
+  height: 15.5px;
+  align-self: center;
+  background-color: #ccc;
 `;
