@@ -49,8 +49,16 @@ function MainCrewCard({
     }
   };
   useEffect(() => {}, [isSaveBlue]);
+
+  const onClickGoDetailPost = (e) => {
+    console.log(e.target.className);
+    if (e.target.className === 'save') {
+      return;
+    }
+    navigate(`/postdetail/${id}`);
+  };
   return (
-    <MainCrewCardItem $isSmall={isSmall}>
+    <MainCrewCardItem $isSmall={isSmall} onClick={onClickGoDetailPost}>
       <DdayLabel>모집 마감 {dayLeft}</DdayLabel>
       <CrewPostImage src={dummyImage} />
       <Space height={'10px'} />
@@ -63,9 +71,17 @@ function MainCrewCard({
         <PostCategory>{category}</PostCategory>
         <PostSaveView>
           {isSaveBlue ? (
-            <SaveImage src={saveImage} onClick={onClickSaveButton} />
+            <SaveImage
+              src={saveImage}
+              onClick={onClickSaveButton}
+              className="save"
+            />
           ) : (
-            <SaveImage src={saveBlueImage} onClick={onClickSaveButton} />
+            <SaveImage
+              src={saveBlueImage}
+              onClick={onClickSaveButton}
+              className="save"
+            />
           )}
 
           <SaveCount $isLiked={isSaveBlue}>{countLikes}</SaveCount>

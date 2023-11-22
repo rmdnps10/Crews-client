@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 export const SignIn = () => {
   const nav = useNavigate();
-
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -429,6 +428,7 @@ const ShortInput = styled.input`
   padding: 22px;
   font-family: 'Pretendard';
   font-size: 18px;
+  outline: none;
   font-weight: 600;
   &:focus {
     background: #fdf2f3;

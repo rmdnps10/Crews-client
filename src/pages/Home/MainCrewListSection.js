@@ -6,8 +6,10 @@ import arrowUpIcon from './arrowUpICon.svg';
 import MainCrewCard from './MainCrewCard';
 import { instance } from 'api/axios';
 import { homePageRequest } from 'api/request';
+import { useNavigate } from 'react-router-dom';
 function MainCrewListSection() {
   const [searchInput, setSearchInput] = useState('');
+  const navigate = useNavigate();
   const [isLabelBlue, setIsLabelBlue] = useState({
     it: false,
     game: false,
@@ -46,16 +48,21 @@ function MainCrewListSection() {
 
   const fetchData = async () => {
     // 로그인했을 경우
-    if (localStorage.getItem('access')) {
-      const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access')}`,
-        },
-      });
-      setPostData(res.data);
-    }
-    // 로그인하지 않을 경우
-    else {
+    try {
+      if (localStorage.getItem('access')) {
+        const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('access')}`,
+          },
+        });
+        setPostData(res.data);
+      }
+      // 로그인하지 않을 경우
+      else {
+        const res = await instance.get(`${homePageRequest.normalPostInfo}`);
+        setPostData(res.data);
+      }
+    } catch (err) {
       const res = await instance.get(`${homePageRequest.normalPostInfo}`);
       setPostData(res.data);
     }
