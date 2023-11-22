@@ -34,12 +34,12 @@ function MainCrewCard({
         },
       }
     );
-    setIsSaveBlue(!isSaveBlue);
     if (isSaveBlue) {
       setCountLikes(countLikes - 1);
     } else {
       setCountLikes(countLikes + 1);
     }
+    setIsSaveBlue(!isSaveBlue);
   };
   const onClickSaveButton = () => {
     if (localStorage.getItem('access')) {

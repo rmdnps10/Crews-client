@@ -19,7 +19,7 @@ function MainCrewListSection() {
     friend: false,
     etc: false,
   });
-
+  // 랜더링할 게시글 데이터 리스트
   const [postData, setPostData] = useState([]);
   const onSearchChange = (e) => {
     setSearchInput(e.target.value);
@@ -49,6 +49,58 @@ function MainCrewListSection() {
     };
     fetchData();
   }, []);
+
+  const fetchFilteredData = async () => {
+    const userCategoriesArray = Object.keys(isLabelBlue).filter(
+      (key) => isLabelBlue[key]
+    );
+    const categoriesQueryString = userCategoriesArray.join('&categories=');
+    // 로그인 O
+    if (localStorage.getItem('access')) {
+      const headers = {
+        Authorization: `Bearer ${localStorage.getItem('access')}`,
+      };
+      try {
+        let url = homePageRequest.specificPostInfo;
+        if (searchInput) {
+          url += `?query=${searchInput}`;
+        }
+        if (userCategoriesArray.length > 0) {
+          url += `${
+            searchInput ? '&' : '?'
+          }categories=${categoriesQueryString}`;
+        }
+
+        const res = await instance.get(url, { headers });
+        setPostData(res.data);
+      } catch (error) {
+        console.error('Error fetching filtered data:', error);
+      }
+    }
+    // 로그인 X
+    else {
+      try {
+        let url = homePageRequest.specificPostInfo;
+        if (searchInput) {
+          url += `?query=${searchInput}`;
+        }
+        if (userCategoriesArray.length > 0) {
+          url += `${
+            searchInput ? '&' : '?'
+          }categories=${categoriesQueryString}`;
+        }
+        const res = await instance.get(url);
+        setPostData(res.data);
+      } catch (error) {
+        console.error('Error fetching filtered data:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchFilteredData();
+  }, [isLabelBlue]);
+
   return (
     <>
       <MainSearchSection>
@@ -57,7 +109,7 @@ function MainCrewListSection() {
           value={searchInput}
           onChange={onSearchChange}
         />
-        <SearchIcon src={searchIcon} />
+        <SearchIcon src={searchIcon} onClick={fetchFilteredData} />
       </MainSearchSection>
       <Space height={'30px'} />
       <SearchLabelListContainer>
@@ -171,7 +223,6 @@ const MainSearchSection = styled.section`
 `;
 const SearchInput = styled.input.attrs({ type: 'text' })`
   width: 80%;
-  color: var(--gray-g-04, #b3b3b3);
   flex-grow: 1;
   font-family: Pretendard;
   font-size: 18px;
@@ -182,10 +233,14 @@ const SearchInput = styled.input.attrs({ type: 'text' })`
   margin-left: 10px;
   border: none;
   outline: none;
+  &:placeholder {
+    color: var(--gray-g-04, #b3b3b3);
+  }
 `;
 
 const SearchIcon = styled.img`
   margin-right: 22px;
+  cursor: pointer;
 `;
 
 const SearchLabelListContainer = styled.div`
