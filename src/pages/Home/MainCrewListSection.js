@@ -29,26 +29,37 @@ function MainCrewListSection() {
     if (isLabelBlue[name]) setIsLabelBlue({ ...isLabelBlue, [name]: false });
     else setIsLabelBlue({ ...isLabelBlue, [name]: true });
   };
+  useEffect(() => {
+    const userCategoriesArray = Object.keys(isLabelBlue).filter(
+      (key) => isLabelBlue[key]
+    );
+    if (userCategoriesArray.length === 0) {
+      fetchData();
+    } else {
+      fetchFilteredData();
+    }
+  }, [isLabelBlue]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      // 로그인했을 경우
-      if (localStorage.getItem('access')) {
-        const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('access')}`,
-          },
-        });
-        setPostData(res.data);
-      }
-      // 로그인하지 않을 경우
-      else {
-        const res = await instance.get(`${homePageRequest.normalPostInfo}`);
-        setPostData(res.data);
-      }
-    };
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    // 로그인했을 경우
+    if (localStorage.getItem('access')) {
+      const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      });
+      setPostData(res.data);
+    }
+    // 로그인하지 않을 경우
+    else {
+      const res = await instance.get(`${homePageRequest.normalPostInfo}`);
+      setPostData(res.data);
+    }
+  };
 
   const fetchFilteredData = async () => {
     const userCategoriesArray = Object.keys(isLabelBlue).filter(
@@ -96,10 +107,6 @@ function MainCrewListSection() {
       }
     }
   };
-
-  useEffect(() => {
-    fetchFilteredData();
-  }, [isLabelBlue]);
 
   return (
     <>

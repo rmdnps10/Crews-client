@@ -1,9 +1,35 @@
 import { Space } from 'components/atoms';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import MainCrewCard from './MainCrewCard';
-
+import { homePageRequest } from 'api/request';
+import { useState } from 'react';
+import { instance } from 'api/axios';
 function MainPopularSection() {
+  const [hotPostData, setHotPostData] = useState([]);
+  useEffect(() => {
+    const fetchPopularData = async () => {
+      // 로그인했을 경우
+      if (localStorage.getItem('access')) {
+        const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('access')}`,
+          },
+        });
+        const postList = res.data;
+        postList.sort((a, b) => b.is_liked - a.is_liked);
+        setHotPostData(postList.slice(0, 3));
+      }
+      // 로그인하지 않을 경우
+      else {
+        const res = await instance.get(`${homePageRequest.normalPostInfo}`);
+        console.log(res.data);
+        setHotPostData(res.data);
+      }
+    };
+    fetchPopularData();
+  }, []);
+  console.log(hotPostData);
   return (
     <>
       <Space height={'50px'} />
