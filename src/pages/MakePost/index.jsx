@@ -1,339 +1,193 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Flex } from 'components/atoms';
 import ImageSection from './ImageSection';
+import H1 from './H1';
+import FormTitle from './FormTitle';
+import FormTextArea from './FormTextArea';
+import { Space } from 'components/atoms';
+import textData from './textData';
+import RecruitPlanSection from './RecruitPlanSection';
+import { instance } from 'api/axios';
+import { applyPostPageRequest } from 'api/request';
+import { useRecoilValue } from 'recoil';
+import { intPlanAtom } from './atom';
+
 export const MakePost = () => {
+  // 백엔드로 전달할 상태관리변수
+  // 연결할거임
   const [form, setForm] = useState({
     title: '',
-    isContinuousRecruitment: 'false',
-    firstStartDate: '',
-    firstEndDate: '',
-    firstAnnounceDate: '',
-    hasSecondInterview: '',
-    secondStartDate: '',
-    secondEndDate: '',
-    secondAnnounceDate: '',
-    recruitWho: '',
+    mainContent: '',
     applyQualify: '',
+    recruitProcess: '',
+    isContinuousRecruitment: false,
+    hasSecondInterview: true,
     recruitProcedure: '',
     membershipFee: '',
-    uploadImage: {},
-    mainContent: '',
+    uploadImage: [],
   });
-  // useRef를 사용하여 DOM 요소 참조
-  const isContinuousRecruitmentRef = useRef(null);
-  const firstStartDateRef = useRef(null);
-  const firstEndDateRef = useRef(null);
-  const firstAnnounceDateRef = useRef(null);
-  const hasYesSecondInterviewRef = useRef(null);
-  const hasNoSecondInterviewRef = useRef(null);
-  const secondStartDateRef = useRef(null);
-  const secondEndDateRef = useRef(null);
-  const secondAnnounceDateRef = useRef(null);
-
-  const onTextFieldChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const ipas = useRecoilValue(intPlanAtom);
+  const onTextFieldChange = (name, value) => {
+    setForm((prev) => {
+      return { ...prev, [name]: value };
+    });
+    localStorage.setItem(name, value);
+  };
+  const onImageFieldChange = (value) => {
+    setForm((prev) => {
+      return { ...prev, uploadImage: value };
+    });
   };
 
-  // 상시모집 여부와 2차 모집여부에 따라 Input값 활성화<->비활성화
-  const onRadioChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-    switch (name) {
-      case 'isContinuousRecruitment':
-        const isContinuousRecruitment = value !== 'true';
-        firstEndDateRef.current.disabled = !isContinuousRecruitment;
-        firstAnnounceDateRef.current.disabled = !isContinuousRecruitment;
-        hasYesSecondInterviewRef.current.disabled = !isContinuousRecruitment;
-        hasNoSecondInterviewRef.current.disabled = !isContinuousRecruitment;
-        secondStartDateRef.current.disabled = !isContinuousRecruitment;
-        secondEndDateRef.current.disabled = !isContinuousRecruitment;
-        secondAnnounceDateRef.current.disabled = !isContinuousRecruitment;
-        break;
-      case 'hasSecondInterview':
-        const hasSecondInterview = value === 'true';
-        secondStartDateRef.current.disabled = !hasSecondInterview;
-        secondEndDateRef.current.disabled = !hasSecondInterview;
-        secondAnnounceDateRef.current.disabled = !hasSecondInterview;
-        break;
-      default:
-        break;
+  // 텍스트 데이터 임시저장
+  useEffect(() => {
+    for (const key in localStorage) {
+      const value = localStorage.getItem(key);
+      setForm((prev) => {
+        return { ...prev, [key]: value };
+      });
     }
+  }, []);
+
+  const onClickPostFormData = () => {
+    // crew 같은 경우는 라우팅할 때 동아리 id를 설정, 토큰은 일단 예시로
+    instance.post(
+      applyPostPageRequest.applyPost,
+      {
+        title: form.title,
+        content: form.mainContent,
+        requirement_target: form.applyQualify,
+        progress: form.recruitProcess,
+        apply_start_date: `${ipas.firstsy}-${ipas.firstsm}-${ipas.firstsd} ${ipas.firstsh}:${ipas.firstsmn}:00`,
+        apply_end_date: `${ipas.firstey}-${ipas.firstem}-${ipas.firsted} ${ipas.firsteh}:${ipas.firstemn}:00`,
+        document_result_date: `${ipas.firstay}-${ipas.firstam}-${ipas.firstad} ${ipas.firstah}:${ipas.firstamn}:00`,
+        has_interview: form.hasSecondInterview,
+        interview_start_date: `${ipas.secondsy}-${ipas.secondsm}-${ipas.secondsd} ${ipas.secondsh}:${ipas.secondsmn}:00`,
+        interview_end_date: `${ipas.secondey}-${ipas.secondem}-${ipas.seconded} ${ipas.secondeh}:${ipas.secondemn}:00`,
+        final_result_date: `${ipas.seconday}-${ipas.secondam}-${ipas.secondad} ${ipas.secondah}:${ipas.secondamn}:00`,
+        membership_fee: form.membershipFee,
+        crew: 1,
+      },
+      {
+        header:
+          'Beader eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNDg4MTEzLCJpYXQiOjE3MDA0ODQ1MTMsImp0aSI6IjIyNjg0ZTg4YmIzZjQ2ZGViMTlmZmY1ZjM4NTQzZjRlIiwidXNlcl9pZCI6M30.VKLfT5AQxXvXw-PmRdY1hRBRuc7zFVP3RBNHEFBbS9Q',
+      }
+    );
   };
 
   return (
-    <>
-      <MakePostWrapper>
-        <H1>Step1. 모집 공고 작성하기</H1>
-        <Title direction="column" align="flex-start" gap="10">
-          <H2>모집 제목</H2>
-          <TextField
-            type="text"
+    <MakePostWrapper>
+      <H1 />
+      <FormList>
+        <FormItem>
+          <FormTitle index={1} content={'모집 제목'} />
+          <FormTextArea
             name="title"
-            maxLength="30"
             value={form.title}
-            onChange={onTextFieldChange}
-          ></TextField>
-          <GuideText>
-            모집 제목은 짧고 간결하게 써주세요! 예) IT 창업 동아리 멋쟁이
-            사자처럼에서 19기 아기사자를 모집합니다!
-          </GuideText>
-        </Title>
-        <RecruitPlan direction="column" align="flex-start" gap="10">
-          <H2>리크루팅 일정</H2>
-          <H3>상시 모집 여부</H3>
-          <RadioWrap>
-            예
-            <Radio
-              type="radio"
-              name="isContinuousRecruitment"
-              value={true}
-              ref={isContinuousRecruitmentRef}
-              onChange={onRadioChange}
-              checked={form.isContinuousRecruitment === 'true'}
-            />
-            아니오
-            <Radio
-              type="radio"
-              name="isContinuousRecruitment"
-              ref={isContinuousRecruitmentRef}
-              value={false}
-              onChange={onRadioChange}
-              checked={form.isContinuousRecruitment === 'false'}
-            />
-          </RadioWrap>
-
-          <H3>1차 서류전형 일정 설정</H3>
-          <PlanWrap>
-            시작일
-            <Date
-              type="text"
-              name="firstStartDate"
-              ref={firstStartDateRef}
-              value={form.firstStartDate}
-              onChange={onTextFieldChange}
-            />
-            마감일
-            <Date
-              type="text"
-              name="firstEndDate"
-              ref={firstEndDateRef}
-              value={form.firstEndDate}
-              onChange={onTextFieldChange}
-            />
-            발표일
-            <Date
-              type="text"
-              name="firstAnnounceDate"
-              ref={firstAnnounceDateRef}
-              value={form.firstAnnounceDate}
-              onChange={onTextFieldChange}
-            />
-          </PlanWrap>
-          <GuideText>
-            서류 시작, 마감, 발표일을 정확하게 기입해 주세요.
-          </GuideText>
-          <H3>2차 모집 여부</H3>
-          <RadioWrap>
-            예
-            <Radio
-              type="radio"
-              name="hasSecondInterview"
-              value={true}
-              ref={hasYesSecondInterviewRef}
-              onChange={onRadioChange}
-              checked={form.hasSecondInterview === 'true'}
-            />
-            아니오
-            <Radio
-              type="radio"
-              name="hasSecondInterview"
-              value={false}
-              ref={hasNoSecondInterviewRef}
-              onChange={onRadioChange}
-              checked={form.hasSecondInterview === 'false'}
-            />
-          </RadioWrap>
-          <H3>2차 면접 일정 설정</H3>
-          <PlanWrap>
-            시작일
-            <Date
-              type="text"
-              name="secondStartDate"
-              ref={secondStartDateRef}
-              value={form.secondStartDate}
-              onChange={onTextFieldChange}
-            />
-            마감일
-            <Date
-              type="text"
-              name="secondEndDate"
-              ref={secondEndDateRef}
-              value={form.secondEndDate}
-              onChange={onTextFieldChange}
-            />
-            발표일
-            <Date
-              type="text"
-              name="secondAnnounceDate"
-              ref={secondAnnounceDateRef}
-              value={form.secondAnnounceDate}
-              onChange={onTextFieldChange}
-            />
-          </PlanWrap>
-          <GuideText>
-            시작, 마감, 발표일을 단위로 정확하게 기입해 주세요. 시작일, 마감일,
-            발표일을 최대한 엄수해주세요.
-          </GuideText>
-        </RecruitPlan>
-
-        <RecruitWho direction="column" align="flex-start" gap="10">
-          <H2>모집 대상</H2>
-          <TextField
-            type="text"
-            name="recruitWho"
-            maxLength="30"
-            value={form.recruitWho}
-            onChange={onTextFieldChange}
+            height={'68px'}
+            onTextFieldChange={onTextFieldChange}
+            placeholder={textData.모집제목}
           />
-          <GuideText>예) 현재 휴학/재학중인 대학생</GuideText>
-        </RecruitWho>
-        <ApplyQualify direction="column" align="flex-start" gap="10">
-          <H2>지원 자격</H2>
-          <TextField
-            type="text"
-            name="applyQualify"
-            maxLength="30"
-            value={form.applyQualify}
-            onChange={onTextFieldChange}
-          />
-          <GuideText>
-            예) 에 관심있으신 분, ~를 하고싶으신 분, ~ 할 수 있으신 분
-          </GuideText>
-        </ApplyQualify>
-        <RecruitProcedure direction="column" align="flex-start" gap="10">
-          <H2>모집 절차</H2>
-          <TextField
-            type="text"
-            name="recruitProcedure"
-            maxLength="30"
-            value={form.recruitProcedure}
-            onChange={onTextFieldChange}
-          />
-          <GuideText>
-            동아리 가입 후 발생하는 가입비, 입회비, 활동비 등에 대해 자세히
-            적어주세요.
-          </GuideText>
-        </RecruitProcedure>
-        <MembershipFee direction="column" align="flex-start" gap="10">
-          <H2>회비</H2>
-          <TextField
-            type="text"
-            name="membershipFee"
-            maxLength="30"
-            value={form.membershipFee}
-            onChange={onTextFieldChange}
-          />
-          <GuideText>
-            동아리 가입 후 발생하는 가입비, 입회비, 활동비 등에 대해 자세히
-            적어주세요.
-          </GuideText>
-        </MembershipFee>
-
-        <UploadImage direction="column" align="flex-start" gap="10">
-          <H2>이미지</H2>
-          <ImageSection />
-          <GuideText>
-            이미지는 최대 8장까지 첨부 가능합니다. 이미지를 여러 장 선택했을 때,
-            선택한 첫 번째 이미지가 메인 화면에 표시됩니다.
-          </GuideText>
-        </UploadImage>
-
-        <MainContent direction="column" align="flex-start" gap="10">
-          <H2>공고 내용</H2>
-          <TextField
-            type="text"
+        </FormItem>
+        <FormItem>
+          <FormTitle index={2} content={'공고할 내용'} />
+          <FormTextArea
             name="mainContent"
-            maxLength="30"
             value={form.mainContent}
-            onChange={onTextFieldChange}
+            height={'220px'}
+            onTextFieldChange={onTextFieldChange}
+            placeholder={textData.공고내용}
           />
-          <GuideText>
-            공고할 내용 파트는 구체적인 활동 내용을 명시하고, 추가적인
-            공고사항들을 적는 곳입니다. 동아리 SNS 링크, 웹사이트 링크를 첨부할
-            수 있습니다.
-          </GuideText>
-        </MainContent>
-        <Notice>
-          <H2>유의사항</H2>
-          <p>
-            이런 유의사항이 있습니다 동의하십니까?이런 유의사항이 있습니다
-            동의하십니까?이런 유의사항이 있습니다 동의하십니까?이런 유의사항이
-            있습니다 동의하십니까?이런 유의사항이 있습니다 동의하십니까?ㅍ이런
-            유의사항이 있습니다 동의하십니까?이런 유의사항이 있습니다
-            동의하십니까?이런 유의사항이 있습니다 동의하십니까?이런 유의사항이
-            있습니다 동의하십니까?이런 유의사항이 있습니다 동의하십니까?이런
-            유의사항이 있습니다 동의하십니까?이런 유의사항이 있습니다
-            동의하십니까?이런 유의사항이 있습니다 동의하십니까?이런 유의사항이
-            있습니다 동의하십니까?이런 유의사항이 있습니다 동의하십니까?이런
-            유의사항이 있습니다 동의하십니까?이런 유의사항이 있습니다
-            동의하십니까?이런 유의사항이 있습니다 동의하십니까?이런 유ㄱ의사항이
-            있습니다 동의하십니까?ㅁㅅ
-          </p>
-        </Notice>
-        <NavigateButton>Step2. 지원서 양식 작성</NavigateButton>
-      </MakePostWrapper>
-    </>
+        </FormItem>
+        <FormItem>
+          <FormTitle index={3} content={'지원 자격'} />
+          <FormTextArea
+            name="applyQualify"
+            value={form.applyQualify}
+            height={'130px'}
+            onTextFieldChange={onTextFieldChange}
+            placeholder={textData.지원자격}
+          />
+        </FormItem>
+        <FormItem>
+          <FormTitle index={4} content={'모집 절차'} />
+          <FormTextArea
+            name="recruitProcess"
+            value={form.recruitProcess}
+            placeholder={textData.모집절차}
+            height={'130px'}
+            onTextFieldChange={onTextFieldChange}
+          />
+        </FormItem>
+        <FormItem>
+          <FormTitle index={5} content={'모집 일정'} />
+          <RecruitPlanSection />
+        </FormItem>
+        <FormItem>
+          <FormTitle index={6} content={'회비'} />
+          <FormTextArea
+            name="membershipFee"
+            value={form.membershipFee}
+            onTextFieldChange={onTextFieldChange}
+            height={'68px'}
+            placeholder={textData.회비}
+          />
+        </FormItem>
+        <FormItem>
+          <FormTitle index={7} content={'이미지 첨부'} />
+          <GuideText>{textData.이미지첨부}</GuideText>
+          <ImageSection onImageFieldChange={onImageFieldChange} />
+        </FormItem>
+      </FormList>
+      <Space height={'52px'}></Space>
+      <GuideText>{textData.유의사항}</GuideText>
+      <MoveButton onClick={onClickPostFormData}>
+        'STEP 02 지원서 양식 작성’ 으로 이동하기
+      </MoveButton>
+    </MakePostWrapper>
   );
 };
 
-const H1 = styled.div`
-  font-size: 30px;
+const MakePostWrapper = styled.div`
+  margin: 0 auto;
+  width: 760px;
 `;
 
-const H2 = styled.div`
-  font-size: 24px;
-`;
-const H3 = styled.div`
-  font-size: 18px;
-`;
-const GuideText = styled.div`
-  color: gray;
-`;
-const TextField = styled.textarea``;
-
-const Date = styled.input``;
-
-const Radio = styled.input``;
-
-const NavigateButton = styled.button``;
-
-const RadioWrap = styled(Flex)``;
-
-const PlanWrap = styled(Flex)``;
-
-const RecruitPlan = styled(Flex)``;
-
-const Title = styled(Flex)``;
-
-const RecruitWho = styled(Flex)``;
-
-const ApplyQualify = styled(Flex)``;
-
-const RecruitProcedure = styled(Flex)``;
-
-const MembershipFee = styled(Flex)``;
-
-const MainContent = styled(Flex)``;
-
-const UploadImage = styled(Flex)``;
-
-const Notice = styled.div``;
-
-const MakePostWrapper = styled.form`
-  width: 60%;
+const FormItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin: 0 auto;
+  gap: 16px;
+`;
+
+const FormList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`;
+
+export const GuideText = styled.div`
+  color: var(--gray-g-04, #b3b3b3);
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.4px;
+`;
+
+const MoveButton = styled.button`
+  all: unset; // 버튼 css 초기화. 나중에 전역스타일링에서 바꿔주면 될듯함
+  margin: 80px auto 80px;
+  width: 392px;
+  height: 65px;
+  border-radius: 10px;
+  background: var(--blue-b-05-m, #3172ea);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
 `;
