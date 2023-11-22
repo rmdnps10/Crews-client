@@ -64,7 +64,7 @@ export const SignIn = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
   };
-
+  const [isValid, setIsValid] = useState();
   const validateField = (fieldName, value) => {
     let errorMessage = '';
 
@@ -402,23 +402,24 @@ const FormGroup = styled.div`
 const LongInput = styled.input`
   height: 65px;
   width: 522px;
-  border: 1px solid ${(props) => (props.isValid ? '#3172ea' : '#ccc')};
-  border-radius: 10px;
   background-color: #f2f2f2;
+  outline: none;
+  border: 1px solid ${(props) => (props.isValid ? '#3172ea ' : '#ccc')};
+  border-radius: 10px;
   padding: 22px;
   font-family: 'Pretendard';
   font-size: 18px;
   font-weight: 600;
   margin-top: 16px;
   &:focus {
-    border-radius: 10px;
-    border: 2px solid #db4242;
     background: #fdf2f3;
+    border: 2px solid #f15454;
   }
 `;
 const ShortInput = styled.input`
   height: 65px;
   width: 350px;
+  outline: none;
   border: 1px solid ${(props) => (props.isValid ? '#3172ea' : '#ccc')};
   border-radius: 10px;
   background-color: #f2f2f2;
@@ -430,12 +431,12 @@ const ShortInput = styled.input`
   outline: none;
   font-weight: 600;
   &:focus {
-    border-radius: 10px;
-    border: 2px solid #db4242;
     background: #fdf2f3;
+    border: 2px solid #f15454;
   }
 `;
 const Select = styled.select`
+  appearance: none;
   height: 68px;
   width: 522px;
   border: 1.4px solid #ccc;
