@@ -5,51 +5,76 @@ import profile from './profile.png';
 import { Flex, Text, Space } from 'components/atoms';
 import { instance } from 'api/axios';
 import { postDetailRequest } from 'api/request';
+import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 export const PostDetail = () => {
   const [recruitmentData, setRecruitmentData] = useState(null);
   const [crewData, setCrewData] = useState(null);
+  const params = useParams();
+  const convertData = (str) => {
+    // dayjs 사용해서
+    if (!str) {
+      return ''; // 날짜가 없을 경우 빈 문자열 반환
+    }
+
+    const formattedDate = dayjs(str).format('M월 D일 H시 m분');
+    return formattedDate;
+  };
+
   useEffect(() => {
-    // instance.get(`${postDetailRequest.getPostInfo}`,{
-    //   params : {
-    //     post_id:
-    //   }
-    // })
-    const data = {
-      id: 3,
-      apply_start_date: '2023-11-17T02:20:09',
-      apply_end_date: '2023-11-17T02:20:10',
-      document_result_date: '2023-11-17T02:20:11',
-      has_interview: true,
-      interview_start_date: '2023-11-17T02:20:12',
-      interview_end_date: '2023-11-17T02:20:13',
-      final_result_date: '2023-11-17T02:20:14',
-      requirement_target:
-        '웹 개발에 관심이 있고 배우려고 하시는 분\n2학기 활동이 가능하신 분\n네트워킹을 통해 팀 프로젝트를 즐기고 싶으신 분',
-      title: '멋쟁이사자처럼 서강대에서 아기사자들을 모집합니다!!',
-      content: '',
-      membership_fee: '0',
-      created_at: '',
-      progress: '면접',
-      total_likes: 0,
-      total_applies: 0,
+    const fetchData = async () => {
+      try {
+        const [postResponse, crewResponse] = await Promise.all([
+          instance.get(`${postDetailRequest.getPostInfo}`, {
+            params: {
+              post_id: params.postid,
+            },
+          }),
+          instance.get(`${postDetailRequest.getCrewInfo}`, {
+            params: {
+              post_id: params.postid,
+            },
+          }),
+        ]);
+
+        setRecruitmentData({
+          ...postResponse.data,
+          apply_start_date: convertData(postResponse.data.apply_start_date),
+          apply_end_date: convertData(postResponse.data.apply_end_date),
+          document_result_date: convertData(
+            postResponse.data.document_result_date
+          ),
+          interview_start_date: convertData(
+            postResponse.data.interview_start_date
+          ),
+          interview_end_date: convertData(postResponse.data.interview_end_date),
+          final_result_date: convertData(postResponse.data.final_result_date),
+        });
+
+        setCrewData(crewResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
 
-    setRecruitmentData(data);
-  }, []);
+    fetchData();
+  }, [params.postid]);
 
   return (
     <DetailWrapper>
       <BackArrow src={backArrow} />
       <Space height="40px" />
       <CrewInfo>
-        <Flex justify="start">
+        <Flex justify="start" height="100%">
           <Profile src={profile} />
-          <Flex direction="column">
-            <CrewName>멋쟁이사자처럼</CrewName>
-            <CrewDetail>웹 기반 창업동아리</CrewDetail>
+          <Flex direction="column" gap={'12'} align="flex-start">
+            <Flex>
+              <CrewName> {crewData?.crew_name}</CrewName>
+              <CrewCategory>{crewData?.category}</CrewCategory>
+            </Flex>
+            <CrewDetail>{crewData?.crew_description}</CrewDetail>
           </Flex>
-          <CrewCategory>IT/코딩</CrewCategory>
         </Flex>
       </CrewInfo>
       <Space height="40px" />
@@ -57,7 +82,7 @@ export const PostDetail = () => {
       <ContentDiv>
         <Title>
           <Text weight={700} size="30px">
-            {recruitmentData ? recruitmentData.title : 'Loading...'}
+            {recruitmentData?.title}
           </Text>
         </Title>
         <Space height="40px" />
@@ -69,9 +94,14 @@ export const PostDetail = () => {
               모집내용
             </Text>
             <Space height="16px" />
-
-            <Text color="#101010" weight={400} size="18px" align="start">
-              {recruitmentData ? recruitmentData.content : 'Loading...'}
+            <Text
+              color="#101010"
+              weight={400}
+              size="18px"
+              align="start"
+              style={{ whiteSpace: 'pre-line' }}
+            >
+              {recruitmentData?.content}
             </Text>
           </Flex>
         </Content>
@@ -83,10 +113,14 @@ export const PostDetail = () => {
               지원자격{' '}
             </Text>{' '}
             <Space height="16px" />
-            <Text color="#101010" weight={400} size="18px" align="start">
-              {recruitmentData
-                ? recruitmentData.requirement_target
-                : 'Loading...'}
+            <Text
+              color="#101010"
+              weight={400}
+              size="18px"
+              align="start"
+              style={{ whiteSpace: 'pre-line' }}
+            >
+              {recruitmentData?.requirement_target}
             </Text>
           </Flex>
         </Target>
@@ -98,8 +132,14 @@ export const PostDetail = () => {
               모집 절차
             </Text>{' '}
             <Space height="16px" />
-            <Text weight={400} size="18px" align="start">
-              {recruitmentData ? recruitmentData.progress : 'Loading...'}
+            <Text
+              color="#101010"
+              weight={400}
+              size="18px"
+              align="start"
+              style={{ whiteSpace: 'pre-line' }}
+            >
+              {recruitmentData?.progress}
             </Text>
           </Flex>
         </Process>
@@ -118,21 +158,12 @@ export const PostDetail = () => {
                 </Text>{' '}
                 <Space height="12px" />
                 <Text color="#101010" weight={400} size="18px" align="start">
-                  접수일 :{' '}
-                  {recruitmentData
-                    ? recruitmentData.apply_start_date
-                    : 'Loading...'}
-                  ~{' '}
-                  {recruitmentData
-                    ? recruitmentData.apply_end_date
-                    : 'Loading...'}
+                  접수일 : {recruitmentData?.apply_start_date}~
+                  {recruitmentData?.apply_end_date}
                 </Text>{' '}
                 <Space height="12px" />
                 <Text color="#101010" weight={400} size="18px" align="start">
-                  발표일 :{' '}
-                  {recruitmentData
-                    ? recruitmentData.document_result_date
-                    : 'Loading...'}
+                  발표일 : {recruitmentData?.document_result_date}
                 </Text>
                 <Space height="16px" />
               </Flex>
@@ -145,21 +176,12 @@ export const PostDetail = () => {
                   </Text>{' '}
                   <Space height="12px" />
                   <Text color="#101010" weight={400} size="18px" align="start">
-                    접수일 :{' '}
-                    {recruitmentData
-                      ? recruitmentData.interview_start_date
-                      : 'Loading...'}{' '}
-                    ~
-                    {recruitmentData
-                      ? recruitmentData.interview_end_date
-                      : 'Loading...'}
+                    접수일 : {recruitmentData?.interview_start_date}~
+                    {recruitmentData?.interview_end_date}
                   </Text>{' '}
                   <Space height="12px" />
                   <Text color="#101010" weight={400} size="18px" align="start">
-                    발표일 :{' '}
-                    {recruitmentData
-                      ? recruitmentData.final_result_date
-                      : 'Loading...'}
+                    발표일 : {recruitmentData?.final_result_date}
                   </Text>
                 </Flex>
               </Interview>
@@ -174,8 +196,14 @@ export const PostDetail = () => {
               회비
             </Text>{' '}
             <Space height="12px" />
-            <Text color="#101010" weight={400} size="18px" align="start">
-              {recruitmentData ? recruitmentData.membership_fee : 'Loading...'}
+            <Text
+              color="#101010"
+              weight={400}
+              size="18px"
+              align="start"
+              style={{ whiteSpace: 'pre-line' }}
+            >
+              {recruitmentData?.membership_fee}
             </Text>
           </Flex>
         </Fee>
@@ -184,6 +212,18 @@ export const PostDetail = () => {
     </DetailWrapper>
   );
 };
+
+const Textarea = styled.textarea`
+  resize: none;
+  border: none;
+  color: '#101010';
+  width: 760px;
+  height: auto;
+  font-weight: 400px;
+  font-size: 18px;
+  align-items: start;
+  overflow-y: hidden;
+`;
 const DetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -204,7 +244,6 @@ const CrewInfo = styled.div`
   background: #f6f8fe;
 `;
 const Profile = styled.img`
-  margin-top: 23.4px;
   margin-left: 25.65px;
 `;
 const CrewName = styled.div`

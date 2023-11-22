@@ -25,7 +25,7 @@ export const applyPostPageRequest = {
 //모집상세페이지
 export const postDetailRequest = {
   getCrewInfo: '/post/get-crew-info/',
-  getPostInfo: '/post/like-post/',
+  getPostInfo: '/post/post-content/',
 };
 //로그인 페이지
 export const loginRequest = {
