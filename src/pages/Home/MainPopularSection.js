@@ -41,11 +41,12 @@ function MainPopularSection() {
       </HotCaption>
       <Space height={'30px'} />
       <HotPostList>
-        {/* 오류방지 */}
+        {/* 아무것도 없을 때 오류방지 */}
         {hotPostData.length > 0 ? (
           <>
             <MainCrewCard
               isSmall={true}
+              id={hotPostData[1].id}
               category={hotPostData[1].category}
               likeCount={hotPostData[1].current_like_count}
               isLiked={hotPostData[1].is_liked}
@@ -55,6 +56,7 @@ function MainPopularSection() {
             />
             <MainCrewCard
               isSmall={false}
+              id={hotPostData[0].id}
               category={hotPostData[0].category}
               likeCount={hotPostData[0].current_like_count}
               isLiked={hotPostData[0].is_liked}
@@ -65,12 +67,13 @@ function MainPopularSection() {
             {/* // 백엔드 연동할 때 2로바꾸자 */}
             <MainCrewCard
               isSmall={true}
-              category={hotPostData[1].category}
-              likeCount={hotPostData[1].current_like_count}
-              isLiked={hotPostData[1].is_liked}
-              crewName={hotPostData[1].crew_name}
-              title={hotPostData[1].title}
-              dayLeft={hotPostData[1].d_minus_info}
+              id={hotPostData[2].id}
+              category={hotPostData[2].category}
+              likeCount={hotPostData[2].current_like_count}
+              isLiked={hotPostData[2].is_liked}
+              crewName={hotPostData[2].crew_name}
+              title={hotPostData[2].title}
+              dayLeft={hotPostData[2].d_minus_info}
             />{' '}
           </>
         ) : (

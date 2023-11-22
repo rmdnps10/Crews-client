@@ -20,11 +20,12 @@ function MyPostSection() {
   };
   // 한번에 fetch하는게 맞긴해.. 근데 상태가너무많아.. 전역변수 설정해주자 나중에
   useEffect(() => {
+    const token = localStorage.getItem('access');
     // 토큰은 로컬이든 쿠키에서 어떻게든 가져왔다고 가정, 테스트 토큰임
     const fetchProfileData = async () => {
       const { data } = await instance.get(`${myPageRequest.allInOne}`, {
         headers: {
-          Authorization: '토큰입력',
+          Authorization: `Bearer ${token}`,
           // 테스트 토큰 주석처리, 새로 발급받아야함
           // 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzM2MDg4LCJpYXQiOjE3MDAzMzI0ODgsImp0aSI6IjI5ZWQxMWI0MDg1ZTRmY2ZhNzg4MTkyZTk5ZjZmNGUwIiwidXNlcl9pZCI6MX0.XLg8jI4FZJOMqM1S_sN_pI28CfPeE2kDASB1GOqlf0I'
         },

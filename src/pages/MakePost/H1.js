@@ -9,6 +9,7 @@ function H1() {
         <StepIndicate>STEP 01</StepIndicate>
         <Line />
         <SectionTitle>모집공고 작성하기</SectionTitle>
+        
       </H1Wrapper>
       <Space height="40px"></Space>
     </>
