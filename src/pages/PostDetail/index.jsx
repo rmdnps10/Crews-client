@@ -4,7 +4,6 @@ import { Flex, Text, Space } from 'components/atoms';
 
 export const PostDetail = () => {
   const [recruitmentData, setRecruitmentData] = useState(null);
-
   useEffect(() => {
     const data = {
       id: 3,
