@@ -60,12 +60,12 @@ function MyProfileSection() {
 
   useEffect(() => {
     // 토큰은 로컬이든 쿠키에서 어떻게든 가져왔다고 가정, 테스트 토큰임
+    const token = localStorage.getItem('access');
     const fetchProfileData = async () => {
       const { data } = await instance.get(`${myPageRequest.allInOne}`, {
         headers: {
-          Authorization:
-            "토큰입력"
-            // 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzM2MDg4LCJpYXQiOjE3MDAzMzI0ODgsImp0aSI6IjI5ZWQxMWI0MDg1ZTRmY2ZhNzg4MTkyZTk5ZjZmNGUwIiwidXNlcl9pZCI6MX0.XLg8jI4FZJOMqM1S_sN_pI28CfPeE2kDASB1GOqlf0I',
+          Authorization: `Bearer ${token}`,
+          // 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMzM2MDg4LCJpYXQiOjE3MDAzMzI0ODgsImp0aSI6IjI5ZWQxMWI0MDg1ZTRmY2ZhNzg4MTkyZTk5ZjZmNGUwIiwidXNlcl9pZCI6MX0.XLg8jI4FZJOMqM1S_sN_pI28CfPeE2kDASB1GOqlf0I',
         },
       });
       //동아리 관리자일경우
