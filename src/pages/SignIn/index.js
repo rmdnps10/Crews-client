@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { Button, Flex, Text } from 'components/atoms';
+import { Flex, Space, Text } from 'components/atoms';
 import { useNavigate } from 'react-router-dom';
 
 export const SignIn = () => {
@@ -78,7 +78,7 @@ export const SignIn = () => {
           /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
         )
           ? '올바른 이메일 형식이 아닙니다.'
-          : '';
+          : '사용 가능한 아이디입니다.';
         break;
       case 'password':
         errorMessage =
@@ -100,7 +100,7 @@ export const SignIn = () => {
           /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
         )
           ? '올바른 이메일 형식이 아닙니다.'
-          : '';
+          : '사용 가능한 아이디입니다.';
         break;
       default:
         break;
@@ -123,93 +123,115 @@ export const SignIn = () => {
 
   return (
     <SigninWrapper>
+      <Space height="120px" />
+
       <TitleDiv>
         <Flex direction="column" align="start">
-          <Text size={32} weight={700} color="#3172EA">
+          <Text size="28px" weight={700} color="#3172EA">
             회원가입
           </Text>
-
-          <Text size={20} weight={400} color="#999999">
+          <Space height="12px" />
+          <Text size="16px" weight={400} color="#999999">
             CREWS에 오신 것을 환영합니다! 계정을 생성해주세요.
           </Text>
         </Flex>
       </TitleDiv>
+      <Space height="40px" />
 
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <Text size={22} weight={600}>
-            이메일(아이디)
+          <Text size="20px" weight={600} color="#101010">
+            아이디(이메일)
+            <Space height="16px" />
           </Text>
-          <Flex>
-            <Input
-              width={380}
-              height={68}
+
+          <Flex align="center">
+            <ShortInput
               type="email"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
               required
+              placeholder="이메일을 입력해주세요."
             />
-            <Button width="150" height="68" fontSize="20" buttonColor="#CCCCCC">
-              중복확인
-            </Button>
+
+            <SmallBtn>중복 확인</SmallBtn>
           </Flex>
+
           <ErrorMessage>{errors.email}</ErrorMessage>
         </FormGroup>
+        <Space height="32px" />
         <FormGroup>
-          <Text>비밀번호</Text>
-          <Input
+          <Text size="20px" weight={600} color="#101010">
+            비밀번호
+          </Text>
+          <LongInput
             type="password"
             id="password"
             name="password"
             value={formData.password}
             onChange={handleInputChange}
             required
+            placeholder="비밀번호를 입력해주세요."
           />
           <ErrorMessage>{errors.password}</ErrorMessage>
         </FormGroup>
         <FormGroup>
-          <Text>비밀번호 확인</Text>
-          <Input
+          <LongInput
             type="password"
             id="confirmPassword"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleInputChange}
+            placeholder="비밀번호를 입력해주세요."
             required
           />
           <ErrorMessage>{errors.confirmPassword}</ErrorMessage>
         </FormGroup>
-        <Text size={20} weight={400} color="#999999">
+        <Text size="20px" weight={400} color="#999999">
+          <Space height="8px" />
           학생 정보 등록 및 본인 인증을 진행해주세요.
+          <Space height="20px" />
         </Text>
         <FormGroup>
-          <Text>이름</Text>
-          <Input
+          <Text size="20px" weight={600} color="#101010">
+            이름
+          </Text>
+
+          <LongInput
             type="text"
             id="username"
             name="username"
             value={formData.username}
             onChange={handleInputChange}
+            placeholder="이름을 입력해주세요."
             required
           />
+
           <ErrorMessage>{errors.username}</ErrorMessage>
         </FormGroup>
+        <Space height="32px" />
         <FormGroup>
-          <Text>학번</Text>
-          <Input
+          <Text size="20px" weight={600} color="#101010">
+            학번
+          </Text>
+          <LongInput
             type="text"
             id="studentId"
             name="studentId"
             value={formData.studentId}
             onChange={handleInputChange}
+            placeholder="학번을 입력해주세요."
             required
           />
           <ErrorMessage>{errors.studentId}</ErrorMessage>
         </FormGroup>
+        <Space height="32px" />
         <FormGroup>
-          <Text>제 1전공 (필수)</Text>
+          <Text size="20px" weight={600} color="#101010">
+            제 1전공 (필수)
+          </Text>
           <Select
             name="department"
             value={formData.department}
@@ -221,8 +243,11 @@ export const SignIn = () => {
             <option value="기계 공학">기계 공학</option>
           </Select>
         </FormGroup>
+        <Space height="32px" />
         <FormGroup>
-          <Text>제 2전공 (선택)</Text>
+          <Text size="20px" weight={600} color="#101010">
+            제 2전공 (선택)
+          </Text>
           <Select
             name="department2"
             value={formData.department2}
@@ -237,8 +262,10 @@ export const SignIn = () => {
         </FormGroup>
         {formData.department2 === '기타' && (
           <FormGroup>
-            <Text>기타 학과</Text>
-            <Input
+            <Text size="20px" weight={600} color="#101010">
+              기타 학과
+            </Text>
+            <LongInput
               type="text"
               name="otherDepartment2"
               value={formData.otherDepartment2}
@@ -247,9 +274,11 @@ export const SignIn = () => {
             />
           </FormGroup>
         )}
-
+        <Space height="32px" />
         <FormGroup>
-          <Text>제 3전공 (선택)</Text>
+          <Text size="20px" weight={600} color="#101010">
+            제 3전공 (선택)
+          </Text>
           <Select
             name="department3"
             value={formData.department3}
@@ -264,8 +293,10 @@ export const SignIn = () => {
         </FormGroup>
         {formData.department3 === '기타' && (
           <FormGroup>
-            <Text>기타 학과</Text>
-            <Input
+            <Text size="20px" weight={600} color="#101010">
+              기타 학과
+            </Text>
+            <LongInput
               type="text"
               name="otherDepartment3"
               value={formData.otherDepartment3}
@@ -274,46 +305,55 @@ export const SignIn = () => {
             />
           </FormGroup>
         )}
+        <Space height="32px" />
         <FormGroup>
-          <Text>학교 이메일 인증</Text>
+          <Text size="20px" weight={600} color="#101010">
+            학교 이메일 인증
+            <Space height="16px" />
+          </Text>
           <Flex direction="row">
-            <Input
+            <ShortInput
               type="email"
               id="schoolemail"
               name="schoolemail"
               value={formData.schoolemail}
               onChange={handleInputChange}
+              placeholder="학교 이메일을 입력해주세요."
               required
             />
-            <Button width="150" height="68" fontSize="20">
-              인증번호 전송
-            </Button>
-          </Flex>{' '}
+            <SmallBtn>인증번호 전송</SmallBtn>
+          </Flex>
           <ErrorMessage>{errors.schoolemail}</ErrorMessage>
         </FormGroup>
+
         <FormGroup>
-          <Text>인증번호</Text>
+          <Text size="20px" weight={600} color="#101010">
+            인증번호
+            <Space height="16px" />
+          </Text>
           <Flex direction="row">
-            <Input />
-            <Button width="150" height="68" fontSize="20">
-              인증번호 확인
-            </Button>
+            <ShortInput />
+            <SmallBtn>인증번호 확인</SmallBtn>
           </Flex>
         </FormGroup>
-
-        <CompleteBtn
-          type="submit"
-          onClick={validateField}
-          disabled={!isButtonEnabled}
-        >
-          <Text color="white"> 회원 가입 완료</Text>
-        </CompleteBtn>
+        <Space height="60px" />
         <Flex>
-          <Text size={12} color="grey">
+          <CompleteBtn
+            type="submit"
+            onClick={validateField}
+            disabled={!isButtonEnabled}
+          >
+            <Text color="white"> 회원 가입 완료</Text>
+          </CompleteBtn>
+        </Flex>
+        <Space height="20px" />
+        <Flex>
+          <Text size={12} color="grey" cursor="default">
             이미 회원이신가요?
           </Text>
           <LoginBtn onClick={() => nav('/login')}>로그인</LoginBtn>
         </Flex>
+        <Space height="60px" />
       </form>
     </SigninWrapper>
   );
@@ -325,16 +365,32 @@ const SigninWrapper = styled.div`
   align-items: center;
 `;
 const TitleDiv = styled.div`
+  width: 522px;
   display: flex;
+
   justify-content: flex-start;
 `;
 const CompleteBtn = styled.button`
-  width: 522px;
-  height: 68px;
+  width: 392px;
+  height: 65px;
   background-color: ${(props) => (props.disabled ? '#ccc' : '#3172ea')};
   border-radius: 10px;
+  font-size: 20px;
+
   border: none;
   margin-bottom: 10px;
+`;
+const SmallBtn = styled.button`
+  width: 150px;
+  height: 65px;
+  background-color: ${(props) => (props.isValid ? '#3172ea' : '#ccc')};
+  border-radius: 10px;
+  border: none;
+  color: ${(props) => (props.isValid ? 'white' : '#999')};
+  font-size: 20px;
+  font-weight: 700;
+  box-sizing: border-box;
+  font-family: 'Pretendard';
 `;
 const FormGroup = styled.div`
   width: 522px;
@@ -343,29 +399,56 @@ const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 `;
 
-const Input = styled.input`
-  height: 30px;
-  padding: 5px;
-  border: 1px solid #ccc;
+const LongInput = styled.input`
+  height: 65px;
+  width: 522px;
+  border: 1px solid ${(props) => (props.isValid ? '#3172ea' : '#ccc')};
   border-radius: 10px;
+  background-color: #f2f2f2;
+  padding: 22px;
+  font-family: 'Pretendard';
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 16px;
 `;
-
+const ShortInput = styled.input`
+  height: 65px;
+  width: 350px;
+  border: 1px solid ${(props) => (props.isValid ? '#3172ea' : '#ccc')};
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  margin-right: 12px;
+  box-sizing: border-box;
+  padding: 22px;
+  font-family: 'Pretendard';
+  font-size: 18px;
+  font-weight: 600;
+`;
 const Select = styled.select`
-  height: 30px;
-  padding: 5px;
-  border: 1px solid #ccc;
+  height: 68px;
+  width: 522px;
+  border: 1.4px solid #ccc;
   border-radius: 5px;
+  font-family: 'Pretendard-Regular';
+  font-size: 18px;
+  padding: 22px 18px 22px 22px;
+  margin-top: 16px;
+  font-weight: 600;
 `;
 
 const ErrorMessage = styled.div`
-  color: red;
-  font-size: 12px;
-  font-weight: 300;
+  color: ${(props) => (props.isValid ? '#3172ea' : '#f15454')};
+  font-size: 18px;
+  font-weight: 500;
+  margin: 16px 0px 32px 0px;
+  font-family: 'Pretendard-Regular';
 `;
 const LoginBtn = styled.div`
   color: blue;
   margin-left: 10px;
+  font-family: 'Pretendard';
+  cursor: pointer;
 `;

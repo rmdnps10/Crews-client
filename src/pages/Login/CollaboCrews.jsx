@@ -5,7 +5,7 @@ export const CollaboCrews = () => {
   const [clubList, setClubList] = useState([1, 2, 3]);
   return (
     <>
-      <Text>Crews와 함께하는 동아리</Text>
+      {/* <Text>Crews와 함께하는 동아리</Text> */}
       <Flex gap={'10'}>
         {clubList.map(() => {
           return <CrewsCard />;

@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { Navigation } from 'components/molecules';
-import { Hello, MakeForm, MakePost, Login, SignIn } from 'pages';
+import { Hello, MakeForm, MakePost, Login, SignIn, PostDetail } from 'pages';
 
 const Router = () => {
   return (
@@ -11,6 +11,7 @@ const Router = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/makepost" element={<MakePost />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/postdetail" element={<PostDetail />} />
       </Routes>
     </>
   );
