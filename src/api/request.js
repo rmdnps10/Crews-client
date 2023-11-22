@@ -22,7 +22,11 @@ export const myPageRequest = {
 export const applyPostPageRequest = {
   applyPost: 'apply/post/',
 };
-
+//모집상세페이지
+export const postDetailRequest = {
+  getCrewInfo: '/post/get-crew-info/',
+  getPostInfo: '/post/like-post/',
+};
 //로그인 페이지
 export const loginRequest = {
   loginPost: 'accounts/login/',

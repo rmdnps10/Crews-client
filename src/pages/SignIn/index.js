@@ -65,7 +65,7 @@ export const SignIn = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
   };
-
+  const [isValid, setIsValid] = useState();
   const validateField = (fieldName, value) => {
     let errorMessage = '';
 
@@ -394,8 +394,6 @@ const SmallBtn = styled.button`
 `;
 const FormGroup = styled.div`
   width: 522px;
-  height: 68px;
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -405,18 +403,24 @@ const FormGroup = styled.div`
 const LongInput = styled.input`
   height: 65px;
   width: 522px;
-  border: 1px solid ${(props) => (props.isValid ? '#3172ea' : '#ccc')};
-  border-radius: 10px;
   background-color: #f2f2f2;
+  outline: none;
+  border: 1px solid ${(props) => (props.isValid ? '#3172ea ' : '#ccc')};
+  border-radius: 10px;
   padding: 22px;
   font-family: 'Pretendard';
   font-size: 18px;
   font-weight: 600;
   margin-top: 16px;
+  &:focus {
+    background: #fdf2f3;
+    border: 2px solid #f15454;
+  }
 `;
 const ShortInput = styled.input`
   height: 65px;
   width: 350px;
+  outline: none;
   border: 1px solid ${(props) => (props.isValid ? '#3172ea' : '#ccc')};
   border-radius: 10px;
   background-color: #f2f2f2;
@@ -426,8 +430,13 @@ const ShortInput = styled.input`
   font-family: 'Pretendard';
   font-size: 18px;
   font-weight: 600;
+  &:focus {
+    background: #fdf2f3;
+    border: 2px solid #f15454;
+  }
 `;
 const Select = styled.select`
+  appearance: none;
   height: 68px;
   width: 522px;
   border: 1.4px solid #ccc;

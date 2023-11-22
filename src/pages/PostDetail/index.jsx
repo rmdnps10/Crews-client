@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import backArrow from './backArrow.svg';
+import profile from './profile.png';
 import { Flex, Text, Space } from 'components/atoms';
+import { instance } from 'api/axios';
+import { postDetailRequest } from 'api/request';
 
 export const PostDetail = () => {
   const [recruitmentData, setRecruitmentData] = useState(null);
-
+  const [crewData, setCrewData] = useState(null);
   useEffect(() => {
+    // instance.get(`${postDetailRequest.getPostInfo}`,{
+    //   params : {
+    //     post_id:
+    //   }
+    // })
     const data = {
       id: 3,
       apply_start_date: '2023-11-17T02:20:09',
@@ -31,8 +40,18 @@ export const PostDetail = () => {
 
   return (
     <DetailWrapper>
+      <BackArrow src={backArrow} />
       <Space height="40px" />
-      <CrewInfo></CrewInfo>
+      <CrewInfo>
+        <Flex justify="start">
+          <Profile src={profile} />
+          <Flex direction="column">
+            <CrewName>멋쟁이사자처럼</CrewName>
+            <CrewDetail>웹 기반 창업동아리</CrewDetail>
+          </Flex>
+          <CrewCategory>IT/코딩</CrewCategory>
+        </Flex>
+      </CrewInfo>
       <Space height="40px" />
 
       <ContentDiv>
@@ -169,12 +188,55 @@ const DetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
+const BackArrow = styled.img`
+  position: absolute;
+  top: -2px;
+  left: -43px;
+  cursor: pointer;
+`;
+
 const CrewInfo = styled.div`
   width: 760px;
   height: 128px;
   border-radius: 20px;
   background: #f6f8fe;
+`;
+const Profile = styled.img`
+  margin-top: 23.4px;
+  margin-left: 25.65px;
+`;
+const CrewName = styled.div`
+  margin-left: 25.76px;
+  color: #101010;
+  font-family: Pretendard;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+`;
+const CrewCategory = styled.div`
+  margin-left: 12px;
+  background-color: #3172ea;
+  border-radius: 15.5px;
+  display: inline-flex;
+  padding: 6px 14px;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+`;
+const CrewDetail = styled.div`
+  margin-left: 25.76px;
+
+  color: #666;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
 `;
 
 const ContentDiv = styled.div`
