@@ -56,9 +56,10 @@ export const LoginInput = () => {
     if (notMatch === true) {
       setNotMatch(false);
     }
+
     if (email.trim() === '') {
       alert('아이디를 입력하세요');
-    } else if (password.trim() === '') {
+    } else if (password.toString().trim() === '') {
       alert('비밀번호를 입력하세요');
     } else {
       loginUser(email, password);
@@ -101,6 +102,7 @@ export const LoginInput = () => {
       isLoginPending = false;
     }
   };
+  console.log(email);
   return (
     <LoginInputWrapper>
       <form onSubmit={onSubmitHanlder}>
