@@ -26,6 +26,8 @@ export const applyPostPageRequest = {
 export const postDetailRequest = {
   getCrewInfo: '/post/get-crew-info/',
   getPostInfo: '/post/post-content/',
+  likedPost: '/post/like-post/',
+  getButtonStatus: '/post/click-apply-button/',
 };
 //로그인 페이지
 export const loginRequest = {

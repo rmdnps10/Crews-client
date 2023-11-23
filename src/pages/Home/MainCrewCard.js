@@ -8,6 +8,7 @@ import saveBlueImage from './save-blue.svg';
 import { instance } from 'api/axios';
 import { homePageRequest } from 'api/request';
 import { useNavigate } from 'react-router-dom';
+import PostCategoryData from './PostCategory';
 function MainCrewCard({
   title,
   endDate,
@@ -41,7 +42,8 @@ function MainCrewCard({
     }
     setIsSaveBlue(!isSaveBlue);
   };
-  const onClickSaveButton = () => {
+  const onClickSaveButton = (e) => {
+    e.stopPropagation();
     if (localStorage.getItem('access')) {
       postLikePost(id);
     } else {
@@ -51,10 +53,6 @@ function MainCrewCard({
   useEffect(() => {}, [isSaveBlue]);
 
   const onClickGoDetailPost = (e) => {
-    console.log(e.target.className);
-    if (e.target.className === 'save') {
-      return;
-    }
     navigate(`/postdetail/${id}`);
   };
   return (
@@ -68,7 +66,9 @@ function MainCrewCard({
           <CrewName>{crewName}</CrewName>
         </Flex>
         <PostTitle>{title}</PostTitle>
-        <PostCategory>{category}</PostCategory>
+        <PostCategory>
+          <PostCategoryData category={category} />
+        </PostCategory>
         <PostSaveView>
           {isSaveBlue ? (
             <SaveImage
@@ -167,7 +167,7 @@ const PostCategory = styled.div`
   position: absolute;
   bottom: 53px;
 `;
-const PostSaveView = styled.div`
+const PostSaveView = styled.label`
   display: flex;
   position: absolute;
   bottom: 16px;

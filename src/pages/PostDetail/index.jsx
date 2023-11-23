@@ -5,10 +5,18 @@ import profile from './profile.png';
 import { Flex, Text, Space } from 'components/atoms';
 import { instance } from 'api/axios';
 import { postDetailRequest } from 'api/request';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import backArrowIcon from './backArrow.svg';
+import shareIcon from './share-icon.svg';
+import bookMarkIcon from './bookmark.svg';
+import activateBookMarkIcon from './blue-bookmark.svg';
+import postImage from './postImage.png';
 import dayjs from 'dayjs';
-
+import copy from 'clipboard-copy';
 export const PostDetail = () => {
+  const navigate = useNavigate();
+  const [isSaveBlue, setIsSaveBlue] = useState();
+  const [countLikes, setCountLikes] = useState();
   const [recruitmentData, setRecruitmentData] = useState(null);
   const [crewData, setCrewData] = useState(null);
   const params = useParams();
@@ -20,6 +28,35 @@ export const PostDetail = () => {
 
     const formattedDate = dayjs(str).format('M월 D일 H시 m분');
     return formattedDate;
+  };
+  const onClickGoPost = () => {
+    navigate(`/makepost/${params.postid}`);
+  };
+
+  const onClickGoHome = () => {
+    console.log('?');
+    navigate('/');
+  };
+
+  const onClickSaveIcon = () => {
+    instance.post(
+      `${postDetailRequest.likedPost}`,
+      { post_id: params.postid },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      }
+    );
+  };
+  const handleCopyClick = () => {
+    copy(window.location.href)
+      .then(() => {
+        alert('클립보드에 주소가 복사되었습니다!');
+      })
+      .catch((err) => {
+        console.error('복사 중 오류 발생:', err);
+      });
   };
 
   useEffect(() => {
@@ -37,7 +74,7 @@ export const PostDetail = () => {
             },
           }),
         ]);
-
+        setCountLikes(postResponse.data.total_likes);
         setRecruitmentData({
           ...postResponse.data,
           apply_start_date: convertData(postResponse.data.apply_start_date),
@@ -63,7 +100,6 @@ export const PostDetail = () => {
 
   return (
     <DetailWrapper>
-      <BackArrow src={backArrow} />
       <Space height="40px" />
       <CrewInfo>
         <Flex justify="start" height="100%">
@@ -81,12 +117,13 @@ export const PostDetail = () => {
 
       <ContentDiv>
         <Title>
+          <BackArrow src={backArrow} onClick={onClickGoHome} />
           <Text weight={700} size="30px">
             {recruitmentData?.title}
           </Text>
         </Title>
         <Space height="40px" />
-        <Image></Image>
+        <Image src={postImage}></Image>
         <Space height="40px" />
         <Content>
           <Flex direction="column" align="start">
@@ -99,7 +136,7 @@ export const PostDetail = () => {
               weight={400}
               size="18px"
               align="start"
-              style={{ whiteSpace: 'pre-line' }}
+              style={{ whiteSpace: 'pre-line', lineHeight: '150%' }}
             >
               {recruitmentData?.content}
             </Text>
@@ -209,20 +246,128 @@ export const PostDetail = () => {
         </Fee>
       </ContentDiv>
       <Space height="200px" />
+      <BottomFixBar>
+        <LeftBoxWrapper>
+          <BlackBox>모집 공고</BlackBox>
+          <BlackBox>Q&A</BlackBox>
+        </LeftBoxWrapper>
+        <RightBoxWrapper>
+          <ShareBox>
+            <ShareIcon src={bookMarkIcon} onClick={handleCopyClick} />
+          </ShareBox>
+          <SaveBox onClick={onClickSaveIcon}>
+            <SaveIcon src={shareIcon} />
+            <SaveCount>24</SaveCount>
+          </SaveBox>
+          {/* 버튼상태 */}
+          <WritePost>지원서 작성하기</WritePost>
+        </RightBoxWrapper>
+      </BottomFixBar>
     </DetailWrapper>
   );
 };
+const BlackBox = styled.div`
+  display: flex;
+  width: 140px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  background: var(--black-bk-01, #303030);
+  color: #fff;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.4px;
+  cursor: pointer;
+`;
 
-const Textarea = styled.textarea`
-  resize: none;
-  border: none;
-  color: '#101010';
-  width: 760px;
-  height: auto;
-  font-weight: 400px;
-  font-size: 18px;
-  align-items: start;
-  overflow-y: hidden;
+const ShareBox = styled.div`
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--blue-b-01, #f6f9fe);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+const ShareIcon = styled.img``;
+
+const SaveBox = styled.div`
+  width: 92px;
+  height: 60px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  border-radius: 10px;
+  background: var(--blue-b-01, #f6f9fe);
+`;
+const SaveIcon = styled.img``;
+
+const SaveCount = styled.div`
+  color: var(--black-bk-01, #303030);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.4px;
+`;
+
+const WritePost = styled.div`
+  width: 250px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.4px;
+  border-radius: 10px;
+  background: var(--blue-b-05-m, #3172ea);
+  justify-content: center;
+`;
+
+const LeftBoxWrapper = styled.div`
+  display: flex;
+  margin-right: auto;
+  gap: 20px;
+`;
+
+const RightBoxWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+const BottomFixBar = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100px;
+  bottom: 0px;
+
+  padding: 20px 28px 20px 1642px;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
+
+  flex-shrink: 0;
+  background: var(--blue-b-02, #e8effd);
+  padding: 28px;
 `;
 const DetailWrapper = styled.div`
   display: flex;
@@ -232,8 +377,8 @@ const DetailWrapper = styled.div`
 `;
 const BackArrow = styled.img`
   position: absolute;
-  top: -2px;
-  left: -43px;
+  left: -60px;
+  top: -170px;
   cursor: pointer;
 `;
 
@@ -286,12 +431,11 @@ const Content = styled.div`
 `;
 const Title = styled.div`
   width: 760px;
+  position: relative;
 `;
-const Image = styled.div`
+const Image = styled.img`
   margin: 0px 165px;
-  height: 430px;
   width: 430px;
-  background: #d9d9d9;
 `;
 
 const Target = styled.div``;
