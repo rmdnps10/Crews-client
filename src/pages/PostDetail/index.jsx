@@ -6,6 +6,10 @@ import { Flex, Text, Space } from 'components/atoms';
 import { instance } from 'api/axios';
 import { postDetailRequest } from 'api/request';
 import { useParams } from 'react-router-dom';
+import backArrowIcon from './backArrow.svg';
+import shareIcon from './share-icon.svg';
+import bookMarkIcon from './bookmark.svg';
+import activateBookMarkIcon from './blue-bookmark.svg';
 import dayjs from 'dayjs';
 
 export const PostDetail = () => {
@@ -209,20 +213,127 @@ export const PostDetail = () => {
         </Fee>
       </ContentDiv>
       <Space height="200px" />
+      <BottomFixBar>
+        <LeftBoxWrapper>
+          <BlackBox>모집 공고</BlackBox>
+          <BlackBox>Q&A</BlackBox>
+        </LeftBoxWrapper>
+        <RightBoxWrapper>
+          <ShareBox>
+            <ShareIcon src={bookMarkIcon} />
+          </ShareBox>
+          <SaveBox>
+            <SaveIcon src={shareIcon} />
+            <SaveCount>24</SaveCount>
+          </SaveBox>
+          <WritePost>지원서 작성하기</WritePost>
+        </RightBoxWrapper>
+      </BottomFixBar>
     </DetailWrapper>
   );
 };
+const BlackBox = styled.div`
+  display: flex;
+  width: 140px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  background: var(--black-bk-01, #303030);
+  color: #fff;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.4px;
+  cursor: pointer;
+`;
 
-const Textarea = styled.textarea`
-  resize: none;
-  border: none;
-  color: '#101010';
-  width: 760px;
-  height: auto;
-  font-weight: 400px;
-  font-size: 18px;
-  align-items: start;
-  overflow-y: hidden;
+const ShareBox = styled.div`
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--blue-b-01, #f6f9fe);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+const ShareIcon = styled.img``;
+
+const SaveBox = styled.div`
+  width: 92px;
+  height: 60px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  border-radius: 10px;
+  background: var(--blue-b-01, #f6f9fe);
+`;
+const SaveIcon = styled.img``;
+
+const SaveCount = styled.div`
+  color: var(--black-bk-01, #303030);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.4px;
+`;
+
+const WritePost = styled.div`
+  width: 250px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.4px;
+  border-radius: 10px;
+  background: var(--blue-b-05-m, #3172ea);
+  justify-content: center;
+`;
+
+const LeftBoxWrapper = styled.div`
+  display: flex;
+  margin-right: auto;
+  gap: 20px;
+`;
+
+const RightBoxWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+const BottomFixBar = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100px;
+  bottom: 0px;
+
+  padding: 20px 28px 20px 1642px;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
+
+  flex-shrink: 0;
+  background: var(--blue-b-02, #e8effd);
+  padding: 28px;
 `;
 const DetailWrapper = styled.div`
   display: flex;
