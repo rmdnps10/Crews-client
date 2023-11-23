@@ -12,7 +12,7 @@ import bookMarkIcon from './bookmark.svg';
 import activateBookMarkIcon from './blue-bookmark.svg';
 import postImage from './postImage.png';
 import dayjs from 'dayjs';
-
+import copy from 'clipboard-copy';
 export const PostDetail = () => {
   const navigate = useNavigate();
   const [isSaveBlue, setIsSaveBlue] = useState();
@@ -48,6 +48,15 @@ export const PostDetail = () => {
         },
       }
     );
+  };
+  const handleCopyClick = () => {
+    copy(window.location.href)
+      .then(() => {
+        alert('클립보드에 주소가 복사되었습니다!');
+      })
+      .catch((err) => {
+        console.error('복사 중 오류 발생:', err);
+      });
   };
 
   useEffect(() => {
@@ -244,7 +253,7 @@ export const PostDetail = () => {
         </LeftBoxWrapper>
         <RightBoxWrapper>
           <ShareBox>
-            <ShareIcon src={bookMarkIcon} />
+            <ShareIcon src={bookMarkIcon} onClick={handleCopyClick} />
           </ShareBox>
           <SaveBox onClick={onClickSaveIcon}>
             <SaveIcon src={shareIcon} />
