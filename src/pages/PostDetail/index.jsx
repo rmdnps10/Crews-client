@@ -5,14 +5,18 @@ import profile from './profile.png';
 import { Flex, Text, Space } from 'components/atoms';
 import { instance } from 'api/axios';
 import { postDetailRequest } from 'api/request';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import backArrowIcon from './backArrow.svg';
 import shareIcon from './share-icon.svg';
 import bookMarkIcon from './bookmark.svg';
 import activateBookMarkIcon from './blue-bookmark.svg';
+import postImage from './postImage.png';
 import dayjs from 'dayjs';
 
 export const PostDetail = () => {
+  const navigate = useNavigate();
+  const [isSaveBlue, setIsSaveBlue] = useState();
+  const [countLikes, setCountLikes] = useState();
   const [recruitmentData, setRecruitmentData] = useState(null);
   const [crewData, setCrewData] = useState(null);
   const params = useParams();
@@ -24,6 +28,26 @@ export const PostDetail = () => {
 
     const formattedDate = dayjs(str).format('M월 D일 H시 m분');
     return formattedDate;
+  };
+  const onClickGoPost = () => {
+    navigate(`/makepost/${params.postid}`);
+  };
+
+  const onClickGoHome = () => {
+    console.log('?');
+    navigate('/');
+  };
+
+  const onClickSaveIcon = () => {
+    instance.post(
+      `${postDetailRequest.likedPost}`,
+      { post_id: params.postid },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -41,7 +65,7 @@ export const PostDetail = () => {
             },
           }),
         ]);
-
+        setCountLikes(postResponse.data.total_likes);
         setRecruitmentData({
           ...postResponse.data,
           apply_start_date: convertData(postResponse.data.apply_start_date),
@@ -67,7 +91,6 @@ export const PostDetail = () => {
 
   return (
     <DetailWrapper>
-      <BackArrow src={backArrow} />
       <Space height="40px" />
       <CrewInfo>
         <Flex justify="start" height="100%">
@@ -85,12 +108,13 @@ export const PostDetail = () => {
 
       <ContentDiv>
         <Title>
+          <BackArrow src={backArrow} onClick={onClickGoHome} />
           <Text weight={700} size="30px">
             {recruitmentData?.title}
           </Text>
         </Title>
         <Space height="40px" />
-        <Image></Image>
+        <Image src={postImage}></Image>
         <Space height="40px" />
         <Content>
           <Flex direction="column" align="start">
@@ -103,7 +127,7 @@ export const PostDetail = () => {
               weight={400}
               size="18px"
               align="start"
-              style={{ whiteSpace: 'pre-line' }}
+              style={{ whiteSpace: 'pre-line', lineHeight: '150%' }}
             >
               {recruitmentData?.content}
             </Text>
@@ -215,17 +239,18 @@ export const PostDetail = () => {
       <Space height="200px" />
       <BottomFixBar>
         <LeftBoxWrapper>
-          <BlackBox>모집 공고</BlackBox>
+          <BlackBox onClick={onClickGoPost}>모집 공고</BlackBox>
           <BlackBox>Q&A</BlackBox>
         </LeftBoxWrapper>
         <RightBoxWrapper>
           <ShareBox>
             <ShareIcon src={bookMarkIcon} />
           </ShareBox>
-          <SaveBox>
+          <SaveBox onClick={onClickSaveIcon}>
             <SaveIcon src={shareIcon} />
             <SaveCount>24</SaveCount>
           </SaveBox>
+          {/* 버튼상태 */}
           <WritePost>지원서 작성하기</WritePost>
         </RightBoxWrapper>
       </BottomFixBar>
@@ -343,8 +368,8 @@ const DetailWrapper = styled.div`
 `;
 const BackArrow = styled.img`
   position: absolute;
-  top: -2px;
-  left: -43px;
+  left: -60px;
+  top: -170px;
   cursor: pointer;
 `;
 
@@ -397,12 +422,11 @@ const Content = styled.div`
 `;
 const Title = styled.div`
   width: 760px;
+  position: relative;
 `;
-const Image = styled.div`
+const Image = styled.img`
   margin: 0px 165px;
-  height: 430px;
   width: 430px;
-  background: #d9d9d9;
 `;
 
 const Target = styled.div``;
