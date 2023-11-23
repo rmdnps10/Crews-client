@@ -248,7 +248,7 @@ export const PostDetail = () => {
       <Space height="200px" />
       <BottomFixBar>
         <LeftBoxWrapper>
-          <BlackBox onClick={onClickGoPost}>모집 공고</BlackBox>
+          <BlackBox>모집 공고</BlackBox>
           <BlackBox>Q&A</BlackBox>
         </LeftBoxWrapper>
         <RightBoxWrapper>

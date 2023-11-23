@@ -11,18 +11,25 @@ function MainPopularSection() {
   useEffect(() => {
     const fetchPopularData = async () => {
       // 로그인했을 경우
-      if (localStorage.getItem('access')) {
-        const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('access')}`,
-          },
-        });
-        const postList = res.data;
-        postList.sort((a, b) => b.is_liked - a.is_liked);
-        setHotPostData(postList.slice(0, 3));
-      }
-      // 로그인하지 않을 경우
-      else {
+      try {
+        if (localStorage.getItem('access')) {
+          const res = await instance.get(`${homePageRequest.normalPostInfo}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('access')}`,
+            },
+          });
+          const postList = res.data;
+          postList.sort((a, b) => b.is_liked - a.is_liked);
+          setHotPostData(postList.slice(0, 3));
+        }
+        // 로그인하지 않을 경우
+        else {
+          const res = await instance.get(`${homePageRequest.normalPostInfo}`);
+          const postList = res.data;
+          postList.sort((a, b) => b.is_liked - a.is_liked);
+          setHotPostData(postList.slice(0, 3));
+        }
+      } catch (err) {
         const res = await instance.get(`${homePageRequest.normalPostInfo}`);
         const postList = res.data;
         postList.sort((a, b) => b.is_liked - a.is_liked);
@@ -46,34 +53,34 @@ function MainPopularSection() {
           <>
             <MainCrewCard
               isSmall={true}
-              id={hotPostData[1].id}
-              category={hotPostData[1].category}
-              likeCount={hotPostData[1].current_like_count}
-              isLiked={hotPostData[1].is_liked}
-              crewName={hotPostData[1].crew_name}
-              title={hotPostData[1].title}
-              dayLeft={hotPostData[1].d_minus_info}
+              id={hotPostData[1]?.id}
+              category={hotPostData[1]?.category}
+              likeCount={hotPostData[1]?.current_like_count}
+              isLiked={hotPostData[1]?.is_liked}
+              crewName={hotPostData[1]?.crew_name}
+              title={hotPostData[1]?.title}
+              dayLeft={hotPostData[1]?.d_minus_info}
             />
             <MainCrewCard
               isSmall={false}
-              id={hotPostData[0].id}
-              category={hotPostData[0].category}
-              likeCount={hotPostData[0].current_like_count}
-              isLiked={hotPostData[0].is_liked}
-              crewName={hotPostData[0].crew_name}
-              title={hotPostData[0].title}
-              dayLeft={hotPostData[0].d_minus_info}
+              id={hotPostData[0]?.id}
+              category={hotPostData[0]?.category}
+              likeCount={hotPostData[0]?.current_like_count}
+              isLiked={hotPostData[0]?.is_liked}
+              crewName={hotPostData[0]?.crew_name}
+              title={hotPostData[0]?.title}
+              dayLeft={hotPostData[0]?.d_minus_info}
             />
             {/* // 백엔드 연동할 때 2로바꾸자 */}
             <MainCrewCard
               isSmall={true}
-              id={hotPostData[2].id}
-              category={hotPostData[2].category}
-              likeCount={hotPostData[2].current_like_count}
-              isLiked={hotPostData[2].is_liked}
-              crewName={hotPostData[2].crew_name}
-              title={hotPostData[2].title}
-              dayLeft={hotPostData[2].d_minus_info}
+              id={hotPostData[2]?.id}
+              category={hotPostData[2]?.category}
+              likeCount={hotPostData[2]?.current_like_count}
+              isLiked={hotPostData[2]?.is_liked}
+              crewName={hotPostData[2]?.crew_name}
+              title={hotPostData[2]?.title}
+              dayLeft={hotPostData[2]?.d_minus_info}
             />{' '}
           </>
         ) : (
