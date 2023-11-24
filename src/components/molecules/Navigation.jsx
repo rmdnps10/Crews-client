@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Flex } from 'components/atoms';
 import basicProfile from './basic-profile.svg';
 import { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import { SignIn } from 'pages';
 export const Navigation = () => {
   const nav = useNavigate();
   const [isLogin, setLogin] = useState();
+  const location = useLocation();
   const onClickLogout = () => {
     localStorage.removeItem('access');
     nav('/');
@@ -25,12 +26,15 @@ export const Navigation = () => {
   };
   useEffect(() => {
     const token = localStorage.getItem('access');
+    console.log(1);
     if (token) {
       setLogin(true);
+      console.log(1);
     } else {
       setLogin(false);
+      console.log(1);
     }
-  }, []);
+  }, [location.pathname]);
   return (
     <>
       <CrewsNav>
