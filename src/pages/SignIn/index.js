@@ -1,463 +1,535 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Flex, Space, Text } from 'components/atoms';
 import { useNavigate } from 'react-router-dom';
-
+import arrow from './arrow-up.svg';
+import { instance } from 'api/axios';
+import { signInRequest } from 'api/request';
+import dayjs from 'dayjs';
 export const SignIn = () => {
-  const nav = useNavigate();
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    studentId: '',
-    department1: '제 1전공',
-    department2: '제 2전공',
-    department3: '제 3전공',
-    otherDepartment2: '',
-    otherDepartment3: '',
-    schoolemail: '',
+  const [isRed, setIsRed] = useState({
+    id: '',
+    pw: '',
+    checkpw: '',
+    sogangemail: '',
+  });
+  const [isActivate, setIsActivate] = useState({
+    id: '',
+    sogangemail: '',
+    authint: false,
+  });
+  const [이미등록학교이메일, set이미등록학교이메일] = useState(false);
+  const [verifyCode, setVerifyCode] = useState('');
+  const [form, setForm] = useState({
+    id: '',
+    pw: '',
+    checkpw: '',
+    name: '',
+    studentid: '',
+    first_major: '',
+    second_major: null,
+    third_major: null,
+    sogangemail: '',
+    authnum: '',
   });
 
-  const [errors, setErrors] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    studentId: '',
-    schoolemail: '',
-  });
-
-  const [isOtherDepartmentVisible2, setIsOtherDepartmentVisible2] =
-    useState(false);
-  const [isOtherDepartmentVisible3, setIsOtherDepartmentVisible3] =
-    useState(false);
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    validateField(name, value);
-  };
-
-  const handleDepartmentChange = (event, departmentNumber) => {
-    const { value } = event.target;
-    const otherDepartmentKey = `otherDepartment${departmentNumber}`;
-    const isOtherDepartmentVisibleKey = `isOtherDepartmentVisible${departmentNumber}`;
-    setFormData((prevData) => ({
-      ...prevData,
-      [`department${departmentNumber}`]: value,
-      [otherDepartmentKey]: '',
-    }));
-    setOtherDepartmentVisibility(false, isOtherDepartmentVisibleKey);
-  };
-
-  const setOtherDepartmentVisibility = (
-    isVisible,
-    isOtherDepartmentVisibleKey
-  ) => {
-    setIsOtherDepartmentVisible2(false);
-    setIsOtherDepartmentVisible3(false);
-  };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
-  const [isValid, setIsValid] = useState();
-  const validateField = (fieldName, value) => {
-    let errorMessage = '';
-
-    switch (fieldName) {
-      case 'username':
-        errorMessage = value.trim() === '' ? '사용자 이름을 입력하세요.' : '';
-        break;
-      case 'email':
-        errorMessage = !value.match(
-          /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
-        )
-          ? '올바른 이메일 형식이 아닙니다.'
-          : '사용 가능한 아이디입니다.';
-        break;
-      case 'password':
-        errorMessage =
-          !value.match(/^(?=.*[!@#$%^&*])/) || value.length < 8
-            ? '비밀번호는 8자 이상으로 특수문자를 포함해주세요.'
-            : '';
-        break;
-      case 'confirmPassword':
-        errorMessage =
-          value !== formData.password ? '비밀번호가 일치하지 않습니다.' : '';
-        break;
-      case 'studentId':
-        errorMessage = !/^\d{8}$/.test(value)
-          ? '올바른 학번을 입력하세요 (8자리 숫자).'
-          : '';
-        break;
-      case 'schoolemail':
-        errorMessage = !value.match(
-          /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
-        )
-          ? '올바른 이메일 형식이 아닙니다.'
-          : '사용 가능한 아이디입니다.';
-        break;
-      default:
-        break;
+  const onChangeID = (e) => {
+    // 성공
+    if (checkID(e.target.value)) {
+      setForm({ ...form, [e.target.name]: e.target.value });
+      setIsRed({ ...isRed, id: false });
+      setIsActivate(true);
+    } else {
+      setForm({ ...form, [e.target.name]: e.target.value });
+      setIsRed({ ...isRed, id: true });
+      setIsActivate(false);
     }
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [fieldName]: errorMessage,
-    }));
-    setIsButtonEnabled(isAllFieldsFilled());
   };
-  const isAllFieldsFilled = () => {
-    for (const key in formData) {
-      if (formData.hasOwnProperty(key) && formData[key] === '') {
-        return false;
-      }
+  const onChangePw = (e) => {
+    if (checkPw(e.target.value)) {
+      setForm({ ...form, [e.target.name]: e.target.value });
+      setIsRed({ ...isRed, pw: false });
+    } else {
+      setForm({ ...form, [e.target.name]: e.target.value });
+      setIsRed({ ...isRed, pw: true });
     }
-    return true;
   };
+  const onChangePwCheck = (e) => {
+    if (checkPwcheck(e.target.value)) {
+      setForm({ ...form, [e.target.name]: e.target.value });
+      setIsRed({ ...isRed, checkpw: false });
+    } else {
+      setForm({ ...form, [e.target.name]: e.target.value });
+      setIsRed({ ...isRed, checkpw: true });
+    }
+  };
+  const onChangeSgMail = (e) => {
+    if (checkSogangEmail(e.target.value)) {
+      setForm({ ...form, [e.target.name]: e.target.value });
+      setIsRed({ ...isRed, sogangemail: false });
+      setIsActivate({ ...isActivate, sogangemail: true });
+    } else {
+      setForm({ ...form, [e.target.name]: e.target.value });
+      setIsRed({ ...isRed, sogangemail: true });
+      setIsActivate({ ...isActivate, sogangemail: false });
+    }
+  };
+  const onChangeForm = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  const onSelectMajor = (e, majorType) => {
+    setForm({ ...form, [`${majorType}_major`]: e.target.value });
+  };
+
+  const checkID = (inputString) => {
+    const emailRegex = /\b@\b.*\.com\b/;
+    return emailRegex.test(inputString);
+  };
+  const checkPw = (inputString) => {
+    const passwordRegex = /^(?=.*[a-zA-Z0-9])(?=.*[^a-zA-Z0-9]).{8,}$/;
+    return passwordRegex.test(inputString);
+  };
+  const checkPwcheck = (inputString) => {
+    return form.pw === inputString;
+  };
+
+  const checkSogangEmail = (inputString) => {
+    return inputString.includes('@sogang.ac.kr');
+  };
+
+  const ID중복확인 = async () => {
+    const res = instance.post(`${signInRequest.doubleCheck}`);
+  };
+  const 인증번호전송 = async () => {
+    try {
+      const res = await instance.post(`${signInRequest.mailCheck}`, {
+        sogang_mail: form.sogangemail,
+      });
+      setVerifyCode(res.data.verification_code);
+      setIsActivate({ ...isActivate, authint: true });
+    } catch {
+      alert('이미 등록된 이메일입니다!');
+    }
+  };
+
+  const 인증번호확인 = () => {
+    try {
+      instance.post(`${signInRequest.verify}`, {
+        user_input_code: form.checkpw,
+        verification_code: verifyCode,
+      });
+    } catch {
+      alert('인증번호가 틀렸습니다.');
+    }
+  };
+
+  const majorList = [
+    '해당없음',
+    '국어국문학과',
+    '아트엔테크놀리지',
+    '컴퓨터공학과',
+    '전자공학과',
+    '기계공학과',
+    '수학과',
+    '물리학과',
+    '생명공학과',
+    '반도체학과',
+    '철학과',
+  ];
+  const [isDisplayCount, setIsDisPlayCount] = useState(false);
+  const [leftCount, setLeftCount] = useState(120);
+  const secondsToMinutesAndSeconds = (seconds) => {
+    const duration = dayjs.duration(seconds, 'seconds');
+    const minutes = duration.minutes();
+    const remainingSeconds = duration.seconds();
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
+  useEffect(() => {
+    // 1초마다 현재 시간을 갱신
+    if (isDisplayCount) {
+      const intervalId = setInterval(() => {
+        setLeftCount((prevCount) => prevCount - 1);
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, []);
 
   return (
     <SigninWrapper>
-      <Space height="120px" />
-
-      <TitleDiv>
-        <Flex direction="column" align="start">
-          <Text size="28px" weight={700} color="#3172EA">
-            회원가입
-          </Text>
-          <Space height="12px" />
-          <Text size="16px" weight={400} color="#999999">
-            CREWS에 오신 것을 환영합니다! 계정을 생성해주세요.
-          </Text>
-        </Flex>
-      </TitleDiv>
-      <Space height="40px" />
-
-      <form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Text size="20px" weight={600} color="#101010">
-            아이디(이메일)
-            <Space height="16px" />
-          </Text>
-
-          <Flex align="center">
-            <ShortInput
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-              placeholder="이메일을 입력해주세요."
-            />
-
-            <SmallBtn>중복 확인</SmallBtn>
-          </Flex>
-
-          <ErrorMessage>{errors.email}</ErrorMessage>
-        </FormGroup>
-        <Space height="32px" />
-        <FormGroup>
-          <Text size="20px" weight={600} color="#101010">
-            비밀번호
-          </Text>
-          <LongInput
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-            placeholder="비밀번호를 입력해주세요."
+      <Space height={'60px'} />
+      <SingInH1>
+        <Title>회원가입</Title>
+        <Subtitle>CREWS에 오신 것을 환영합니다! 계정을 생성해주세요.</Subtitle>
+      </SingInH1>
+      <Space height={'35px'} />
+      <FormID>
+        <FormName>아이디 (이메일)</FormName>
+        <InputPlusButton>
+          <SmallInput
+            name="id"
+            value={form.id}
+            onChange={onChangeID}
+            isRed={isRed.id}
           />
-          <ErrorMessage>{errors.password}</ErrorMessage>
-        </FormGroup>
-        <FormGroup>
-          <LongInput
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
-            placeholder="비밀번호를 입력해주세요."
-            required
-          />
-          <ErrorMessage>{errors.confirmPassword}</ErrorMessage>
-        </FormGroup>
-        <Text size="20px" weight={400} color="#999999">
-          <Space height="8px" />
-          학생 정보 등록 및 본인 인증을 진행해주세요.
-          <Space height="20px" />
-        </Text>
-        <FormGroup>
-          <Text size="20px" weight={600} color="#101010">
-            이름
-          </Text>
-
-          <LongInput
-            type="text"
-            id="username"
-            name="username"
-            value={formData.username}
-            onChange={handleInputChange}
-            placeholder="이름을 입력해주세요."
-            required
-          />
-
-          <ErrorMessage>{errors.username}</ErrorMessage>
-        </FormGroup>
-        <Space height="32px" />
-        <FormGroup>
-          <Text size="20px" weight={600} color="#101010">
-            학번
-          </Text>
-          <LongInput
-            type="text"
-            id="studentId"
-            name="studentId"
-            value={formData.studentId}
-            onChange={handleInputChange}
-            placeholder="학번을 입력해주세요."
-            required
-          />
-          <ErrorMessage>{errors.studentId}</ErrorMessage>
-        </FormGroup>
-        <Space height="32px" />
-        <FormGroup>
-          <Text size="20px" weight={600} color="#101010">
-            제 1전공 (필수)
-          </Text>
-          <Select
-            name="department"
-            value={formData.department}
-            onChange={handleDepartmentChange}
-          >
-            <option value="제 1전공">직접 입력</option>
-            <option value="컴퓨터 공학">컴퓨터 공학</option>
-            <option value="전기 공학">전기 공학</option>
-            <option value="기계 공학">기계 공학</option>
-          </Select>
-        </FormGroup>
-        <Space height="32px" />
-        <FormGroup>
-          <Text size="20px" weight={600} color="#101010">
-            제 2전공 (선택)
-          </Text>
-          <Select
-            name="department2"
-            value={formData.department2}
-            onChange={(e) => handleDepartmentChange(e, 2)}
-          >
-            <option value="제 2전공">직접 입력</option>
-            <option value="컴퓨터 공학">컴퓨터 공학</option>
-            <option value="전기 공학">전기 공학</option>
-            <option value="기계 공학">기계 공학</option>
-            <option value="기타">기타</option>
-          </Select>
-        </FormGroup>
-        {formData.department2 === '기타' && (
-          <FormGroup>
-            <Text size="20px" weight={600} color="#101010">
-              기타 학과
-            </Text>
-            <LongInput
-              type="text"
-              name="otherDepartment2"
-              value={formData.otherDepartment2}
-              onChange={handleInputChange}
-              required={isOtherDepartmentVisible2}
-            />
-          </FormGroup>
+          {isRed.id ? (
+            <DoubleCheckInactiveButton>중복 확인</DoubleCheckInactiveButton>
+          ) : (
+            <DoubleCheckButton>중복 확인</DoubleCheckButton>
+          )}
+        </InputPlusButton>
+        {isRed.id ? (
+          <CautionMessage>올바른 이메일 형식이 아닙니다.</CautionMessage>
+        ) : (
+          ''
         )}
-        <Space height="32px" />
-        <FormGroup>
-          <Text size="20px" weight={600} color="#101010">
-            제 3전공 (선택)
-          </Text>
-          <Select
-            name="department3"
-            value={formData.department3}
-            onChange={(e) => handleDepartmentChange(e, 3)}
-          >
-            <option value="제 3전공">직접 입력</option>
-            <option value="컴퓨터 공학">컴퓨터 공학</option>
-            <option value="전기 공학">전기 공학</option>
-            <option value="기계 공학">기계 공학</option>
-            <option value="기타">기타</option>
-          </Select>
-        </FormGroup>
-        {formData.department3 === '기타' && (
-          <FormGroup>
-            <Text size="20px" weight={600} color="#101010">
-              기타 학과
-            </Text>
-            <LongInput
-              type="text"
-              name="otherDepartment3"
-              value={formData.otherDepartment3}
-              onChange={handleInputChange}
-              required={isOtherDepartmentVisible3}
-            />
-          </FormGroup>
+      </FormID>
+      <Space height={'35px'} />
+      <FormPw>
+        <FormName isRed={isRed.id}>비밀번호</FormName>
+        <MaxInput
+          name="pw"
+          type="password"
+          isRed={isRed.pw}
+          value={form.pw}
+          onChange={onChangePw}
+        />
+        {isRed.pw ? (
+          <CautionMessage>
+            비밀번호는 8자 이상으로 특수문자를 포함해주세요.
+          </CautionMessage>
+        ) : (
+          ''
         )}
-        <Space height="32px" />
-        <FormGroup>
-          <Text size="20px" weight={600} color="#101010">
-            학교 이메일 인증
-            <Space height="16px" />
-          </Text>
-          <Flex direction="row">
-            <ShortInput
-              type="email"
-              id="schoolemail"
-              name="schoolemail"
-              value={formData.schoolemail}
-              onChange={handleInputChange}
-              placeholder="학교 이메일을 입력해주세요."
-              required
-            />
-            <SmallBtn>인증번호 전송</SmallBtn>
-          </Flex>
-          <ErrorMessage>{errors.schoolemail}</ErrorMessage>
-        </FormGroup>
-
-        <FormGroup>
-          <Text size="20px" weight={600} color="#101010">
-            인증번호
-            <Space height="16px" />
-          </Text>
-          <Flex direction="row">
-            <ShortInput />
-            <SmallBtn>인증번호 확인</SmallBtn>
-          </Flex>
-        </FormGroup>
-        <Space height="60px" />
-        <Flex>
-          <CompleteBtn
-            type="submit"
-            onClick={validateField}
-            disabled={!isButtonEnabled}
-          >
-            <Text color="white"> 회원 가입 완료</Text>
-          </CompleteBtn>
-        </Flex>
-        <Space height="20px" />
-        <Flex>
-          <Text size={12} color="grey" cursor="default">
-            이미 회원이신가요?
-          </Text>
-          <LoginBtn onClick={() => nav('/login')}>로그인</LoginBtn>
-        </Flex>
-        <Space height="60px" />
-      </form>
+        <FormName>비밀번호 확인</FormName>
+        <MaxInput
+          name="checkpw"
+          type="password"
+          isRed={isRed.checkpw}
+          value={form.checkpw}
+          onChange={onChangePwCheck}
+        />
+        {isRed.checkpw ? (
+          <CautionMessage>비밀번호가 일치하지 않습니다.</CautionMessage>
+        ) : (
+          ''
+        )}
+      </FormPw>
+      <Space height={'80px'} />
+      <GuideText>학생 정보 및 인증 등록을 진행해주세요</GuideText>
+      <Space height={'28px'} />
+      <FormUserName>
+        <FormName>이름</FormName>
+        <MaxInput name="name" value={form.name} onChange={onChangeForm} />
+      </FormUserName>
+      <Space height={'28px'} />
+      <FormStudentId>
+        <FormName>학번</FormName>
+        <MaxInput
+          name="studentid"
+          value={form.studentid}
+          onChange={onChangeForm}
+        />
+      </FormStudentId>
+      <Space height={'80px'} />
+      <MajorSelectSection>
+        <FormMajor>
+          <FormName>제 1전공(필수)</FormName>
+          <Label>
+            <SelectInput
+              value={form.first_major}
+              onChange={(e) => onSelectMajor(e, 'first')}
+            >
+              {majorList.map((item, idx) => (
+                <option value={item} key={idx}>
+                  {item}
+                </option>
+              ))}
+            </SelectInput>
+            <ArrowUp src={arrow} />
+          </Label>
+        </FormMajor>
+        <FormMajor>
+          <FormName>제 2전공(선택)</FormName>
+          <Label>
+            <SelectInput
+              value={form.second_major}
+              onChange={(e) => onSelectMajor(e, 'second')}
+            >
+              {majorList.map((item, idx) => (
+                <option value={item} key={idx}>
+                  {item}
+                </option>
+              ))}
+            </SelectInput>
+            <ArrowUp src={arrow} />
+          </Label>
+        </FormMajor>
+        <FormMajor>
+          <FormName>제 3전공(선택)</FormName>
+          <Label>
+            <SelectInput
+              value={form.third_major}
+              onChange={(e) => onSelectMajor(e, 'third')}
+            >
+              {majorList.map((item, idx) => (
+                <option value={item} key={idx}>
+                  {item}
+                </option>
+              ))}
+            </SelectInput>
+            <ArrowUp src={arrow} />
+          </Label>
+        </FormMajor>
+      </MajorSelectSection>
+      <Space height={'80px'} />
+      <FormAuthEmail>
+        <FormName>학교 이메일 인증</FormName>
+        <InputPlusButton>
+          <SmallInput
+            name="sogangemail"
+            isRed={isRed.sogangemail}
+            value={form.sogangemail}
+            onChange={onChangeSgMail}
+          />
+          {isActivate.sogangemail ? (
+            <DoubleCheckButton onClick={인증번호전송}>
+              인증번호 전송
+            </DoubleCheckButton>
+          ) : (
+            <DoubleCheckInactiveButton>중복 확인</DoubleCheckInactiveButton>
+          )}
+        </InputPlusButton>
+        {isRed.sogangemail ? (
+          <CautionMessage>올바른 이메일 형식이 아닙니다.</CautionMessage>
+        ) : (
+          ''
+        )}
+        <FormName>인증번호</FormName>
+        <InputPlusButton style={{ position: 'relative' }}>
+          {isDisplayCount ? (
+            <DisplayLeftTime>
+              {secondsToMinutesAndSeconds(leftCount)}
+            </DisplayLeftTime>
+          ) : (
+            ''
+          )}
+          <SmallInput
+            name="authnum"
+            value={form.authnum}
+            onChange={onChangeForm}
+          />
+          {isActivate.authint ? (
+            <DoubleCheckButton onClick={인증번호확인}>
+              인증번호 확인
+            </DoubleCheckButton>
+          ) : (
+            <DoubleCheckInactiveButton>인증번호 확인</DoubleCheckInactiveButton>
+          )}
+        </InputPlusButton>
+      </FormAuthEmail>
+      <Space height={'80px'} />
+      <EndSignInButton>회원가입 완료</EndSignInButton>
+      <Space height={'80px'} />
     </SigninWrapper>
   );
 };
+const DisplayLeftTime = styled.div`
+  color: #fc6363;
+  font-family: Pretendard;
+  position: absolute;
+  top: 20px;
+  left: 290px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
+
+const CautionMessage = styled.div`
+  color: #db4242;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.4px;
+`;
 
 const SigninWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 512px;
+  margin: 0 auto;
 `;
-const TitleDiv = styled.div`
-  width: 522px;
-  display: flex;
 
-  justify-content: flex-start;
-`;
-const CompleteBtn = styled.button`
-  width: 392px;
-  height: 65px;
-  background-color: ${(props) => (props.disabled ? '#ccc' : '#3172ea')};
-  border-radius: 10px;
-  font-size: 20px;
-
-  border: none;
-  margin-bottom: 10px;
-`;
-const SmallBtn = styled.button`
-  width: 150px;
-  height: 65px;
-  background-color: ${(props) => (props.isValid ? '#3172ea' : '#ccc')};
-  border-radius: 10px;
-  border: none;
-  color: ${(props) => (props.isValid ? 'white' : '#999')};
-  font-size: 20px;
-  font-weight: 700;
-  box-sizing: border-box;
-  font-family: 'Pretendard';
-`;
-const FormGroup = styled.div`
-  width: 522px;
+const SingInH1 = styled.h1`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 32px;
+  gap: 20px;
 `;
 
-const LongInput = styled.input`
-  height: 65px;
-  width: 522px;
-  background-color: #f2f2f2;
-  outline: none;
-  border: 1px solid ${(props) => (props.isValid ? '#3172ea ' : '#ccc')};
-  border-radius: 10px;
-  padding: 22px;
-  font-family: 'Pretendard';
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 16px;
-  &:focus {
-    background: #fdf2f3;
-    border: 2px solid #f15454;
-  }
+const Title = styled.div`
+  color: var(--blue-b-05-m, #3172ea);
+  font-family: Pretendard;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.64px;
 `;
-const ShortInput = styled.input`
-  height: 65px;
-  width: 350px;
-  outline: none;
-  border: 1px solid ${(props) => (props.isValid ? '#3172ea' : '#ccc')};
-  border-radius: 10px;
-  background-color: #f2f2f2;
-  margin-right: 12px;
-  box-sizing: border-box;
-  padding: 22px;
-  font-family: 'Pretendard';
-  font-size: 18px;
-  outline: none;
-  font-weight: 600;
-  &:focus {
-    background: #fdf2f3;
-    border: 2px solid #f15454;
-  }
+
+const Subtitle = styled.div`
+  color: var(--gray-g-05, #999);
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.4px;
 `;
-const Select = styled.select`
-  appearance: none;
+
+const FormName = styled.div`
+  color: var(--black-bk-02, #101010);
+  font-family: Pretendard;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.44px;
+`;
+const FormID = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const InputPlusButton = styled.div`
+  display: flex;
+  gap: 12px;
+`;
+
+const SmallInput = styled.input`
+  width: 360px;
   height: 68px;
-  width: 522px;
-  border: 1.4px solid #ccc;
-  border-radius: 5px;
-  font-family: 'Pretendard-Regular';
-  font-size: 18px;
-  padding: 22px 18px 22px 22px;
-  margin-top: 16px;
+  border-radius: 10px;
+  padding: 22px;
+  font-size: 20px;
   font-weight: 600;
+  border-radius: 10px;
+  border: 1.4px solid var(--gray-g-03, #ccc);
+  background: #fff;
+  background: ${(props) => (props.isRed ? '#FDF2F3' : '#F6F9FE')};
+  &:focus {
+    outline: ${(props) => (props.isRed ? '2px solid #DB4242' : '')};
+  }
 `;
 
-const ErrorMessage = styled.div`
-  color: ${(props) => (props.isValid ? '#3172ea' : '#f15454')};
-  font-size: 18px;
-  font-weight: 500;
-  margin: 16px 0px 32px 0px;
-  font-family: 'Pretendard-Regular';
-`;
-const LoginBtn = styled.div`
-  color: blue;
-  margin-left: 10px;
-  font-family: 'Pretendard';
+const DoubleCheckButton = styled.div`
+  width: 150px;
+  height: 65px;
+  flex-shrink: 0;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-size: 20px;
+  align-items: center;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 2px solid var(--blue-b-05-m, #3172ea);
+  border-radius: 10px;
+  background: #3172ea;
+  color: white;
   cursor: pointer;
+`;
+
+const DoubleCheckInactiveButton = styled(DoubleCheckButton)`
+  background: var(--gray-g-03, #ccc);
+  color: var(--gray-g-05, #999);
+  border: none;
+`;
+
+const FormPw = styled(FormID)``;
+
+const MaxInput = styled(SmallInput)`
+  width: 512px;
+`;
+
+const FormUserName = styled(FormID)``;
+
+const FormStudentId = styled(FormID)``;
+
+const MajorSelectSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+`;
+
+const GuideText = styled.div`
+  color: var(--gray-g-05, #999);
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.4px;
+`;
+
+const FormAuthEmail = styled(FormID)``;
+const EndSignInButton = styled.div`
+  width: 392px;
+  cursor: pointer;
+  height: 65px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.4px;
+  border-radius: 10px;
+  background: var(--blue-b-05-m, #3172ea);
+  flex-shrink: 0;
+`;
+
+const FormMajor = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const SelectInput = styled.select`
+  appearance: none;
+  width: 522px;
+  height: 68px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1.4px solid var(--gray-g-03, #ccc);
+  dipslay: flex;
+  justify-content: center;
+  background: #fff;
+  color: var(--black-bk-02, #101010);
+  font-family: Pretendard;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.44px;
+  padding: 20px;
+`;
+
+const Label = styled.div`
+  position: relative;
+`;
+const ArrowUp = styled.img`
+  position: absolute;
+  width: 36px;
+  top: 16px;
+  right: 16px;
 `;
