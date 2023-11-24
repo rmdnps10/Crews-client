@@ -66,19 +66,29 @@ const CrewImage = styled.div`
   height: 95.327px;
   flex-shrink: 0;
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 96.128px;
   background: url(${likelionLogo});
   background-size: cover;
-  transition: 1s;
+  .mask {
+    p
+    display: none;
+    width: 96.128px;
+    height: 95.327px;
+    border-radius: 96.128px;
+  }
   &:hover {
-    background: rgba(16, 16, 16, 0.7);
+    filter: brightenss(0.4);
     .overlay {
       opacity: 1;
       color: white;
-      filter: brightness(2);
+    }
+    ,
+    mask {
+      display: block;
     }
   }
 `;
@@ -89,6 +99,8 @@ const OverlayText = styled.div`
   font-family: Pretendard;
   font-size: 18px;
   font-style: normal;
+  position: relative;
+  z-index: 3;
   font-weight: 600;
   line-height: 20px;
   letter-spacing: -0.36px;
