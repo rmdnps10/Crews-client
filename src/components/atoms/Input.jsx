@@ -36,6 +36,7 @@ export const Input = ({
   onBlur,
   onFocus,
   type = 'text',
+  padding,
 }) => {
   const borderColor = BorderColors[status];
   const bgColor = BgColors[status];
@@ -54,6 +55,7 @@ export const Input = ({
       onFocus={onFocus}
       placeholder={placeholder}
       type={type}
+      padding={padding}
     />
   );
 };
@@ -71,6 +73,7 @@ const StyledInput = styled.input`
   font-weight: 600;
   color: ${({ fontColor }) => fontColor};
   text-indent: 15px;
+  padding: ${({ padding }) => padding};
 
   &:focus {
     outline: none;

@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { Navigation } from 'components/molecules';
+import { Header } from 'components/molecules';
 import {
   MakeForm,
   MakePost,
@@ -19,7 +20,7 @@ import MainCollaborateSection from 'pages/Home/MainCollaborateSection';
 const Router = () => {
   return (
     <>
-      <Navigation />
+      <Header />
       <Routes>
         <Route path="/makeform" element={<MakeForm />} />
         <Route path="/signin" element={<SignIn />} />

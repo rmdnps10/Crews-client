@@ -1,118 +1,122 @@
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import { sectionDataAtom } from './FormAtom';
+
+import { instance } from 'api/axios';
+import { applyAppPageRequest } from 'api/request';
 
 // Imported Functions & Datas
-import { addSection } from './formFunctions';
-import { BK02, G05, G06 } from 'style/palette';
+import useSection from './useSection';
+import useQuestion from './useQuestion';
+import { G06, BK01 } from 'style/palette';
 
 // Imported Components
-import SectionBox from './SectionBox';
-import { Space, Button, Input, Flex, Text } from 'components/atoms';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+import SectionBox from './Section/SectionBox';
+import MakeFormHeader from './MakeFormHeader';
+import LoadingPage from './LoadingPage';
+import { Space, Button, Text } from 'components/atoms';
+import { useState } from 'react';
 
 export const MakeForm = () => {
-  const [sectionData, setSectionData] = useRecoilState(sectionDataAtom);
+  const [loading, setLoading] = useState(0);
+  const { sectionData, addSection } = useSection();
+  const { questionData } = useQuestion();
 
-  return (
-    <MakeFormWrapper>
-      <Space height="200px" />
-      <DescriptionBox>
-        <Flex justify="left" align="center" gap="15">
-          <Text children="STEP 02" size="32px" weight="bold" color={BK02} />
-          <TextLine color={G05} size="32px" />
-          <Text
-            children="지원서 양식 작성"
-            size="32px"
-            weight="bold"
-            color={BK02}
-          />
-          <QuestionButton>
-            <FontAwesomeIcon
-              onClick={() => alert('Modal!')}
-              icon={faCircleQuestion}
-              className="fa-2xl"
-              style={{ color: BK02 }}
-            />
-          </QuestionButton>
-        </Flex>
-        <Space height="20px" />
-        <Text
-          children="모집 공고는 등록 후에도 수정이 가능하지만, 지원서는 모집 기간 이후 수정이 불가능합니다."
-          size="20px"
-          weight="400"
-          color={G05}
-        />
-      </DescriptionBox>
-      <Space height="50px" />
+  const handleMakeFormClick = async () => {
+    for (const section of sectionData) {
+      const questions = questionData
+        .filter((ques) => ques.sectionId === section.id)
+        .map((ques) => {
+          if (ques.questionType === 'checkbox')
+            return {
+              type: 'checkbox',
+              is_essential: ques.isMandatory,
+              question: ques.questionDescription,
+              answer_minimum: 1,
+              answer_maximum: ques.canMultipleCheck ? 1 : 2,
+              options: ques.options.map((op) => op.option),
+            };
+          else
+            return {
+              type: 'long_sentence',
+              is_essential: ques.isMandatory,
+              question: ques.questionDescription,
+              letter_count_limit: ques.characterLimit,
+            };
+        });
 
-      <TmpBox />
-      {/* {sectionData.map((it, idx) => (
-        <>
-          <SectionBox section={it} />
+      const body = {
+        // post_id
+        section_name: section.sectionName,
+        description: section.sectionDescription,
+        question: questions,
+      };
+
+      setLoading((prev) => prev + 1);
+
+      console.log(body);
+      // await instance.post(`${applyAppPageRequest.applyApplication}`, body, {
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem('access')}`,
+      //   },
+      // });
+      setLoading((prev) => prev - 1);
+    }
+  };
+
+  if (loading !== 0) return <LoadingPage />;
+  else
+    return (
+      <MakeFormWrapper>
+        <MakeFormContent>
+          <Space height="40px" />
+          <MakeFormHeader />
+          <Space height="40px" />
+
+          {sectionData.map((it, idx) => (
+            <>
+              <SectionBox key={idx} sectionData={it} idx={idx} />
+              <Space height="50px" />
+            </>
+          ))}
           <Space height="50px" />
-        </>
-      ))} */}
-      <Space height="50px" />
 
-      {/* onClick={() => addSection(sectionData, setSectionData)} */}
-      <TextButton color={G06}>
-        <Text
-          size="24px"
-          color={G06}
-          weight="400"
-          children="새로운 섹션 추가하기"
-        />
-      </TextButton>
-      <Space height="80px" />
-      <CenteredButton
-        status="inactive"
-        width="530px"
-        height="70px"
-        children="모집 공고 등록하기"
-      />
-      <Space height="80px" />
-    </MakeFormWrapper>
-  );
+          <TextButton color={G06} onClick={addSection}>
+            <Text size="20px" weight="400" children="새로운 섹션 추가하기" />
+          </TextButton>
+          <Space height="80px" />
+          <CenteredButton
+            status="active"
+            width="392px"
+            height="65px"
+            children="모집 공고 등록하기"
+            onClick={handleMakeFormClick}
+          />
+          <Space height="80px" />
+        </MakeFormContent>
+      </MakeFormWrapper>
+    );
 };
 
 const MakeFormWrapper = styled.div`
   overflow: hidden;
-  width: fit-content;
+  width: 100%;
   height: auto;
   margin: 0 auto;
   text-align: center;
 `;
 
-const DescriptionBox = styled.div`
-  text-align: left;
-`;
-
-const QuestionButton = styled.button`
-  cursor: pointer;
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-const TextLine = styled.span`
-  border: 2px solid ${({ color }) => color};
-  border-radius: 999px;
-  height: ${({ size }) => size};
+const MakeFormContent = styled.div`
+  width: 760px;
+  margin: 0 auto;
 `;
 
 const TextButton = styled.button`
   border-bottom: 1px solid ${({ color }) => color};
-  cursor: pointer;
+  color: ${G06};
+  &:hover {
+    color: ${BK01};
+  }
 `;
 
 const CenteredButton = styled(Button)`
   margin: 0 auto;
-`;
-
-const TmpBox = styled.div`
-  width: 920px;
-  height: 600px;
-  border: 1px solid black;
 `;
