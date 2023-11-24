@@ -74,6 +74,7 @@ export const PostDetail = () => {
             },
           }),
         ]);
+        console.log(crewResponse);
         setCountLikes(postResponse.data.total_likes);
         setRecruitmentData({
           ...postResponse.data,
@@ -88,8 +89,11 @@ export const PostDetail = () => {
           interview_end_date: convertData(postResponse.data.interview_end_date),
           final_result_date: convertData(postResponse.data.final_result_date),
         });
-
-        setCrewData(crewResponse.data);
+        setCrewData({
+          crew_name: crewResponse.data.crew.crew_name,
+          category: crewResponse.data.crew.crew_category,
+          crew_description: crewResponse.data.crew.description,
+        });
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -97,6 +101,8 @@ export const PostDetail = () => {
 
     fetchData();
   }, [params.postid]);
+
+  console.log(crewData);
 
   return (
     <DetailWrapper>

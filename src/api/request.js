@@ -32,7 +32,6 @@ export const loginRequest = {
   loginPost: 'accounts/login/',
 };
 
-
 export const signInRequest = {
   mailCheck: '/accounts/sogang-mail-check/',
   verify: '/accounts/verification-code-check/',
