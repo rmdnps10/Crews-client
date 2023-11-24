@@ -132,6 +132,7 @@ export const LoginInput = () => {
                 setEmailStatus('inactive');
                 setShowEmailX(false);
               }}
+              padding="0px 50px 0px 0px"
             />
           </label>
           {showEmailX === true && (
@@ -173,6 +174,7 @@ export const LoginInput = () => {
                 setPasswordStatus('inactive');
                 setShowPwX(false);
               }}
+              padding="0px 90px 0px 0px"
             />
           </label>
           {showPwX === true &&
