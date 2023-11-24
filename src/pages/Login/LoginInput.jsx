@@ -13,6 +13,7 @@ import eyeXIcon from './eyeX.svg';
 //import api
 import { loginRequest } from 'api/request';
 import { instance } from 'api/axios';
+import { useNavigate } from 'react-router-dom';
 export const LoginInput = () => {
   //state
   const [email, setEmail] = useState('');
@@ -34,6 +35,7 @@ export const LoginInput = () => {
   const [isStore, setIsStore] = useState(false);
   //로그인이 일치하지않아요 toggle
   const [notMatch, setNotMatch] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     // 컴포넌트가 렌더링될 때 쿠키가 있으면 바로 입력
     const savedEmail = cookies.userEmail;
@@ -54,9 +56,10 @@ export const LoginInput = () => {
     if (notMatch === true) {
       setNotMatch(false);
     }
+
     if (email.trim() === '') {
       alert('아이디를 입력하세요');
-    } else if (password.trim() === '') {
+    } else if (password.toString().trim() === '') {
       alert('비밀번호를 입력하세요');
     } else {
       loginUser(email, password);
@@ -85,6 +88,9 @@ export const LoginInput = () => {
       // 로그인이 성공한 경우
       const accessToken = response.data.access;
       const refreshToken = response.data.refresh;
+      localStorage.setItem('access', accessToken);
+      localStorage.setItem('refresh', refreshToken);
+      navigate('/');
       // console.log(accessToken);
       // console.log(refreshToken);
     } catch (error) {
@@ -96,6 +102,7 @@ export const LoginInput = () => {
       isLoginPending = false;
     }
   };
+  console.log(email);
   return (
     <LoginInputWrapper>
       <form onSubmit={onSubmitHanlder}>
@@ -125,6 +132,7 @@ export const LoginInput = () => {
                 setEmailStatus('inactive');
                 setShowEmailX(false);
               }}
+              padding="0px 50px 0px 0px"
             />
           </label>
           {showEmailX === true && (
@@ -166,6 +174,7 @@ export const LoginInput = () => {
                 setPasswordStatus('inactive');
                 setShowPwX(false);
               }}
+              padding="0px 90px 0px 0px"
             />
           </label>
           {showPwX === true &&

@@ -1,26 +1,90 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Flex, Space } from 'components/atoms';
 import basicProfile from './basic-profile.svg';
 import dummyImage from './dummyImage.png';
 import saveImage from './save.svg';
 import saveBlueImage from './save-blue.svg';
-function MainCrewCard({ isSmall }) {
+import { instance } from 'api/axios';
+import { homePageRequest } from 'api/request';
+import { useNavigate } from 'react-router-dom';
+import PostCategoryData from './PostCategory';
+function MainCrewCard({
+  title,
+  endDate,
+  id,
+  crewName,
+  dayLeft,
+  likeCount,
+  category,
+  isLiked,
+  isSmall,
+}) {
+  const [isSaveBlue, setIsSaveBlue] = useState(isLiked);
+  const [countLikes, setCountLikes] = useState(likeCount);
+  const navigate = useNavigate();
+  const postLikePost = async (id) => {
+    await instance.post(
+      `${homePageRequest.likePost}`,
+      {
+        post_id: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      }
+    );
+    if (isSaveBlue) {
+      setCountLikes(countLikes - 1);
+    } else {
+      setCountLikes(countLikes + 1);
+    }
+    setIsSaveBlue(!isSaveBlue);
+  };
+  const onClickSaveButton = (e) => {
+    e.stopPropagation();
+    if (localStorage.getItem('access')) {
+      postLikePost(id);
+    } else {
+      navigate('/login');
+    }
+  };
+  useEffect(() => {}, [isSaveBlue]);
+
+  const onClickGoDetailPost = (e) => {
+    navigate(`/postdetail/${id}`);
+  };
   return (
-    <MainCrewCardItem $isSmall={isSmall}>
-      <DdayLabel>모집 마감 D-1</DdayLabel>
+    <MainCrewCardItem $isSmall={isSmall} onClick={onClickGoDetailPost}>
+      <DdayLabel>모집 마감 {dayLeft}</DdayLabel>
       <CrewPostImage src={dummyImage} />
       <Space height={'10px'} />
       <PostDataContainer>
         <Flex justify="flex-start" gap={'7'}>
           <CrewImage src={basicProfile} />
-          <CrewName>멋쟁이사자처럼</CrewName>
+          <CrewName>{crewName}</CrewName>
         </Flex>
-        <PostTitle>멋쟁이 사자처럼 11기 신입기수 모집</PostTitle>
-        <PostCategory>IT / 코딩</PostCategory>
+        <PostTitle>{title}</PostTitle>
+        <PostCategory>
+          <PostCategoryData category={category} />
+        </PostCategory>
         <PostSaveView>
-          <SaveImage src={saveImage} />
-          <SaveCount>25</SaveCount>
+          {isSaveBlue ? (
+            <SaveImage
+              src={saveImage}
+              onClick={onClickSaveButton}
+              className="save"
+            />
+          ) : (
+            <SaveImage
+              src={saveBlueImage}
+              onClick={onClickSaveButton}
+              className="save"
+            />
+          )}
+
+          <SaveCount $isLiked={isSaveBlue}>{countLikes}</SaveCount>
         </PostSaveView>
       </PostDataContainer>
     </MainCrewCardItem>
@@ -89,13 +153,10 @@ const PostTitle = styled.p`
   font-weight: 700;
   line-height: 26px; /* 130% */
   letter-spacing: -0.4px;
-  // 단어 단위 줄바꿈 적용함
-  word-break: keep-all;
 `;
 
 const PostCategory = styled.div`
   display: flex;
-  align-self: flex-start;
   padding: 6px 14px;
   justify-content: center;
   align-items: center;
@@ -103,23 +164,28 @@ const PostCategory = styled.div`
   border-radius: 30px;
   background: var(--blue-b-05-m, #3172ea);
   color: #fff;
+  position: absolute;
+  bottom: 53px;
 `;
-const PostSaveView = styled.div`
+const PostSaveView = styled.label`
   display: flex;
-  align-self: flex-end;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
   gap: 4px;
 `;
 
 const SaveImage = styled.img`
   width: 20px;
   height: 20px;
+  cursor: pointer;
 `;
 const SaveCount = styled.div`
-  color: var(--blue-b-05-m, #3172ea);
+  color: ${(props) => (props.$isLiked ? '#3172ea' : '#101010')};
   font-family: Pretendard;
   font-size: 18px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: ${(props) => (props.$isLiked ? '700' : '400')};
   line-height: normal;
   letter-spacing: -0.36px;
 `;
