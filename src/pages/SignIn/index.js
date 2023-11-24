@@ -7,6 +7,7 @@ import { instance } from 'api/axios';
 import { signInRequest } from 'api/request';
 import dayjs from 'dayjs';
 export const SignIn = () => {
+  const navigate = useNavigate();
   const [isRed, setIsRed] = useState({
     id: '',
     pw: '',
@@ -120,6 +121,22 @@ export const SignIn = () => {
       });
     } catch {
       alert('인증번호가 틀렸습니다.');
+    }
+  };
+  const 회원가입끝 = async () => {
+    try {
+      await instance.post(`${signInRequest.register}`, {
+        email: form.id,
+        name: form.name,
+        sogang_mail: form.sogangemail,
+        student_number: form.studentid,
+        first_major: form.first_major,
+        second_major: form.second_major,
+        third_major: form.third_major,
+      });
+      navigate('/');
+    } catch (err) {
+      alert('필수 항목을 모두 작성해주세요!');
     }
   };
 
@@ -329,7 +346,7 @@ export const SignIn = () => {
         </InputPlusButton>
       </FormAuthEmail>
       <Space height={'80px'} />
-      <EndSignInButton>회원가입 완료</EndSignInButton>
+      <EndSignInButton onClick={회원가입끝}>회원가입 완료</EndSignInButton>
       <Space height={'80px'} />
     </SigninWrapper>
   );
