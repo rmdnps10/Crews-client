@@ -33,18 +33,6 @@ export const Navigation = () => {
   }, []);
   return (
     <>
-      <NavigationContainer>
-        <button onClick={() => nav('/')}>To Home</button>
-        <button onClick={() => nav('/makeform')}>To MakeForm</button>
-        <button onClick={() => nav('/login')}>To Login</button>
-        <button onClick={() => nav('/makepost')}>To MakePost</button>
-        <button onClick={() => nav('/signin')}>To SignIn</button>
-        <button onClick={() => nav('/evaluate')}>To Evaluate</button>
-        <button onClick={() => nav('/evaluatedetail')}>
-          To EvaluateDetail
-        </button>
-        <button onClick={() => nav('/mypage')}>mypage</button>
-      </NavigationContainer>
       <CrewsNav>
         <CrewsLogo onClick={onClickGoHome}>Crews 🛳️</CrewsLogo>
         <ProfileSection>
