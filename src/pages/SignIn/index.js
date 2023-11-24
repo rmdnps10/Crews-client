@@ -65,6 +65,7 @@ export const SignIn = () => {
     }
   };
   const onChangeSgMail = (e) => {
+    set이미등록학교이메일(false);
     if (checkSogangEmail(e.target.value)) {
       setForm({ ...form, [e.target.name]: e.target.value });
       setIsRed({ ...isRed, sogangemail: false });
@@ -109,6 +110,7 @@ export const SignIn = () => {
       setVerifyCode(res.data.verification_code);
       setIsActivate({ ...isActivate, authint: true });
     } catch {
+      set이미등록학교이메일(true);
       alert('이미 등록된 이메일입니다!');
     }
   };
@@ -319,6 +321,11 @@ export const SignIn = () => {
         </InputPlusButton>
         {isRed.sogangemail ? (
           <CautionMessage>올바른 이메일 형식이 아닙니다.</CautionMessage>
+        ) : (
+          ''
+        )}
+        {이미등록학교이메일 ? (
+          <CautionMessage>이미 등록된 이메일입니다.</CautionMessage>
         ) : (
           ''
         )}
