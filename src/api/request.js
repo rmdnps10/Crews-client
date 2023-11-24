@@ -36,5 +36,5 @@ export const loginRequest = {
 
 export const applyAppPageRequest = {
   // Post : 지원서 생성 요청
-  applyApplication: 'apply/application',
+  applyApplication: '/apply/application/',
 };

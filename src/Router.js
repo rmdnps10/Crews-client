@@ -22,7 +22,7 @@ const Router = () => {
     <>
       <Header />
       <Routes>
-        <Route path="/makeform" element={<MakeForm />} />
+        <Route path="/makeform/:postid" element={<MakeForm />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/makepost/:postid" element={<MakePost />} />
         <Route path="/login" element={<Login />} />
