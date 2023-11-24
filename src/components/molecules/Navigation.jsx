@@ -40,7 +40,11 @@ export const Navigation = () => {
             <>
               <ProfileImage src={basicProfile} onClick={onClickMyPage} />
               <Flex direction="column" align="flex-start">
-                <UserName>20201148 정인영</UserName>
+                <UserName>
+                  {localStorage.getItem('studentid') +
+                    ' ' +
+                    localStorage.getItem('name')}
+                </UserName>
                 <LogoutButton onClick={onClickLogout}>로그아웃</LogoutButton>
               </Flex>{' '}
             </>
