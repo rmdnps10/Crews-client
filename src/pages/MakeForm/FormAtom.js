@@ -5,7 +5,7 @@ export const sectionDataAtom = atom({
   default: [
     {
       id: 0,
-      sectionName: '공통 섹션',
+      sectionName: '공통',
       sectionDescription: '',
     },
   ],

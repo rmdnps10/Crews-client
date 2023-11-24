@@ -22,19 +22,42 @@ export const MakeForm = () => {
 
   const handleMakeFormClick = async () => {
     for (const section of sectionData) {
-      const body = {};
+      const questions = questionData
+        .filter((ques) => ques.sectionId === section.id)
+        .map((ques) => {
+          if (ques.questionType === 'checkbox')
+            return {
+              type: 'checkbox',
+              is_essential: ques.isMandatory,
+              question: ques.questionDescription,
+              answer_minimum: 1,
+              answer_maximum: ques.canMultipleCheck ? 1 : 2,
+              options: ques.options.map((op) => op.option),
+            };
+          else
+            return {
+              type: 'long_sentence',
+              is_essential: ques.isMandatory,
+              question: ques.questionDescription,
+              letter_count_limit: ques.characterLimit,
+            };
+        });
+
+      const body = {
+        // post_id
+        section_name: section.sectionName,
+        description: section.sectionDescription,
+        question: questions,
+      };
 
       setLoading((prev) => prev + 1);
 
-      await instance.post(
-        `${applyAppPageRequest.applyApplication}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('access')}`,
-          },
-        }
-      );
+      console.log(body);
+      // await instance.post(`${applyAppPageRequest.applyApplication}`, body, {
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem('access')}`,
+      //   },
+      // });
       setLoading((prev) => prev - 1);
     }
   };
@@ -61,10 +84,11 @@ export const MakeForm = () => {
           </TextButton>
           <Space height="80px" />
           <CenteredButton
-            status="inactive"
+            status="active"
             width="392px"
             height="65px"
             children="모집 공고 등록하기"
+            onClick={handleMakeFormClick}
           />
           <Space height="80px" />
         </MakeFormContent>

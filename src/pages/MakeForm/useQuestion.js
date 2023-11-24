@@ -55,7 +55,6 @@ const useQuestion = () => {
 
   const changeQuestion = (e, idxToChange) => {
     const { name, value, checked } = e.target;
-    console.log(name, value, checked);
 
     const newQuestionData = questionData.map((ques, idx) => {
       if (idx === idxToChange) {
@@ -113,7 +112,6 @@ const useQuestion = () => {
       }
       return ques;
     });
-    console.log(newQuestionData);
     setQuestionData(newQuestionData);
   };
 
