@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import useQuestion from '../useQuestion';
 
 // Imported Functions & Datas
 import { G02, W01, BK01, B04 } from 'style/palette';
@@ -8,25 +9,34 @@ import QuestionTypeBox from './QuestionTypeBox';
 import CheckBoxQues from './CheckBoxQues';
 import DescriptiveQues from './DescriptiveQues';
 
-const QuestionBox = ({ questionData }) => {
-  const { questionType } = { ...questionData };
+const QuestionBox = ({ questionData, idx }) => {
+  const { questionType, questionDescription } = { ...questionData };
+  const { changeQuestion } = useQuestion();
+  const onChangeQuestion = (e) => changeQuestion(e, idx);
+
   return (
     <>
-      <QuestionTypeBox questionType={questionType} />
+      <QuestionTypeBox questionType={questionType} idx={idx} />
       <QuestionBoxContainer>
-        <QuestionDescription placeholder="질문을 입력해주세요." />
-        <QuestionBoxContent questionData={questionData} />
+        <QuestionDescription
+          name="questionDescription"
+          value={questionDescription}
+          placeholder="질문을 입력해주세요."
+          onChange={onChangeQuestion}
+        />
+        <QuestionBoxContent questionData={questionData} idx={idx} />
       </QuestionBoxContainer>
     </>
   );
 };
 
-const QuestionBoxContent = ({ questionData }) => {
+const QuestionBoxContent = ({ questionData, idx }) => {
   const { questionType } = { ...questionData };
 
   if (questionType === 'checkbox')
-    return <CheckBoxQues questionData={questionData} />;
-  else if (questionType === 'descriptive') return <DescriptiveQues />;
+    return <CheckBoxQues questionData={questionData} idx={idx} />;
+  else if (questionType === 'descriptive')
+    return <DescriptiveQues questionData={questionData} idx={idx} />;
   else if (questionType === 'file') return null;
 };
 
@@ -56,9 +66,6 @@ const QuestionDescription = styled.input`
 
   &::placeholder {
     color: ${BK01};
-    font-size: 18px;
-    font-weight: 700;
-    font-family: 'Pretendard-Regular';
   }
 `;
 

@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import { sectionDataAtom } from './FormAtom';
 
 // Imported Functions & Datas
-import { addSection } from './formFunctions';
-import { G06 } from 'style/palette';
+import useSection from './useSection';
+import { G06, BK01 } from 'style/palette';
 
 // Imported Components
 import SectionBox from './Section/SectionBox';
@@ -12,7 +10,7 @@ import MakeFormHeader from './MakeFormHeader';
 import { Space, Button, Text } from 'components/atoms';
 
 export const MakeForm = () => {
-  const [sectionData, setSectionData] = useRecoilState(sectionDataAtom);
+  const { sectionData, addSection } = useSection();
 
   return (
     <MakeFormWrapper>
@@ -23,20 +21,14 @@ export const MakeForm = () => {
 
         {sectionData.map((it, idx) => (
           <>
-            <SectionBox sectionData={it} />
+            <SectionBox key={idx} sectionData={it} idx={idx} />
             <Space height="50px" />
           </>
         ))}
         <Space height="50px" />
 
-        {/* onClick={() => addSection(sectionData, setSectionData)} */}
-        <TextButton color={G06}>
-          <Text
-            size="20px"
-            color={G06}
-            weight="400"
-            children="새로운 섹션 추가하기"
-          />
+        <TextButton color={G06} onClick={addSection}>
+          <Text size="20px" weight="400" children="새로운 섹션 추가하기" />
         </TextButton>
         <Space height="80px" />
         <CenteredButton
@@ -66,6 +58,10 @@ const MakeFormContent = styled.div`
 
 const TextButton = styled.button`
   border-bottom: 1px solid ${({ color }) => color};
+  color: ${G06};
+  &:hover {
+    color: ${BK01};
+  }
 `;
 
 const CenteredButton = styled(Button)`
