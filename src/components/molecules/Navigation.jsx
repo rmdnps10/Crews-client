@@ -10,6 +10,7 @@ export const Navigation = () => {
   const location = useLocation();
   const onClickLogout = () => {
     localStorage.removeItem('access');
+    setLogin(false);
     nav('/');
   };
   const onClickGoHome = () => {
@@ -35,6 +36,7 @@ export const Navigation = () => {
       console.log(1);
     }
   }, [location.pathname]);
+  useEffect(() => {}, [isLogin]);
   return (
     <>
       <CrewsNav>
